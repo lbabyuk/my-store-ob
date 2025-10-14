@@ -15,7 +15,7 @@
 
 .promo-banners__subheading {
   margin-bottom: 2rem;
-  color: var(--color-foreground-secondary);
+  color: #000;
 }
 
 .promo-banners__grid {
@@ -27,7 +27,7 @@
 .promo-banner {
   position: relative;
   overflow: hidden;
-  border-radius: var(--radius-md, 12px);
+  border-radius: 12px;
 }
 
 .promo-banner__image-wrapper {
