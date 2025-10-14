@@ -1,0 +1,150 @@
+{% comment %} Section: Promo Banners {% endcomment %}
+
+{{ 'promo-banners.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    text-align: {{ section.settings.alignment }}
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section
+  id="promo-banners-{{ section.id }}"
+  class="promo-banners section-{{ section.id }} color-{{ section.settings.color_scheme }} section-{{ section.id }}-padding"
+>
+  <div class="promo-banners__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="promo-banners__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.subheading != blank -%}
+      <div class="promo-banners__subheading">{{ section.settings.subheading }}</div>
+    {%- endif -%}
+
+    <div class="promo-banners__grid">
+      {% for block in section.blocks %}
+        {%- if block.type == 'banner' -%}
+          <div
+            class="promo-banner {% if block.settings.aspect_ratio != blank %}aspect-{{ block.settings.aspect_ratio | replace: ':', '-' }}{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            {% if block.settings.image != blank %}
+              {{
+                block.settings.image
+                | image_url: width: 800
+                | image_tag: loading: 'lazy', class: 'promo-banner__image'
+              }}
+            {% else %}
+              {{ 'hero-apparel-3' | placeholder_svg_tag: 'promo-banner__image placeholder' }}
+            {% endif %}
+
+            {%- if block.settings.heading != blank or block.settings.button_text != blank -%}
+              <div class="promo-banner__content">
+                {%- if block.settings.heading != blank -%}
+                  <h3 class="promo-banner__title">{{ block.settings.heading }}</h3>
+                {%- endif -%}
+
+                {%- if block.settings.button_text != blank -%}
+                  <a
+                    {% if block.settings.button_link != blank %}
+                      href="{{ block.settings.button_link }}"
+                    {% else %}
+                      role="link" aria-disabled="true"
+                    {% endif %}
+                    class="promo-banner__button button"
+                  >
+                    {{ block.settings.button_text | escape }}
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Promo Banners",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Promotion Banners" },
+    { "type": "richtext", "id": "subheading", "label": "Subheading", "default": "<p>Your special offer here!</p>" },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "Text alignment",
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom",
+      "default": 36
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "heading", "label": "Text", "default": "<h3>Browse our latest deal!</h3>" },
+        { "type": "url", "id": "button_link", "label": "Button link" },
+        { "type": "text", "id": "button_text", "label": "Button label", "default": "Shop Now" },
+        {
+          "type": "select",
+          "id": "aspect_ratio",
+          "label": "Ratio",
+          "options": [
+            { "value": "16:9", "label": "16:9" },
+            { "value": "1:1", "label": "1:1" },
+            { "value": "3:2", "label": "3:2" }
+          ],
+          "default": "16:9"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo Banner",
+      "category": "banners",
+      "blocks": [{ "type": "banner" }, { "type": "banner" }, { "type": "banner" }]
+    }
+  ]
+}
+{% endschema %}
