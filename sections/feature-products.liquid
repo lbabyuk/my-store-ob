@@ -94,16 +94,12 @@
               {% if section.settings.show_price %}
                 <p class="product-price"><span class="product-price--regular">$19.99</span></p>
               {% endif %}
-              {% if section.settings.add_to_cart and product.available and product.variants.size > 0 %}
-                {% assign first_variant = product.first_available_variant %}
-                <form class="add-to-cart-form" action="{{ routes.cart_add_url }}" method="post">
-                  <input type="hidden" name="id" value="{{ first_variant.id }}">
-
+              {% if section.settings.add_to_cart %}
+                <form class="add-to-cart-form" action="#" method="post">
                   <button
-                    type="submit"
-                    id="add-to-cart-{{ first_variant.id }}"
+                    type="button"
                     class="add-to-cart-btn"
-                    aria-label="Add {{ product.title | escape }} to cart"
+                    aria-label="Add sample product to cart"
                   >
                     {{ 'products.product.add_to_cart' | t: default: 'Add To Cart' }}
                   </button>
