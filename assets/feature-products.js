@@ -1,4 +1,4 @@
-async function updateSections(sections) {
+async function updateSections() {
   try {
     const res = await fetch("/?sections=cart-icon-bubble,cart-drawer");
     const data = await res.json();
@@ -79,11 +79,10 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     const btn = form.querySelector(".add-to-cart-btn");
-    console.log(btn); // <button type="submit" id="add-to-cart-55708638511452" class="add-to-cart-btn" aria-label="Add Nike Air Max Plus to cart">Add to cart</button>
-
+    console.log(btn); 
     const variantId = form.querySelector('input[name="id"]')?.value;
     const quantity = form.querySelector('input[name="quantity"]')?.value || 1;
-    console.log(variantId, quantity); // 55708638511452,  1
+    console.log(variantId, quantity);
 
     addToCart(variantId, btn, +quantity);
   });
