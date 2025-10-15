@@ -1,42 +1,42 @@
 {% comment %} Section: Feature products {% endcomment %}
 
 {{ 'feature-products.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'feature-products.js' | asset_url }}" defer="defer"></script>
+<script src="{{- 'feature-products.js' | asset_url -}}" defer="defer"></script>
 
 <section id="feature-products-{{ section.id }}" class="feature-products-section" data-section-id="{{ section.id }}">
   <div class="container">
-    {% if section.settings.heading != blank %}
+    {%- if section.settings.heading != blank -%}
       <h2 class="feature-products__title">{{- section.settings.heading | default: 'Feature products' -}}</h2>
-    {% endif %}
+    {%- endif -%}
 
     <div class="feature-products__controls">
-      <label for="SortBy-{{ section.id }}">{{ 'products.facets.sort_by_label' | t }}</label>
+      <label for="SortBy-{{ section.id }}">{{- 'products.facets.sort_by_label' | t -}}</label>
       <select id="SortBy-{{ section.id }}" class="feature-products__sort">
         <option value="best-selling">Best Selling</option>
         <option value="price-low">Price: low to hight</option>
         <option value="price-high">Price: hight to low</option>
-        <option value="title-ascending">Alphabetically: A–Z</option>
+        <option value="title-ascending">Alphabetically: A – Z</option>
       </select>
     </div>
 
     <div class="feature-products__grid">
-      {% if section.settings.collection != blank %}
+      {%- if section.settings.collection != blank -%}
         {% assign sort_option = request.params.sort_by | default: 'best-selling' %}
         {% assign collection_handle = section.settings.collection %}
         {% assign products = collections[collection_handle].products | slice: 0, section.settings.products_count %}
 
-        {% case sort_option %}
-          {% when 'price-low' %}
+        {%- case sort_option -%}
+          {%- when 'price-low' -%}
             {% assign products = products | sort: 'price' %}
-          {% when 'price-high' %}
+          {%- when 'price-high' -%}
             {% assign products = products | sort: 'price' | reverse %}
-          {% when 'title-ascending' %}
+          {%- when 'title-ascending' -%}
             {% assign products = products | sort: 'title' %}
-          {% else %}
+          {%- else -%}
             {% assign products = collections[collection_handle].products %}
-        {% endcase %}
+        {%- endcase -%}
 
-        {% for product in products %}
+        {%- for product in products -%}
           <div class="product-card" data-product-id="{{ product.id }}">
             <a href="{{ product.url }}" aria-label="details {{ product.title | escape }}">
               {%- if product.featured_image != blank -%}
@@ -46,17 +46,20 @@
               {%- endif -%}
               <h3>{{- product.title | default: 'Product title' | escape -}}</h3>
             </a>
-            {% if section.settings.show_price %}
+            {%- if section.settings.show_price -%}
               <p class="product-price">
-                {% if product.compare_at_price > product.price %}
+                {%- if product.compare_at_price > product.price -%}
                   <s class="product-price--original">{{ product.compare_at_price | money_with_currency }}</s>
-                  <span class="product-price--sale">From {{ product.price | money_with_currency }}</span>
-                {% else %}
-                  <span class="product-price--regular">{{ product.price | money_with_currency }}</span>
-                {% endif %}
+                  <span class="product-price--sale"
+                    >From
+                    {{- product.price | money_with_currency -}}
+                  </span>
+                {%- else -%}
+                  <span class="product-price--regular">{{- product.price | money_with_currency -}}</span>
+                {%- endif -%}
               </p>
-            {% endif %}
-            {% if section.settings.add_to_cart and product.available and product.variants.size > 0 %}
+            {%- endif -%}
+            {%- if section.settings.add_to_cart and product.available and product.variants.size > 0 -%}
               {% assign first_variant = product.first_available_variant %}
               <form
                 class="add-to-cart-form"
@@ -71,44 +74,45 @@
                   id="add-to-cart-{{ first_variant.id }}"
                   class="add-to-cart-btn"
                   aria-label="Add {{ product.title | escape }} to cart"
-                  {% if product.selected_or_first_available_variant.available == false
+                  {%- if product.selected_or_first_available_variant.available == false
                     or product.selected_or_first_available_variant == null
-                  %}
+                  -%}
                     disabled
-                  {% endif %}
+                  {%- endif -%}
                 >
                   {{ 'products.product.add_to_cart' | t: default: 'Add To Cart' }}
                 </button>
               </form>
-            {% endif %}
+            {%- endif -%}
           </div>
-        {% endfor %}
-      {% else %}
+        {%- endfor -%}
+      {%- else -%}
         <div class="feature-products__grid">
-          {% for i in (1..section.settings.product_count) %}
+          {%- for i in (1..section.settings.product_count) -%}
             <div class="product-card placeholder-card">
               <a href="#">
                 {{ 'collection-' | append: i | placeholder_svg_tag }}
                 <h3>Sample product</h3>
               </a>
-              {% if section.settings.show_price %}
+              {%- if section.settings.show_price -%}
                 <p class="product-price"><span class="product-price--regular">$19.99</span></p>
-              {% endif %}
-              {% if section.settings.add_to_cart %}
+              {%- endif -%}
+              {%- if section.settings.add_to_cart -%}
                 <form class="add-to-cart-form" action="#" method="post">
                   <button
                     type="button"
                     class="add-to-cart-btn"
                     aria-label="Add sample product to cart"
+                    id="{{ section.id }}"
                   >
                     {{ 'products.product.add_to_cart' | t: default: 'Add To Cart' }}
                   </button>
                 </form>
-              {% endif %}
+              {%- endif -%}
             </div>
-          {% endfor %}
+          {%- endfor -%}
         </div>
-      {% endif %}
+      {%- endif -%}
     </div>
   </div>
 </section>
