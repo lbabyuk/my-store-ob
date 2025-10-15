@@ -3,7 +3,7 @@
 {{ 'feature-products.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'feature-products.js' | asset_url }}" defer="defer"></script>
 
-<section id="feature-products-{{ section.id }}" class="feature-products-section">
+<section id="feature-products-{{ section.id }}" class="feature-products-section" data-section-id="{{ section.id }}">
   <div class="container">
     {% if section.settings.heading != blank %}
       <h2 class="feature-products__title">{{- section.settings.heading | default: 'Feature products' -}}</h2>
@@ -56,14 +56,30 @@
                 {% endif %}
               </p>
             {% endif %}
-            {% if product.variants.size > 0 and section.settings.add_to_cart %}
-              <button
-                class="add-to-cart-btn"
-                data-variant-id="{{ product.variants.first.id }}"
-                aria-label="Add {{ product.title | escape }} to cart"
+            {% if section.settings.add_to_cart and product.available and product.variants.size > 0 %}
+              {% assign first_variant = product.first_available_variant %}
+              <form
+                class="add-to-cart-form"
+                action="{{ routes.cart_add_url }}"
+                method="post"
+                data-section-id="{{ section.id }}"
               >
-                {{- 'products.product.add_to_cart' | t: default: 'Add To Cart' -}}
-              </button>
+                <input type="hidden" name="id" value="{{ first_variant.id }}">
+
+                <button
+                  type="submit"
+                  id="add-to-cart-{{ first_variant.id }}"
+                  class="add-to-cart-btn"
+                  aria-label="Add {{ product.title | escape }} to cart"
+                  {% if product.selected_or_first_available_variant.available == false
+                    or product.selected_or_first_available_variant == null
+                  %}
+                    disabled
+                  {% endif %}
+                >
+                  {{ 'products.product.add_to_cart' | t: default: 'Add To Cart' }}
+                </button>
+              </form>
             {% endif %}
           </div>
         {% endfor %}
@@ -78,18 +94,20 @@
               {% if section.settings.show_price %}
                 <p class="product-price"><span class="product-price--regular">$19.99</span></p>
               {% endif %}
-              {% if section.settings.add_to_cart %}
+              {% if section.settings.add_to_cart and product.available and product.variants.size > 0 %}
                 {% assign first_variant = product.first_available_variant %}
-                <button
-                  class="add-to-cart-btn"
-                  data-variant-id="{{ first_variant.id }}"
-                  {% unless first_variant.available %}
-                    disabled
-                  {% endunless %}
-                  aria-label="Add {{ product.title | escape }} to cart"
-                >
-                  {{- 'products.product.add_to_cart' | t: default: 'Add To Cart' -}}
-                </button>
+                <form class="add-to-cart-form" action="{{ routes.cart_add_url }}" method="post">
+                  <input type="hidden" name="id" value="{{ first_variant.id }}">
+
+                  <button
+                    type="submit"
+                    id="add-to-cart-{{ first_variant.id }}"
+                    class="add-to-cart-btn"
+                    aria-label="Add {{ product.title | escape }} to cart"
+                  >
+                    {{ 'products.product.add_to_cart' | t: default: 'Add To Cart' }}
+                  </button>
+                </form>
               {% endif %}
             </div>
           {% endfor %}

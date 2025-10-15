@@ -1,72 +1,95 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const sectionEl = document.querySelector('[id^="feature-products-"]');
-  if (!sectionEl) return;
+async function updateSections(sections) {
+  try {
+    const res = await fetch("/?sections=cart-icon-bubble,cart-drawer");
+    const data = await res.json();
 
-  const sectionId = sectionEl.id.replace("feature-products-", "");
-  const sortSelect = sectionEl.querySelector(`#SortBy-${sectionId}`);
+    const bubble = document.querySelector(".cart-count-bubble");
+    console.log("bubble", bubble);
 
-  document.addEventListener("click", async (e) => {
-    const btn = e.target.closest(".add-to-cart-btn");
-    if (!btn) return;
-
-    const variantId = btn.dataset.variantId;
-    if (!variantId) return;
-
-    try {
-      const addResponse = await fetch("/cart/add.js", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "same-origin",
-        body: JSON.stringify({
-          id: parseInt(variantId),
-          quantity: 1
-        })
-      });
-
-      if (!addResponse.ok) {
-        const errorText = await addResponse.text();
-        throw new Error(`${errorText}`);
-      }
-
-      const sectionsToRender = ["cart-drawer", "cart-icon-bubble"];
-      const res = await fetch(`/?sections=${sectionsToRender.join(",")}`);
-      const data = await res.json();
-      sectionsToRender.forEach((section) => {
-        const sectionEl = document.querySelector(`[data-section-id="${section}"]`);
-        if (sectionEl && data[section]) {
-          sectionEl.innerHTML = data[section];
-        }
-      });
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setTimeout(() => {
-        btn.disabled = false;
-        btn.textContent = originalText;
-      }, 1500);
+    if (bubble && data["cart-icon-bubble"]) {
+      bubble.innerHTML = data["cart-icon-bubble"];
     }
+    const drawer = window.cartDrawerInstance;
+    console.log("drawer", drawer); // undefined 
+    if (drawer && typeof drawer.renderContents === "function" && data["cart-drawer"]) {
+      drawer.renderContents(data);
+      drawer.open();
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function addToCart(variantId, btn) {
+  if (!variantId) return;
+  btn.disabled = true;
+
+  try {
+    const addRes = await fetch("/cart/add.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: +variantId, quantity: 1 })
+    });
+
+    if (!addRes.ok) throw new Error("Failed to add product");
+
+    await updateSections();
+  } catch (err) {
+    console.error(err);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function sortFeatureProducts(select) {
+  const section = select.closest('[id^="feature-products-"]');
+  const sectionId = section?.id.replace("feature-products-", "");
+  if (!sectionId) return;
+
+  const sortBy = select.value;
+
+  try {
+    const sectionUrl = `${window.location.pathname}?sections=feature-products-${sectionId}&sort_by=${sortBy}`;
+    const res = await fetch(sectionUrl);
+    if (!res.ok) throw new Error("Failed to fetch sorted section");
+
+    const data = await res.json();
+    const newSectionHTML = data[`feature-products-${sectionId}`];
+
+    if (newSectionHTML) {
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = newSectionHTML;
+      const newSectionEl = tempDiv.firstElementChild;
+      section.replaceWith(newSectionEl);
+    }
+
+    const url = new URL(window.location.href);
+    url.searchParams.set("sort_by", sortBy);
+    window.history.replaceState({}, "", url);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("submit", (e) => {
+    const form = e.target.closest(".add-to-cart-form");
+    if (!form) return;
+
+    e.preventDefault();
+
+    const btn = form.querySelector(".add-to-cart-btn");
+    console.log(btn); // <button type="submit" id="add-to-cart-55708638511452" class="add-to-cart-btn" aria-label="Add Nike Air Max Plus to cart">Add to cart</button>
+
+    const variantId = form.querySelector('input[name="id"]')?.value;
+    const quantity = form.querySelector('input[name="quantity"]')?.value || 1;
+    console.log(variantId, quantity); // 55708638511452,  1
+
+    addToCart(variantId, btn, +quantity);
   });
 
-  if (sortSelect) {
-    sortSelect.addEventListener("change", async (e) => {
-      const sortValue = e.target.value;
-
-      const url = new URL(window.location.href);
-      url.searchParams.set("sort_by", sortValue);
-
-      try {
-        const res = await fetch(`${url.pathname}?section_id=${sectionId}&sort_by=${sortValue}`);
-        const html = await res.text();
-        const parser = new DOMParser();
-        const newDoc = parser.parseFromString(html, "text/html");
-        const newSection = newDoc.querySelector(`#feature-products-${sectionId}`);
-        if (newSection) {
-          sectionEl.replaceWith(newSection);
-        }
-        window.history.replaceState({}, "", url);
-      } catch (err) {
-        console.error(err);
-      }
-    });
-  }
+  document.addEventListener("change", (e) => {
+    if (!e.target.matches('[id^="SortBy-"]')) return;
+    sortFeatureProducts(e.target);
+  });
 });
