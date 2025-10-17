@@ -14,16 +14,17 @@
       <select id="SortBy-{{ section.id }}" class="feature-products__sort">
         <option value="best-selling">Best Selling</option>
         <option value="price-low">Price: low to hight</option>
-        <option value="price-high">Price: hight to low</option>
+        <option value="price-high">Price: high to low</option>
         <option value="title-ascending">Alphabetically: A – Z</option>
       </select>
     </div>
 
     <div class="feature-products__grid">
       {%- if section.settings.collection != blank -%}
-        {% assign sort_option = request.params.sort_by | default: 'best-selling' %}
         {% assign collection_handle = section.settings.collection %}
-        {% assign products = collections[collection_handle].products | slice: 0, section.settings.products_count %}
+
+        {% assign sort_option = request.params.sort_by | default: 'best-selling' %}
+        {% assign products = collections[collection_handle].products %}
 
         {%- case sort_option -%}
           {%- when 'price-low' -%}
@@ -36,9 +37,9 @@
             {% assign products = collections[collection_handle].products %}
         {%- endcase -%}
 
-        {%- for product in products -%}
+        {%- for product in products limit: section.settings.product_count -%}
           <div class="product-card" data-product-id="{{ product.id }}">
-            <a href="{{ product.url }}" aria-label="details {{ product.title | escape }}">
+            <a href="{{ product.url  }}" aria-label="details {{ product.title | escape }}">
               {%- if product.featured_image != blank -%}
                 {{ product.featured_image | image_url: width: 400 | image_tag: alt: product.title }}
               {%- else -%}
@@ -116,7 +117,6 @@
     </div>
   </div>
 </section>
-
 {% schema %}
 {
   "name": "Feature Products",

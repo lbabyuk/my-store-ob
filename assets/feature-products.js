@@ -1,19 +1,15 @@
 async function updateSections() {
   try {
-    const res = await fetch("/?sections=cart-icon-bubble,cart-drawer");
+    const res = await fetch("/cart.js");
     const data = await res.json();
 
     const bubble = document.querySelector(".cart-count-bubble");
-    console.log("bubble", bubble);
+    if (bubble) bubble.textContent = data.item_count;
 
-    if (bubble && data["cart-icon-bubble"]) {
-      bubble.innerHTML = data["cart-icon-bubble"];
-    }
-    const drawer = window.cartDrawerInstance;
-    console.log("drawer", drawer); // undefined 
-    if (drawer && typeof drawer.renderContents === "function" && data["cart-drawer"]) {
-      drawer.renderContents(data);
-      drawer.open();
+    const cartNotification = document.querySelector("cart-notification");
+
+    if (cartNotification && typeof cartNotification.renderContents === "function") {
+      cartNotification.renderContents(data);
     }
   } catch (err) {
     console.error(err);
@@ -25,15 +21,22 @@ async function addToCart(variantId, btn) {
   btn.disabled = true;
 
   try {
-    const addRes = await fetch("/cart/add.js", {
+    const formData = {
+      items: [{ id: Number(variantId), quantity: 1 }]
+    };
+
+    const res = await fetch(window.Shopify.routes.root + `cart/add.js`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: +variantId, quantity: 1 })
+      body: JSON.stringify(formData)
     });
 
-    if (!addRes.ok) throw new Error("Failed to add product");
+    if (!res.ok) throw new Error("Failed to add product");
 
     await updateSections();
+    const cartNotification = document.querySelector("cart-notification");
+
+    if (cartNotification) cartNotification.open();
   } catch (err) {
     console.error(err);
   } finally {
@@ -50,20 +53,21 @@ async function sortFeatureProducts(select) {
 
   try {
     const sectionUrl = `${window.location.pathname}?sections=feature-products-${sectionId}&sort_by=${sortBy}`;
+    console.log(sectionUrl);
+
     const res = await fetch(sectionUrl);
+
     if (!res.ok) throw new Error("Failed to fetch sorted section");
 
-    const data = await res.json();
-    const newSectionHTML = data[`feature-products-${sectionId}`];
+    const newHTML = await res.text();
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = newHTML;
+    const newSectionEl = tempDiv.querySelector(`#feature-products-${sectionId}`);
 
-    if (newSectionHTML) {
-      const tempDiv = document.createElement("div");
-      tempDiv.innerHTML = newSectionHTML;
-      const newSectionEl = tempDiv.firstElementChild;
-      section.replaceWith(newSectionEl);
-    }
+    if (newSectionEl) section.replaceWith(newSectionEl);
 
     const url = new URL(window.location.href);
+
     url.searchParams.set("sort_by", sortBy);
     window.history.replaceState({}, "", url);
   } catch (err) {
@@ -79,10 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     const btn = form.querySelector(".add-to-cart-btn");
-    console.log(btn); 
     const variantId = form.querySelector('input[name="id"]')?.value;
     const quantity = form.querySelector('input[name="quantity"]')?.value || 1;
-    console.log(variantId, quantity);
 
     addToCart(variantId, btn, +quantity);
   });
