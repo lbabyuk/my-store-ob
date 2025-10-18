@@ -7,7 +7,6 @@ async function updateSections() {
     if (bubble) bubble.textContent = data.item_count;
 
     const cartNotification = document.querySelector("cart-notification");
-
     if (cartNotification && typeof cartNotification.renderContents === "function") {
       cartNotification.renderContents(data);
     }
@@ -21,9 +20,7 @@ async function addToCart(variantId, btn) {
   btn.disabled = true;
 
   try {
-    const formData = {
-      items: [{ id: Number(variantId), quantity: 1 }]
-    };
+    const formData = { items: [{ id: Number(variantId), quantity: 1 }] };
 
     const res = await fetch(window.Shopify.routes.root + `cart/add.js`, {
       method: "POST",
@@ -35,7 +32,6 @@ async function addToCart(variantId, btn) {
 
     await updateSections();
     const cartNotification = document.querySelector("cart-notification");
-
     if (cartNotification) cartNotification.open();
   } catch (err) {
     console.error(err);
@@ -44,53 +40,58 @@ async function addToCart(variantId, btn) {
   }
 }
 
-async function sortFeatureProducts(select) {
-  const section = select.closest('[id^="feature-products-"]');
-  const sectionId = section?.id.replace("feature-products-", "");
-  if (!sectionId) return;
+function initFeatureProducts(sectionId) {
+  const section = document.getElementById(`shopify-section-${sectionId}`);
+  if (!section) return;
 
-  const sortBy = select.value;
+  const sortSelect = section.querySelector(`#SortBy-${sectionId}`);
+  const grid = section.querySelector(".feature-products__grid");
+  if (!sortSelect || !grid) return;
 
-  try {
-    const sectionUrl = `${window.location.pathname}?sections=feature-products-${sectionId}&sort_by=${sortBy}`;
-    console.log(sectionUrl);
+  function sortProducts(sortBy) {
+    const initialProducts = Array.from(grid.querySelectorAll(".product-card"));
+    const products = [...initialProducts];
 
-    const res = await fetch(sectionUrl);
+    products.sort((a, b) => {
+      const priceA = parseFloat(a.querySelector(".product-price")?.textContent.replace(/[^0-9.]/g, "")) || 0;
+      const priceB = parseFloat(b.querySelector(".product-price")?.textContent.replace(/[^0-9.]/g, "")) || 0;
+      const titleA = a.querySelector("h3")?.textContent.trim() || "";
+      const titleB = b.querySelector("h3")?.textContent.trim() || "";
 
-    if (!res.ok) throw new Error("Failed to fetch sorted section");
+      return sortBy === "price-low"
+        ? priceA - priceB
+        : sortBy === "price-high"
+          ? priceB - priceA
+          : sortBy === "title-ascending"
+            ? titleA.localeCompare(titleB)
+            : initialProducts.indexOf(a) - initialProducts.indexOf(b);
+    });
 
-    const newHTML = await res.text();
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = newHTML;
-    const newSectionEl = tempDiv.querySelector(`#feature-products-${sectionId}`);
-
-    if (newSectionEl) section.replaceWith(newSectionEl);
-
-    const url = new URL(window.location.href);
-
-    url.searchParams.set("sort_by", sortBy);
-    window.history.replaceState({}, "", url);
-  } catch (err) {
-    console.error(err);
+    products.forEach((p) => grid.appendChild(p));
   }
+
+  sortSelect.addEventListener("change", () => sortProducts(sortSelect.value));
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("[data-section-id]").forEach((section) => {
+    initFeatureProducts(section.getAttribute("data-section-id"));
+  });
+
+  document.addEventListener("shopify:section:load", (event) => {
+    const sectionId = event.target.getAttribute("data-section-id");
+    if (sectionId) initFeatureProducts(sectionId);
+  });
+
   document.addEventListener("submit", (e) => {
     const form = e.target.closest(".add-to-cart-form");
     if (!form) return;
 
     e.preventDefault();
-
     const btn = form.querySelector(".add-to-cart-btn");
     const variantId = form.querySelector('input[name="id"]')?.value;
     const quantity = form.querySelector('input[name="quantity"]')?.value || 1;
 
     addToCart(variantId, btn, +quantity);
-  });
-
-  document.addEventListener("change", (e) => {
-    if (!e.target.matches('[id^="SortBy-"]')) return;
-    sortFeatureProducts(e.target);
   });
 });
