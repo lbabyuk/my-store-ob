@@ -1,0 +1,201 @@
+{{ 'designers-collection.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{% assign designers = collection.metafields.custom.designers.value %}
+<section
+  class="collection page-width section section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}"
+  aria-label="Designers Collection"
+>
+  {% if designers.size == 0 %}
+    <div class="collection collection--empty page-width" id="designers-grid" data-id="{{ section.id }}">
+      <div class="title-wrapper center"><h2 class="title title--primary">No cards with designers info found</h2></div>
+    </div>
+  {% else %}
+    <div
+      class="
+        designers-collection designers-collection--{{ section.id }}
+        grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
+        grid--{{ section.settings.columns_desktop }}-col-desktop
+      "
+    >
+      {% for designer in designers %}
+        <article
+          class="designer-card grid__item"
+          id="designer-{{ forloop.index }}"
+          role="region"
+          aria-labelledby="designer-name-{{ forloop.index }}"
+          data-designer="{{ designer.name | escape }}"
+        >
+          {% if designer.image == blank %}
+            {{ 'hero-apparel-1' | placeholder_svg_tag: 'designer-card__image' }}
+          {% else %}
+            <img
+              src="{{ designer.image | image_url: width: 200,  crop: 'center' }}"
+              alt="{{ designer.name }}"
+              width="200"
+              height="200"
+              loading="lazy"
+              class="designer-card__image"
+            >
+          {% endif %}
+
+          {% if designer.name != blank %}
+            <h2 class="designer-card__name" id="designer-name-{{ forloop.index }}">{{ designer.name | escape }}</h2>
+          {% endif %}
+          {% if designer.title != blank %}
+            <h3 class="designer-card__title">{{ designer.title | escape }}</h3>
+          {% endif %}
+          <div class="designer-card__info">
+            {% if designer.description %}
+              <div class="designer-card__description">
+                <p class="designer-card__section-title">Bio</p>
+                {{ designer.description | metafield_tag }}
+              </div>
+            {% endif %}
+
+            {% if designer.tags != blank %}
+              <div class="designer-card__tags">
+                {% assign tag_list = designer.tags | split: ',' %}
+                <p class="designer-card__section-title">Tags</p>
+                <ul class="designer-card__tags-list">
+                  {% for tag in tag_list %}
+                    {% if tag != blank %}
+                      <li class="designer-card__tags-item">{{ tag | strip }}</li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+
+            {% if designer.link != blank %}
+              {% assign link = designer.link.value %}
+              <div class="designer-card__portfolio">
+                <p class="designer-card__section-title">Portfolio links</p>
+                <a
+                  href="{{ link.url }}"
+                  target="_blank"
+                  rel="noopener"
+                  class="designer-card__link"
+                  aria-labelledby="portfolio-links-{{ section.id }}"
+                >
+                  {{ link.text | default: link.url }}
+                </a>
+              </div>
+            {% endif %}
+            <div class="designer-card__date">
+              <p class="designer-card__section-title">Date of Birth</p>
+              <p>{{ designer.date_of_birth | date: '%B %d, %Y' | escape }}</p>
+            </div>
+            {% if designer.verified_designer and section.settings.show_vendor %}
+              <p class="designer-card__verified">Verified Designer</p>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Designers Collection",
+  "tag": "section",
+  "class": "section section-designers-collection",
+
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "range",
+      "id": "cards_per_page",
+      "min": 2,
+      "max": 36,
+      "step": 2,
+      "default": 2,
+      "label": "Cards per page"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "t:sections.collection-list.settings.columns_desktop.label"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "t:sections.collection-list.settings.columns_mobile.options__1.label"
+        },
+        {
+          "value": "2",
+          "label": "t:sections.collection-list.settings.columns_mobile.options__2.label"
+        }
+      ],
+      "default": "1",
+      "label": "t:sections.collection-list.settings.columns_mobile.label"
+    },
+
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "info": "t:sections.all.colors.has_cards_info",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Designer card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "Verified Designer"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Designers cards"
+    }
+  ]
+}
+{% endschema %}
