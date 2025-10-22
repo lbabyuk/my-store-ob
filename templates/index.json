@@ -84,23 +84,16 @@
           "settings": {
             "collection": "designers"
           }
-        },
-        "featured_collection_33anMz": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": "sport"
-          }
         }
       },
       "block_order": [
-        "featured_collection_BqMMT9",
-        "featured_collection_33anMz"
+        "featured_collection_BqMMT9"
       ],
       "name": "t:sections.collection-list.presets.name",
       "settings": {
         "title": "Our Designers",
         "heading_size": "h1",
-        "image_ratio": "square",
+        "image_ratio": "adapt",
         "columns_desktop": 3,
         "color_scheme": "",
         "show_view_all": false,
