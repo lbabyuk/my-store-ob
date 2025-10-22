@@ -84,10 +84,17 @@
           "settings": {
             "collection": "designers"
           }
+        },
+        "featured_collection_33anMz": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "sport"
+          }
         }
       },
       "block_order": [
-        "featured_collection_xxYMQT"
+        "featured_collection_xxYMQT",
+        "featured_collection_33anMz"
       ],
       "name": "t:sections.collection-list.presets.name",
       "settings": {
