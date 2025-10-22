@@ -84,23 +84,16 @@
           "settings": {
             "collection": "designers"
           }
-        },
-        "featured_collection_yi7aBz": {
-          "type": "featured_collection",
-          "settings": {
-            "collection": "sport"
-          }
         }
       },
       "block_order": [
-        "featured_collection_e9zGkQ",
-        "featured_collection_yi7aBz"
+        "featured_collection_e9zGkQ"
       ],
       "name": "t:sections.collection-list.presets.name",
       "settings": {
         "title": "Collections",
         "heading_size": "h1",
-        "image_ratio": "square",
+        "image_ratio": "adapt",
         "columns_desktop": 3,
         "color_scheme": "",
         "show_view_all": false,
