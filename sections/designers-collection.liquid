@@ -14,16 +14,16 @@
   }
 {%- endstyle -%}
 
-{% assign designers = collection.metafields.custom.designers.value %}
+{%- assign designers = collection.metafields.custom.designers.value -%}
 <section
   class="collection page-width section section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}"
   aria-label="Designers Collection"
 >
-  {% if designers.size == 0 %}
+  {%- if designers.size == 0 -%}
     <div class="collection collection--empty page-width" id="designers-grid" data-id="{{ section.id }}">
       <div class="title-wrapper center"><h2 class="title title--primary">No cards with designers info found</h2></div>
     </div>
-  {% else %}
+  {%- else -%}
     <div
       class="
         designers-collection designers-collection--{{ section.id }}
@@ -31,7 +31,7 @@
         grid--{{ section.settings.columns_desktop }}-col-desktop
       "
     >
-      {% for designer in designers %}
+      {%- for designer in designers -%}
         <article
           class="designer-card grid__item"
           id="designer-{{ forloop.index }}"
@@ -39,9 +39,9 @@
           aria-labelledby="designer-name-{{ forloop.index }}"
           data-designer="{{ designer.name | escape }}"
         >
-          {% if designer.image == blank %}
+          {%- if designer.image == blank -%}
             {{ 'hero-apparel-1' | placeholder_svg_tag: 'designer-card__image' }}
-          {% else %}
+          {%- else -%}
             <img
               src="{{ designer.image | image_url: width: 200,  crop: 'center' }}"
               alt="{{ designer.name }}"
@@ -50,38 +50,38 @@
               loading="lazy"
               class="designer-card__image"
             >
-          {% endif %}
+          {%- endif -%}
 
-          {% if designer.name != blank %}
+          {%- if designer.name != blank -%}
             <h2 class="designer-card__name" id="designer-name-{{ forloop.index }}">{{ designer.name | escape }}</h2>
-          {% endif %}
-          {% if designer.title != blank %}
+          {%- endif -%}
+          {%- if designer.title != blank -%}
             <h3 class="designer-card__title">{{ designer.title | escape }}</h3>
-          {% endif %}
+          {%- endif -%}
           <div class="designer-card__info">
-            {% if designer.description %}
+            {%- if designer.description -%}
               <div class="designer-card__description">
                 <p class="designer-card__section-title">Bio</p>
                 {{ designer.description | metafield_tag }}
               </div>
-            {% endif %}
+            {%- endif -%}
 
-            {% if designer.tags != blank %}
+            {%- if designer.tags != blank -%}
               <div class="designer-card__tags">
-                {% assign tag_list = designer.tags | split: ',' %}
+                {%- assign tag_list = designer.tags | split: ',' -%}
                 <p class="designer-card__section-title">Tags</p>
                 <ul class="designer-card__tags-list">
-                  {% for tag in tag_list %}
-                    {% if tag != blank %}
+                  {%- for tag in tag_list -%}
+                    {%- if tag != blank -%}
                       <li class="designer-card__tags-item">{{ tag | strip }}</li>
-                    {% endif %}
-                  {% endfor %}
+                    {%- endif -%}
+                  {%- endfor -%}
                 </ul>
               </div>
-            {% endif %}
+            {%- endif -%}
 
-            {% if designer.link != blank %}
-              {% assign link = designer.link.value %}
+            {%- if designer.link != blank -%}
+              {%- assign link = designer.link.value -%}
               <div class="designer-card__portfolio">
                 <p class="designer-card__section-title">Portfolio links</p>
                 <a
@@ -94,19 +94,19 @@
                   {{ link.text | default: link.url }}
                 </a>
               </div>
-            {% endif %}
+            {%- endif -%}
             <div class="designer-card__date">
               <p class="designer-card__section-title">Date of Birth</p>
               <p>{{ designer.date_of_birth | date: '%B %d, %Y' | escape }}</p>
             </div>
-            {% if designer.verified_designer and section.settings.show_vendor %}
+            {%- if designer.verified_designer and section.settings.show_vendor -%}
               <p class="designer-card__verified">Verified Designer</p>
-            {% endif %}
+            {%- endif -%}
           </div>
         </article>
-      {% endfor %}
+      {%- endfor -%}
     </div>
-  {% endif %}
+  {%- endif -%}
 </section>
 
 {% schema %}
