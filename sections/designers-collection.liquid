@@ -42,14 +42,11 @@
           {%- if designer.image == blank -%}
             {{ 'hero-apparel-1' | placeholder_svg_tag: 'designer-card__image' }}
           {%- else -%}
-            <img
-              src="{{ designer.image | image_url: width: 200,  crop: 'center' }}"
-              alt="{{ designer.name }}"
-              width="200"
-              height="200"
-              loading="lazy"
-              class="designer-card__image"
-            >
+            {{
+              designer.image
+              | image_url: width: 200
+              | image_tag: class: 'designer-card__image', loading: 'lazy', alt: designer.name
+            }}
           {%- endif -%}
 
           {%- if designer.name != blank -%}
@@ -66,14 +63,13 @@
               </div>
             {%- endif -%}
 
-            {%- if designer.tags != blank -%}
+            {%- if designer.tag and designer.tag.value.size > 0 -%}
               <div class="designer-card__tags">
-                {%- assign tag_list = designer.tags | split: ',' -%}
                 <p class="designer-card__section-title">Tags</p>
                 <ul class="designer-card__tags-list">
-                  {%- for tag in tag_list -%}
+                  {%- for tag in designer.tag.value -%}
                     {%- if tag != blank -%}
-                      <li class="designer-card__tags-item">{{ tag | strip }}</li>
+                      <li class="designer-card__tags-item">{{ tag | strip | escape }}</li>
                     {%- endif -%}
                   {%- endfor -%}
                 </ul>
