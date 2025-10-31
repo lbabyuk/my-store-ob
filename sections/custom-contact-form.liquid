@@ -80,11 +80,11 @@
             id="email"
             placeholder="Enter email"
             value="{% if form.email %}{{form.email}}{% elsif customer %}{{ customer.email }}{% endif %}"
-            {% comment %} pattern="^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$" {% endcomment %}
-            {% comment %}
-              required
-              aria-required="true"
-            {% endcomment %}
+            pattern="^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$"
+
+            required
+            aria-required="true"
+
             autocorrect="off"
             autocapitalize="off"
             autocomplete="email"
@@ -112,10 +112,8 @@
             rows="5"
             minlength="2"
             maxlength="1000"
-            {% comment %}
-              required
-              aria-required="true"
-            {% endcomment %}
+            required
+            aria-required="true"
             autocomplete="off"
           >{{ form.body }}</textarea>
         </div>
