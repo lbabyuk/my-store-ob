@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  var thumbsSwiper = new Swiper(".mySwiper", {
+  const thumbsSwiper = new Swiper(".mySwiper", {
     loop: true,
     spaceBetween: 10,
     slidesPerView: 3,
@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     watchSlidesProgress: true
   });
 
-  var mainSwiper = new Swiper(".mySwiper2", {
+  const mainSwiper = new Swiper(".mySwiper2", {
     loop: true,
     spaceBetween: 10,
     navigation: {
@@ -19,16 +19,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  const colorSelect = document.getElementById("color-select");
-  const sizeSelect = document.getElementById("size-select");
-  const variantInput = document.getElementById("selected-variant-id");
-  const variantContainer = document.getElementById("variant-data");
+  const colorSelect = document.querySelector("#color-select");
+  const sizeSelect = document.querySelector("#size-select");
+  const variantInput = document.querySelector("#selected-variant-id");
+  const variantContainer = document.querySelector("#variant-data");
   const addToCartBtn = document.querySelector(".add-to-cart-button");
   const messageBox = document.querySelector(".form-message");
   const productSection = document.querySelector("[data-section-id]");
   const quantityInput = productSection.querySelector('input[name="quantity"]');
-  const reasonInput = document.getElementById("reason");
-  const contactSelect = document.getElementById("preferred_contact");
+  const reasonInput = document.querySelector("#reason");
+  const contactSelect = document.querySelector("#preferred_contact");
 
   if (!variantContainer) return;
 
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
     messageBox.textContent = text;
     messageBox.style.display = "block";
     messageBox.style.color = type === "error" ? "red" : "green";
-    setTimeout(() => (messageBox.style.display = "none"), 4000);
+    setTimeout(() => (messageBox.style.display = "none"), 5000);
   }
 
   function updateVariant() {
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   updateVariant();
 
-  addToCartBtn?.addEventListener("click", async function (e) {
+  addToCartBtn?.addEventListener("click", async (e) => {
     e.preventDefault();
 
     const variantId = variantInput.value;
@@ -103,22 +103,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const contactValue = contactSelect?.value || "";
 
     if (!variantId || addToCartBtn.disabled) {
-      showMessage("Cannot add this variant to cart.", "error");
+      showMessage("Cannot add this variant to cart.");
       return;
     }
 
     if (!reasonValue) {
-      showMessage("Please enter a reason for purchase.", "error");
+      showMessage("Please enter a reason for purchase and select preferred contact.");
       return;
     }
 
     if (!contactValue) {
-      showMessage("Please select a preferred contact method.", "error");
+      showMessage("Please select a preferred contact method.");
       return;
     }
 
     if (!variantId || addToCartBtn.disabled) {
-      showMessage("Cannot add this variant to cart.", "error");
+      showMessage("Cannot add this variant to cart.");
       return;
     }
 
@@ -137,48 +137,35 @@ document.addEventListener("DOMContentLoaded", function () {
         body: formData,
         headers: { Accept: "application/json" }
       });
-
       const data = await response.json();
 
       if (data.status && data.status >= 400) {
         showMessage(data.description || "Error adding to cart.", "error");
-
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-          event: "form_error",
-          form_type: "add_to_cart",
-          productId: variantId,
-          reason: reasonInput.value,
-          preferred_contact: contactSelect.value,
-          timestamp: new Date().toISOString()
-        });
+        pushDataLayer("form_error");
       } else {
         showMessage("Added to cart successfully!", "success");
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-          event: "form_success",
-          orm_type: "add_to_cart",
-          productId: variantId,
-          reason: reasonInput.value,
-          preferred_contact: contactSelect.value,
-          quantity,
-          timestamp: new Date().toISOString()
-        });
+        pushDataLayer("form_success", quantity);
       }
     } catch (err) {
       showMessage("Network error. Please try again.", "error");
-      window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        event: "form_error",
-        form_type: "add_to_cart",
-        productId: variantId,
-        reason: reasonInput.value,
-        preferred_contact: contactSelect.value,
-        error: err.message,
-        timestamp: new Date().toISOString()
-      });
+      pushDataLayer("form_error", null, err.message);
     } finally {
       updateVariant();
+    }
+
+    function pushDataLayer(eventType, quantity = null, error = null) {
+      window.dataLayer = window.dataLayer || [];
+      const payload = {
+        event: eventType,
+        form_type: "add_to_cart",
+        productId: variantInput.value,
+        reason: reasonInput.value,
+        preferred_contact: contactSelect.value,
+        timestamp: new Date().toISOString()
+      };
+      if (quantity) payload.quantity = quantity;
+      if (error) payload.error = error;
+      window.dataLayer.push(payload);
     }
   });
 });

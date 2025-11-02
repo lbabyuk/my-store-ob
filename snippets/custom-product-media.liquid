@@ -1,0 +1,54 @@
+{% comment %}
+  Renders product images
+
+  Usage:
+  {% render 'custom-product-media' %}
+{% endcomment %}
+
+<div class="product_image">
+  <div class="swiper mySwiper2">
+    <div class="swiper-wrapper">
+      {%- for media in product.media -%}
+        <div class="image-container swiper-slide" data-media-id="{{ media.id }}">
+          {%- if media != blank -%}
+            <img
+              src="{{ media | image_url: width: 550, height: 550 }}"
+              loading="lazy"
+              width="450px"
+              height="600px"
+              height="{{ 500 | divided_by: media.preview_image.aspect_ratio }}"
+              alt="{{ media.preview_image.alt | escape }}"
+            >
+          {%- else -%}
+            {{ 'product-2' | placeholder_svg_tag: 'placeholder-img' }}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+
+  <div thumbsSlider="" class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      {%- for media in product.media -%}
+        <div class="swiper-slide" data-media-id="{{ media.id }}">
+          {%- if media != blank -%}
+            <img
+              src="{{ media | image_url: width: 88, height: 88 }}"
+              loading="lazy"
+              loading="lazy"
+              height="88"
+              width="88"
+              height="{{ 80 | divided_by: media.preview_image.aspect_ratio }}"
+              alt="{{ media.preview_image.alt | escape }}"
+            >
+          {%- else -%}
+            {{ 'product-2' | placeholder_svg_tag: 'placeholder-img' }}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
