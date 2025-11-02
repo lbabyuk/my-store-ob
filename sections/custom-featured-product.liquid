@@ -1,0 +1,502 @@
+{{ 'custom-featured-product.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+    .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section
+  class="product section-{{ section.id }}-padding section-{{ section.id }} color-{{ section.settings.color_scheme }}"
+  id="product-{{ section.id }}"
+  data-section="{{ section.id }}"
+  data-url="{{ product.url }}"
+  data-section-id="{{ section.id }}"
+>
+  <div class="page-width">
+    <div class="product-wrapper">
+      <div class="product_image">
+        <div class="swiper mySwiper2">
+          <div class="swiper-wrapper">
+            {% for media in product.media %}
+              <div class="image-container swiper-slide" data-media-id="{{ media.id }}">
+                {%- if media != blank -%}
+                  <img
+                    src="{{ media | image_url: width: 550, height: 550 }}"
+                    loading="lazy"
+                    width="450px"
+                    height="600px"
+                    height="{{ 500 | divided_by: media.preview_image.aspect_ratio }}"
+                    alt="{{ media.preview_image.alt | escape }}"
+                  >
+                {% else -%}
+                  {{ 'product-2' | placeholder_svg_tag: 'placeholder-img' }}
+                {%- endif %}
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+        </div>
+
+        <div thumbsSlider="" class="swiper mySwiper">
+          <div class="swiper-wrapper">
+            {% for media in product.media %}
+              <div class="swiper-slide" data-media-id="{{ media.id }}">
+                {%- if media != blank -%}
+                  <img
+                    src="{{ media | image_url: width: 88, height: 88 }}"
+                    loading="lazy"
+                    loading="lazy"
+                    height="88"
+                    width="88"
+                    height="{{ 80 | divided_by: media.preview_image.aspect_ratio }}"
+                    alt="{{ media.preview_image.alt | escape }}"
+                  >
+                {% else -%}
+                  {{ 'product-2' | placeholder_svg_tag: 'placeholder-img' }}
+                {%- endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="product-info">
+        <div class="product_vendor">
+          {% if product.vendor != blank %}
+            <p>{{ product.vendor | escape }}</p>
+          {% else -%}
+            <p>{{ '***' }}</p>
+          {%- endif %}
+        </div>
+
+        <div class="product_title">
+          {% if product.title == blank %}
+            <h1>{{ product.title | escape }}</h1>
+          {% else %}
+            <h1>{{ product.handle | capitalize }}</h1>
+          {% endif %}
+        </div>
+
+        {% form 'product', product %}
+          <div class="product-form-wrapper">
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+            <div id="product_price" class="product_price price-{{ section.id }}">
+              {% assign product_price = product.selected_or_first_available_variant %}
+
+              <span class="initial_price">{{ product_price.price | money_with_currency }}</span>
+              <s class="compare_at_price">{{ product_price.compare_at_price | money_with_currency }}</s>
+              {% if product_price.price < product_price.compare_at_price %}
+                <span class="price-badge">On {{ 'products.product.on_sale' | t }}</span>
+              {% endif %}
+            </div>
+            {% if product_price.taxable %}
+              <div class="tax-info">
+                <span>{{ 'products.product.taxes_included' | t | default: 'Taxes included' }}</span>
+              </div>
+            {% endif %}
+
+            {% assign color_index = -1 %}
+            {% assign size_index = -1 %}
+
+            {% for option in product.options %}
+              {% assign option_normalized = option | downcase | strip %}
+              {% if option_normalized contains 'color'
+                or option_normalized contains 'colour'
+                or option_normalized contains 'цвет'
+                or option_normalized contains 'колір'
+              %}
+                {% assign color_index = forloop.index0 %}
+              {% elsif option_normalized contains 'size'
+                or option_normalized contains 'shoe size'
+                or option_normalized contains 'розмір'
+              %}
+                {% assign size_index = forloop.index0 %}
+              {% endif %}
+            {% endfor %}
+
+            {% if color_index >= 0 %}
+              {% assign color_index_plus = color_index | plus: 1 %}
+              {% assign color_key = 'option' | append: color_index_plus %}
+              {% assign colors = product.variants | map: color_key | uniq %}
+              <div class="product_option">
+                <label for="color-select">{{ product.options[color_index] | default: 'Color' }}: </label>
+                <select id="color-select" name="color">
+                  {% for color in colors %}
+                    <option value="{{ color | escape }}">{{ color }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            {% endif %}
+
+            {% if size_index >= 0 %}
+              {% assign size_index_plus = size_index | plus: 1 %}
+              {% assign size_key = 'option' | append: size_index_plus %}
+              {% assign sizes = product.variants | map: size_key | uniq %}
+              <div class="product_option">
+                <label for="size-select">{{ product.options[size_index] | default: ' Shoe size' }}: </label>
+                <select id="size-select" name="size">
+                  {% for size in sizes %}
+                    <option value="{{ size | escape }}">{{ size }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            {% endif %}
+
+            <div
+              id="variant-data"
+              data-color-index="{{ color_index }}"
+              data-size-index="{{ size_index }}"
+            >
+              {% for variant in product.variants %}
+                <span
+                  data-id="{{ variant.id }}"
+                  data-option1="{{ variant.option1 | escape }}"
+                  data-option2="{{ variant.option2 | escape }}"
+                  data-option3="{{ variant.option3 | escape }}"
+                  data-media-id="{{ variant.featured_media.id }}"
+                  data-available="{{ variant.available }}"
+                ></span>
+              {% endfor %}
+            </div>
+
+            <div class="product_quantity">
+              {% assign initial_quantity = 1 %}
+              {% assign quantity_text = 'Quantity' %}
+              <label for="Quantity-{{ section.id }}">{{ quantity_text }}: </label>
+              <div class="product_quantity__count">
+                <input
+                  type="number"
+                  name="quantity"
+                  id="Quantity-{{ section.id }}"
+                  value="{{ initial_quantity }}"
+                  min="1"
+                >
+              </div>
+            </div>
+
+            <div class="product_properties">
+              {%- assign fallback_reason_for_purchase_text = 'Preferred purchase' -%}
+              {%- assign fallback_preferred_contact_text = 'Preferred contact' -%}
+
+              <label for="reason">{{ fallback_reason_for_purchase_text }}: </label>
+              <input
+                type="text"
+                name="properties[Reason]"
+                id="reason"
+                placeholder="Reason for purchase..."
+                required
+              >
+
+              <label for="preferred_contact">{{ fallback_preferred_contact_text }}: </label>
+              <select name="properties[Preferred contact]" id="preferred_contact" required aria-required="true">
+                <option value="">Select</option>
+                <option>Email</option>
+                <option>Phone</option>
+                <option>None</option>
+              </select>
+            </div>
+          </div>
+
+          <input
+            type="hidden"
+            name="id"
+            id="selected-variant-id"
+            value="{{ product.selected_or_first_available_variant.id }}"
+          >
+
+          {%- assign fallback_add_to_cart_text = 'Add To Cart' -%}
+
+          <button
+            type="button"
+            class="button add-to-cart-button"
+            name="add"
+            aria-label="{{ 'products.product.add_to_cart' | t: default: fallback_add_to_cart_text | escape }}"
+            {% unless product.selected_or_first_available_variant.available %}
+              disabled
+            {% endunless %}
+          >
+            <span class="btn-text">
+              {% if product.selected_or_first_available_variant.available %}
+                {{ 'products.product.add_to_cart' | t: default: fallback_add_to_cart_text | escape }}
+              {% else %}
+                {{ 'products.product.sold_out' | t: default: fallback_add_to_cart_text | escape }}
+              {% endif %}
+            </span>
+            <span class="spinner" style="display:none;"></span>
+          </button>
+
+          <div class="form-message" style="display:none;"></div>
+
+          <div class="product_description">
+            {%- assign fallback_description_text = 'Let your attitude have the edge in your Shoes, a Tuned Air experience that offers premium stability and unbelievable cushioning.' -%}
+            {% if product.description != blank -%}
+              {{- product.description | default: fallback_description_text -}}
+            {%- else -%}
+              {{- 'products.product.description' | t -}}
+            {%- endif %}
+          </div>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  console.log({{ product | json }})
+</script>
+{% comment %}
+  <script src="{{ 'custom-featured-product.js' | asset_url }}" defer></script>
+{% endcomment %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var thumbsSwiper = new Swiper('.mySwiper', {
+      loop: true,
+      spaceBetween: 10,
+      slidesPerView: 3,
+      freeMode: true,
+      watchSlidesProgress: true
+    });
+
+    var mainSwiper = new Swiper('.mySwiper2', {
+      loop: true,
+      spaceBetween: 10,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      },
+      thumbs: {
+        swiper: thumbsSwiper
+      }
+    });
+
+    const colorSelect = document.getElementById('color-select');
+    const sizeSelect = document.getElementById('size-select');
+    const variantInput = document.getElementById('selected-variant-id');
+    const variantContainer = document.getElementById('variant-data');
+    const addToCartBtn = document.querySelector('.add-to-cart-button');
+    const messageBox = document.querySelector('.form-message');
+    const productSection = document.querySelector('[data-section-id]');
+    const quantityInput = productSection.querySelector('input[name="quantity"]');
+    const reasonInput = document.getElementById('reason');
+    const contactSelect = document.getElementById('preferred_contact');
+
+    if (!variantContainer) return;
+
+    const colorIndex = parseInt(variantContainer.dataset.colorIndex);
+    const sizeIndex = parseInt(variantContainer.dataset.sizeIndex);
+
+    const variants = Array.from(variantContainer.querySelectorAll('span')).map((el) => ({
+      id: el.dataset.id,
+      option1: el.dataset.option1,
+      option2: el.dataset.option2,
+      option3: el.dataset.option3,
+      mediaId: el.dataset.mediaId,
+      available: el.dataset.available === 'true'
+    }));
+
+    function findVariant(color, size) {
+      return variants.find((v) => {
+        const colorVal = colorIndex >= 0 ? v[`option${colorIndex + 1}`] : null;
+        const sizeVal = sizeIndex >= 0 ? v[`option${sizeIndex + 1}`] : null;
+        const colorMatch = color ? colorVal === color : true;
+        const sizeMatch = size ? sizeVal === size : true;
+        return colorMatch && sizeMatch;
+      });
+    }
+
+    function updateImagesForVariant(mediaId) {
+      if (!mediaId) return;
+      const slides = document.querySelectorAll('.mySwiper2 .swiper-slide');
+      const index = Array.from(slides).findIndex((s) => s.dataset.mediaId === mediaId);
+      if (index >= 0 && mainSwiper) mainSwiper.slideTo(index);
+    }
+
+    function showMessage(text, type = 'error') {
+      if (!messageBox) return;
+      messageBox.textContent = text;
+      messageBox.style.display = 'block';
+      messageBox.style.color = type === 'error' ? 'red' : 'green';
+      setTimeout(() => (messageBox.style.display = 'none'), 4000);
+    }
+
+    function updateVariant() {
+      const color = colorSelect?.value;
+      const size = sizeSelect?.value;
+      const variant = findVariant(color, size);
+
+      if (!variant) return;
+
+      variantInput.value = variant.id;
+      updateImagesForVariant(variant.mediaId);
+
+      if (variant.available) {
+        addToCartBtn.disabled = false;
+        addToCartBtn.textContent = 'Add to Cart';
+      } else {
+        addToCartBtn.disabled = true;
+        addToCartBtn.textContent = 'Sold Out';
+        showMessage('This variant is currently unavailable.');
+      }
+    }
+
+    colorSelect?.addEventListener('change', updateVariant);
+    sizeSelect?.addEventListener('change', updateVariant);
+
+    updateVariant();
+
+    addToCartBtn?.addEventListener('click', async function (e) {
+      e.preventDefault();
+
+      const variantId = variantInput.value;
+      const quantity = quantityInput?.value || 1;
+      const reasonValue = reasonInput?.value || '';
+      const contactValue = contactSelect?.value || '';
+
+      if (!variantId || addToCartBtn.disabled) {
+        showMessage('Cannot add this variant to cart.', 'error');
+        return;
+      }
+
+      if (!reasonValue) {
+        showMessage('Please enter a reason for purchase.', 'error');
+        return;
+      }
+
+      if (!contactValue) {
+        showMessage('Please select a preferred contact method.', 'error');
+        return;
+      }
+
+      if (!variantId || addToCartBtn.disabled) {
+        showMessage('Cannot add this variant to cart.', 'error');
+        return;
+      }
+
+      addToCartBtn.disabled = true;
+      addToCartBtn.textContent = 'Adding...';
+
+      const formData = new FormData();
+      formData.append('id', variantId);
+      formData.append('quantity', quantity);
+      formData.append('properties[Reason]', reasonInput.value);
+      formData.append('properties[Preferred contact]', contactSelect.value);
+
+      try {
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          body: formData,
+          headers: { Accept: 'application/json' }
+        });
+
+        const data = await response.json();
+
+        if (data.status && data.status >= 400) {
+          showMessage(data.description || 'Error adding to cart.', 'error');
+
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: 'form_error',
+            form_type: 'add_to_cart',
+            productId: variantId,
+            reason: reasonInput.value,
+            preferred_contact: contactSelect.value,
+            timestamp: new Date().toISOString()
+          });
+        } else {
+          showMessage('Added to cart successfully!', 'success');
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: 'form_success',
+            orm_type: 'add_to_cart',
+            productId: variantId,
+            reason: reasonInput.value,
+            preferred_contact: contactSelect.value,
+            quantity,
+            timestamp: new Date().toISOString()
+          });
+        }
+      } catch (err) {
+        showMessage('Network error. Please try again.', 'error');
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'form_error',
+          form_type: 'add_to_cart',
+          productId: variantId,
+          reason: reasonInput.value,
+          preferred_contact: contactSelect.value,
+          error: err.message,
+          timestamp: new Date().toISOString()
+        });
+      } finally {
+        updateVariant();
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Custom featured product",
+  "tag": "section",
+  "class": "section section-featured-product",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "t:sections.featured-product.settings.product.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom featured product"
+    }
+  ]
+}
+{% endschema %}
