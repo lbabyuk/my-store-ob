@@ -256,6 +256,8 @@
     {% endstyle %}
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}
+
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
     {%- if settings.cart_type == 'drawer' -%}
@@ -327,19 +329,19 @@
         cart_change_url: '{{ routes.cart_change_url }}',
         cart_update_url: '{{ routes.cart_update_url }}',
         cart_url: '{{ routes.cart_url }}',
-        predictive_search_url: '{{ routes.predictive_search_url }}',
+        predictive_search_url: '{{ routes.predictive_search_url }}'
       };
 
       window.cartStrings = {
         error: `{{ 'sections.cart.cart_error' | t }}`,
-        quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' }}`,
+        quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' }}`
       };
 
       window.variantStrings = {
         addToCart: `{{ 'products.product.add_to_cart' | t }}`,
         soldOut: `{{ 'products.product.sold_out' | t }}`,
         unavailable: `{{ 'products.product.unavailable' | t }}`,
-        unavailable_with_option: `{{ 'products.product.value_unavailable' | t: option_value: '[value]' }}`,
+        unavailable_with_option: `{{ 'products.product.value_unavailable' | t: option_value: '[value]' }}`
       };
 
       window.quickOrderListStrings = {
@@ -351,7 +353,7 @@
         each: `{{- 'sections.quick_order_list.each' | t: money: '[money]' }}`,
         min_error: `{{- 'sections.quick_order_list.min_error' | t: min: '[min]' }}`,
         max_error: `{{- 'sections.quick_order_list.max_error' | t: max: '[max]' }}`,
-        step_error: `{{- 'sections.quick_order_list.step_error' | t: step: '[step]' }}`,
+        step_error: `{{- 'sections.quick_order_list.step_error' | t: step: '[step]' }}`
       };
 
       window.accessibilityStrings = {
@@ -361,7 +363,7 @@
         playSlideshow: `{{ 'sections.slideshow.play_slideshow' | t }}`,
         recipientFormExpanded: `{{ 'recipient.form.expanded' | t }}`,
         recipientFormCollapsed: `{{ 'recipient.form.collapsed' | t }}`,
-        countrySelectorSearchCount: `{{ 'localization.country_results_count' | t: count: '[count]' }}`,
+        countrySelectorSearchCount: `{{ 'localization.country_results_count' | t: count: '[count]' }}`
       };
     </script>
 
