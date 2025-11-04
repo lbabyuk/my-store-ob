@@ -1,0 +1,28 @@
+{% comment %}
+  Renders product add to cart button
+
+  Usage:
+  {% render 'custom-add-to-cart' %}
+{% endcomment %}
+
+{%- assign fallback_add_to_cart_text = 'Add To Cart' -%}
+
+<button
+  type="button"
+  class="button add-to-cart-button"
+  name="add"
+  aria-label="{{ 'products.product.add_to_cart' | t: default: fallback_add_to_cart_text | escape }}"
+  {%- unless product.selected_or_first_available_variant.available -%}
+    disabled
+  {%- endunless -%}
+>
+  <span class="btn-text">
+    {%- if product.selected_or_first_available_variant.available -%}
+      {{ 'products.product.add_to_cart' | t: default: fallback_add_to_cart_text | escape }}
+    {%- else -%}
+      {{ 'products.product.sold_out' | t: default: fallback_add_to_cart_text | escape }}
+    {%- endif -%}
+  </span>
+</button>
+
+<div class="form-message" style="display:none;"></div>

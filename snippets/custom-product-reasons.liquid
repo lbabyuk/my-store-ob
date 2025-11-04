@@ -1,0 +1,29 @@
+{% comment %}
+  Renders product reasons for purchase and preferred contact
+
+  Usage:
+  {% render 'custom-product-reasons' %}
+{% endcomment %}
+
+<div class="product_properties">
+  <div class="contact">
+    <label for="preferred_contact"></label>
+    <select name="properties[Preferred contact]" id="preferred_contact" required aria-required="true">
+      <option value="">Select preferred contact</option>
+      <option>Email</option>
+      <option>Phone</option>
+      <option>None</option>
+    </select>
+  </div>
+
+  <div class="reason">
+    <label for="reason"></label>
+    <input
+      type="text"
+      name="properties[Reason]"
+      id="reason"
+      placeholder="Reason for purchase..."
+      required
+    >
+  </div>
+</div>

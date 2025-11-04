@@ -1,0 +1,70 @@
+{% comment %}
+  Renders product options
+
+  Usage:
+  {% render 'custom-product-options' %}
+{% endcomment %}
+
+{%- assign color_index = -1 -%}
+{%- assign size_index = -1 -%}
+
+{%- for option in product.options -%}
+  {%- assign option_normalized = option | downcase | strip -%}
+  {%- if option_normalized contains 'color'
+    or option_normalized contains 'colour'
+    or option_normalized contains 'цвет'
+    or option_normalized contains 'колір'
+  -%}
+    {%- assign color_index = forloop.index0 -%}
+  {%- elsif option_normalized contains 'size'
+    or option_normalized contains 'shoe size'
+    or option_normalized contains 'розмір'
+  -%}
+    {%- assign size_index = forloop.index0 -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if color_index >= 0 -%}
+  {%- assign color_index_plus = color_index | plus: 1 -%}
+  {%- assign color_key = 'option' | append: color_index_plus -%}
+  {%- assign colors = product.variants | map: color_key | uniq -%}
+  <div class="product_option">
+    <label for="color-select">{{ product.options[color_index] | default: 'Color' }}: </label>
+    <select id="color-select" name="color">
+      {%- for color in colors -%}
+        <option value="{{ color | escape }}">{{ color }}</option>
+      {%- endfor -%}
+    </select>
+  </div>
+{%- endif -%}
+
+{%- if size_index >= 0 -%}
+  {%- assign size_index_plus = size_index | plus: 1 -%}
+  {%- assign size_key = 'option' | append: size_index_plus -%}
+  {%- assign sizes = product.variants | map: size_key | uniq -%}
+  <div class="product_option">
+    <label for="size-select">{{ product.options[size_index] | default: ' Shoe size' }}: </label>
+    <select id="size-select" name="size">
+      {%- for size in sizes -%}
+        <option value="{{ size | escape }}">{{ size }}</option>
+      {%- endfor -%}
+    </select>
+  </div>
+{%- endif -%}
+
+<div
+  id="variant-data"
+  data-color-index="{{ color_index }}"
+  data-size-index="{{ size_index }}"
+>
+  {%- for variant in product.variants -%}
+    <span
+      data-id="{{ variant.id }}"
+      data-option1="{{ variant.option1 | escape }}"
+      data-option2="{{ variant.option2 | escape }}"
+      data-option3="{{ variant.option3 | escape }}"
+      data-media-id="{{ variant.featured_media.id }}"
+      data-available="{{ variant.available }}"
+    ></span>
+  {%- endfor -%}
+</div>

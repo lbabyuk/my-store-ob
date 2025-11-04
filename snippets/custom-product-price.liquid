@@ -1,0 +1,21 @@
+{% comment %}
+  Renders product price
+
+  Usage:
+  {% render 'custom-product-price' %}
+{% endcomment %}
+
+<div id="product_price" class="product_price price-{{ section.id }}">
+  {%- assign product_price = product.selected_or_first_available_variant -%}
+
+  <span class="initial_price">{{ product_price.price | money_with_currency }}</span>
+  <s class="compare_at_price">{{ product_price.compare_at_price | money_with_currency }}</s>
+  {%- if product_price.price < product_price.compare_at_price -%}
+    <span class="price-badge">On {{ 'products.product.on_sale' | t }}</span>
+  {%- endif -%}
+</div>
+{%- if product_price.taxable -%}
+  <div class="tax-info">
+    <span>{{ 'products.product.taxes_included' | t | default: 'Taxes included' }}</span>
+  </div>
+{%- endif -%}

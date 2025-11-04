@@ -16,12 +16,13 @@
         "padding_bottom": 36
       }
     },
-    "form": {
-      "type": "contact-form",
+    "custom_contact_form_E7cdxa": {
+      "type": "custom-contact-form",
+      "name": "Custom contact form",
       "settings": {
-        "heading": "",
+        "heading": "Need help?",
         "heading_size": "h1",
-        "color_scheme": "scheme-1",
+        "color_scheme": "",
         "padding_top": 36,
         "padding_bottom": 36
       }
@@ -29,6 +30,6 @@
   },
   "order": [
     "main",
-    "form"
+    "custom_contact_form_E7cdxa"
   ]
 }

@@ -1,0 +1,215 @@
+{{ 'custom-contact-form.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'honeypot.js' | asset_url }}" defer></script>
+<script src="{{ 'custom-contact-form.js' | asset_url }}" defer></script>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }}">
+  <div class="contact section-{{ section.id }}-padding page-width page-width--narrow">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}">
+        {{ section.settings.heading }}
+      </h2>
+    {%- else -%}
+      <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
+    {%- endif -%}
+    {%- form 'contact', id: 'ContactForm', class: 'custom-contact-form' -%}
+      {%- if form.posted_successfully? -%}
+        <div class="form-status form-status--success" role="status" aria-live="polite" tabindex="-1">
+          {{ 'templates.contact.form.post_success' | t }}
+        </div>
+      {%- elsif form.errors -%}
+        <div class="form-status form-status--error" role="alert" aria-live="assertive" tabindex="-1">
+          <p>{{ 'templates.contact.form.error_heading' | t }}</p>
+          <ul role="list">
+            {%- for error in form.errors -%}
+              <li>
+                {%- if error == 'form' -%}
+                  {{ form.errors.messages[error] }}
+                {%- else -%}
+                  {{ form.errors.translated_fields[error] }} — {{ form.errors.messages[error] }}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">{{ 'templates.contact.form.name' | t }}</label>
+            <input
+              type="text"
+              name="contact[name]"
+              id="name"
+              placeholder="Enter name"
+              autocomplete="name"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+            >
+          </div>
+          <div class="form-group">
+            <label for="phone">{{ 'templates.contact.form.phone' | t }}</label>
+            <input
+              type="tel"
+              name="contact[phone]"
+              id="phone"
+              placeholder="Enter phone"
+              autocomplete="tel"
+              value="{% if form.phone %}{{form.phone}}{% elsif customer %}{{ customer.phone }}{% endif %}"
+              pattern="^\+?(?:[0-9] ?){6,14}[0-9]$"
+            >
+          </div>
+        </div>
+        <div class="form-group{% if form.errors contains 'email' %} form-group--error{% endif %}">
+          <label for="email">{{ 'templates.contact.form.email' | t }}*</label>
+          <input
+            type="email"
+            name="contact[email]"
+            id="email"
+            placeholder="Enter email"
+            value="{% if form.email %}{{form.email}}{% elsif customer %}{{ customer.email }}{% endif %}"
+            pattern="^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$"
+
+            required
+            aria-required="true"
+
+            autocorrect="off"
+            autocapitalize="off"
+            autocomplete="email"
+            {%- if form.errors contains 'email' -%}
+              aria-invalid="true"
+              aria-describedby="ContactForm-email-error"
+              autofocus
+            {%- else -%}
+              aria-invalid="false"
+            {%- endif -%}
+          >
+          {%- if form.errors contains 'email' -%}
+            <p class="field-error" id="ContactForm-email-error">
+              {{ 'templates.contact.form.email' | t }}
+              {{ form.errors.messages.email }}
+            </p>
+          {%- endif -%}
+        </div>
+        <div class="form-group{% if form.errors contains 'body' %} form-group--error{% endif %}">
+          <label for="message">{{ 'templates.contact.form.comment' | t }}*</label>
+          <textarea
+            name="contact[body]"
+            id="message"
+            placeholder="{{ 'templates.contact.form.comment' | t }}"
+            rows="5"
+            minlength="2"
+            maxlength="1000"
+            required
+            aria-required="true"
+            autocomplete="off"
+          >{{ form.body }}</textarea>
+        </div>
+      </div>
+      <div class="contact-honeypot" aria-hidden="true">
+        <label for="contact-honeypot">Do not fill this field</label>
+        <input type="text" name="contact[honeypot]" id="contact-honeypot" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="contact__button">
+        <button
+          type="submit"
+          class="help-btn"
+          aria-label="Submit button"
+          data-sending-text="Sending..."
+        >
+          {{ 'templates.contact.form.send' | t }}
+        </button>
+      </div>
+    {%- endform -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom contact form",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "Need help?",
+      "label": "t:sections.contact-form.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [{ "name": "Custom contact form" }]
+}
+{% endschema %}
