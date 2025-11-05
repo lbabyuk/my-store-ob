@@ -28,27 +28,75 @@
   {%- assign color_index_plus = color_index | plus: 1 -%}
   {%- assign color_key = 'option' | append: color_index_plus -%}
   {%- assign colors = product.variants | map: color_key | uniq -%}
-  <div class="product_option">
-    <label for="color-select">{{ product.options[color_index] | default: 'Color' }}: </label>
-    <select id="color-select" name="color">
+
+  <fieldset  class="product_option text-black">
+    <legend  id="color-select" name="color" class="hidden">
       {%- for color in colors -%}
         <option value="{{ color | escape }}">{{ color }}</option>
       {%- endfor -%}
-    </select>
-  </div>
+    </legend>
+
+    <div class="flex flex-wrap gap-4">
+      {%- for color in colors -%}
+        {%- assign variant = product.variants | where: color_key, color | first -%}
+        {%- if variant and variant.featured_image -%}
+          {%- assign image_url = variant.featured_image | image_url: width: 88 -%}
+        {%- else -%}
+          {%- assign image_url = product.featured_image | image_url: width: 88 -%}
+        {%- endif -%}
+
+        <label class="cursor-pointer">
+          <input
+            type="radio"
+            name="color"
+            value="{{ color | escape }}"
+            class="sr-only peer color-input"
+            aria-label="{{ color }}"
+          >
+          {% if image_url != blank %}
+            <span
+              class="block w-36 h-36 rounded-xl ring-1 ring-gray-200 peer-checked:ring-1 peer-checked:ring-black bg-center bg-cover"
+              style="background-image:url({{ image_url }});"
+              title="{{ color }}"
+               role="presentation"
+            ></span>
+          {% else %}
+            <span
+              class="block w-12 h-12 rounded-full ring-1 ring-gray-200 peer-checked:ring-1 peer-checked:ring-black"
+              style="background-color:{{ color | downcase }};"
+              title="{{ color }}"
+            ></span>
+          {% endif %}
+        </label>
+      {%- endfor -%}
+    </div>
+  </fieldset>
 {%- endif -%}
 
 {%- if size_index >= 0 -%}
   {%- assign size_index_plus = size_index | plus: 1 -%}
   {%- assign size_key = 'option' | append: size_index_plus -%}
   {%- assign sizes = product.variants | map: size_key | uniq -%}
-  <div class="product_option">
-    <label for="size-select">{{ product.options[size_index] | default: ' Shoe size' }}: </label>
-    <select id="size-select" name="size">
-      {%- for size in sizes -%}
-        <option value="{{ size | escape }}">{{ size }}</option>
-      {%- endfor -%}
-    </select>
+  <div class="product_option text-black">
+    <div class="product_option text-black w-full">
+      <span class="block mb-2 font-medium"> {{ product.options[size_index] | default: 'Size select' }}: </span>
+      <div id="size-select" class="size-chips w-full flex flex-wrap">
+        {%- for size in sizes -%}
+          <label class="chip cursor-pointer w-1/2 md:w-1/3">
+            <input
+              type="radio"
+              name="size"
+              value="{{ size | escape }}"
+              class="hidden peer"
+               aria-label="{{ size }}"
+            >
+            <span class="border border-gray-200 rounded-xl px-4 py-4 mr-2 mt-2 flex items-center justify-center text-black peer-checked:border-black">
+              {{ size }}
+            </span>
+          </label>
+        {%- endfor -%}
+      </div>
+    </div>
   </div>
 {%- endif -%}
 

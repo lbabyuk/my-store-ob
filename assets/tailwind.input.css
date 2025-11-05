@@ -1,1 +1,14 @@
 @import "tailwindcss";
+
+@layer components {
+  /*for swiper thumb img*/
+  .mySwiper .swiper-slide {
+    width: 8.8rem !important;
+    height: 8.8rem !important;
+  }
+
+  .swiper-slide-thumb-active::after {
+    content: "";
+    @apply absolute inset-0 pointer-events-none rounded-xl bg-black/20;
+  }
+}

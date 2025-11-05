@@ -1,22 +1,30 @@
 document.addEventListener("DOMContentLoaded", function () {
   const thumbsSwiper = new Swiper(".mySwiper", {
     loop: true,
-    spaceBetween: 10,
+    spaceBetween: 24,
     slidesPerView: 3,
     freeMode: true,
-    watchSlidesProgress: true
+    watchSlidesProgress: true,
+    centeredSlides: true,
+    centeredSlidesBounds: true,
+    direction: "horizontal",
+    breakpoints: {
+      0: { spaceBetween: 16, direction: "horizontal" },
+      768: { spaceBetween: 24, direction: "horizontal" },
+      1024: { direction: "horizontal" },
+      1200: { direction: "vertical" }
+    }
   });
 
   const mainSwiper = new Swiper(".mySwiper2", {
     loop: true,
+    direction: "horizontal",
     spaceBetween: 10,
     navigation: {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev"
     },
-    thumbs: {
-      swiper: thumbsSwiper
-    }
+    thumbs: { swiper: thumbsSwiper }
   });
 
   const colorSelect = document.querySelector("#color-select");
@@ -26,9 +34,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const addToCartBtn = document.querySelector(".add-to-cart-button");
   const messageBox = document.querySelector(".form-message");
   const productSection = document.querySelector("[data-section-id]");
-  const quantityInput = productSection.querySelector('input[name="quantity"]');
-  const reasonInput = document.querySelector("#reason");
-  const contactSelect = document.querySelector("#preferred_contact");
+
+  const colorRadios = document.querySelectorAll(".color-input");
+  if (colorRadios.length && colorSelect) {
+    colorRadios.forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        colorSelect.value = e.target.value;
+        colorSelect.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    });
+  }
 
   if (!variantContainer) return;
 
@@ -66,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
     messageBox.textContent = text;
     messageBox.style.display = "block";
     messageBox.style.color = type === "error" ? "red" : "green";
-    setTimeout(() => (messageBox.style.display = "none"), 5000);
+    setTimeout(() => (messageBox.style.display = "none"), 3000);
   }
 
   function updateVariant() {
@@ -98,24 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
 
     const variantId = variantInput.value;
-    const quantity = quantityInput?.value || 1;
-    const reasonValue = reasonInput?.value || "";
-    const contactValue = contactSelect?.value || "";
-
-    if (!variantId || addToCartBtn.disabled) {
-      showMessage("Cannot add this variant to cart.");
-      return;
-    }
-
-    if (!reasonValue) {
-      showMessage("Please enter a reason for purchase and select preferred contact.");
-      return;
-    }
-
-    if (!contactValue) {
-      showMessage("Please select a preferred contact method.");
-      return;
-    }
 
     if (!variantId || addToCartBtn.disabled) {
       showMessage("Cannot add this variant to cart.");
@@ -127,9 +124,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const formData = new FormData();
     formData.append("id", variantId);
-    formData.append("quantity", quantity);
-    formData.append("properties[Reason]", reasonInput.value);
-    formData.append("properties[Preferred contact]", contactSelect.value);
 
     try {
       const response = await fetch("/cart/add.js", {
@@ -144,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
         pushDataLayer("form_error");
       } else {
         showMessage("Added to cart successfully!", "success");
-        pushDataLayer("form_success", quantity);
+        pushDataLayer("form_success");
       }
     } catch (err) {
       showMessage("Network error. Please try again.", "error");
@@ -159,11 +153,8 @@ document.addEventListener("DOMContentLoaded", function () {
         event: eventType,
         form_type: "add_to_cart",
         productId: variantInput.value,
-        reason: reasonInput.value,
-        preferred_contact: contactSelect.value,
         timestamp: new Date().toISOString()
       };
-      if (quantity) payload.quantity = quantity;
       if (error) payload.error = error;
       window.dataLayer.push(payload);
     }

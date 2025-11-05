@@ -9,14 +9,13 @@
 
 <button
   type="button"
-  class="button add-to-cart-button"
+  class="add-to-cart-button bg-black text-white w-full pt-6 pb-6 rounded-lg cursor-pointer transition-colors duration-300 hover:bg-neutral-500"
   name="add"
-  aria-label="{{ 'products.product.add_to_cart' | t: default: fallback_add_to_cart_text | escape }}"
   {%- unless product.selected_or_first_available_variant.available -%}
     disabled
   {%- endunless -%}
 >
-  <span class="btn-text">
+  <span aria-live="polite">
     {%- if product.selected_or_first_available_variant.available -%}
       {{ 'products.product.add_to_cart' | t: default: fallback_add_to_cart_text | escape }}
     {%- else -%}
@@ -25,4 +24,4 @@
   </span>
 </button>
 
-<div class="form-message" style="display:none;"></div>
+<div class="form-message" style="display:none;" role="status" aria-live="polite"></div>
