@@ -13,7 +13,7 @@
 {%- endstyle -%}
 
 <section
-  class="product section-{{ section.id }}-padding section-{{ section.id }} color-{{ section.settings.color_scheme }}"
+  class="product section-{{ section.id }}-padding section-{{ section.id }} dark:bg-black transition-colors duration-300"
   id="product-{{ section.id }}"
   data-section="{{ section.id }}"
   data-url="{{ product.url }}"
@@ -22,7 +22,7 @@
   <div class="page-width">
     {%- assign not_available_text = 'No product available at the moment.' -%}
     {%- if product == null -%}
-      <div class="title-wrapper text-center">
+      <div class="title-wrapper text-center dark:text-white">
         <h2 class="title">
           {{ not_available_text }}
         </h2>

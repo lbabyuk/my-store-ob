@@ -9,13 +9,13 @@
 
 <button
   type="button"
-  class="add-to-cart-button bg-black text-white w-full pt-6 pb-6 rounded-lg cursor-pointer transition-colors duration-300 hover:bg-neutral-500"
+  class="add-to-cart-button bg-black text-white w-full pt-6 pb-6 rounded-lg cursor-pointer transition-colors duration-300 hover:bg-neutral-500 dark:bg-white dark:text-black dark:hover:bg-neutral-700"
   name="add"
   {%- unless product.selected_or_first_available_variant.available -%}
     disabled
   {%- endunless -%}
 >
-  <span aria-live="polite">
+  <span aria-live="polite  dark:text-gray-50">
     {%- if product.selected_or_first_available_variant.available -%}
       {{ 'products.product.add_to_cart' | t: default: fallback_add_to_cart_text | escape }}
     {%- else -%}

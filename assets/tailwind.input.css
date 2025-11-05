@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+h1 {
+  @apply text-black dark:text-grey-50 transition-colors duration-300;
+}
+
+h2 {
+  @apply text-black dark:text-grey-50 transition-colors duration-300;
+}
+
 @layer components {
   /*for swiper thumb img*/
   .mySwiper .swiper-slide {

@@ -29,8 +29,8 @@
   {%- assign color_key = 'option' | append: color_index_plus -%}
   {%- assign colors = product.variants | map: color_key | uniq -%}
 
-  <fieldset  class="product_option text-black">
-    <legend  id="color-select" name="color" class="hidden">
+  <fieldset class="product_option text-black">
+    <legend id="color-select" name="color" class="hidden">
       {%- for color in colors -%}
         <option value="{{ color | escape }}">{{ color }}</option>
       {%- endfor -%}
@@ -55,14 +55,14 @@
           >
           {% if image_url != blank %}
             <span
-              class="block w-36 h-36 rounded-xl ring-1 ring-gray-200 peer-checked:ring-1 peer-checked:ring-black bg-center bg-cover"
+              class="block w-36 h-36 rounded-xl ring-1 ring-gray-200 peer-checked:ring-1 peer-checked:ring-black bg-center bg-cover dark:peer-checked:ring-3 dark:ring-red dark:peer-checked:ring-red-600"
               style="background-image:url({{ image_url }});"
               title="{{ color }}"
-               role="presentation"
+              role="presentation"
             ></span>
           {% else %}
             <span
-              class="block w-12 h-12 rounded-full ring-1 ring-gray-200 peer-checked:ring-1 peer-checked:ring-black"
+              class="block w-12 h-12 rounded-full ring-1 ring-gray-200 peer-checked:ring-1 peer-checked:ring-black dark:ring-gray-700 dark:peer-checked:ring-white"
               style="background-color:{{ color | downcase }};"
               title="{{ color }}"
             ></span>
@@ -78,7 +78,7 @@
   {%- assign size_key = 'option' | append: size_index_plus -%}
   {%- assign sizes = product.variants | map: size_key | uniq -%}
   <div class="product_option text-black">
-    <div class="product_option text-black w-full">
+    <div class="product_option text-black w-full dark:text-gray-50">
       <span class="block mb-2 font-medium"> {{ product.options[size_index] | default: 'Size select' }}: </span>
       <div id="size-select" class="size-chips w-full flex flex-wrap">
         {%- for size in sizes -%}
@@ -88,9 +88,9 @@
               name="size"
               value="{{ size | escape }}"
               class="hidden peer"
-               aria-label="{{ size }}"
+              aria-label="{{ size }}"
             >
-            <span class="border border-gray-200 rounded-xl px-4 py-4 mr-2 mt-2 flex items-center justify-center text-black peer-checked:border-black">
+            <span class="border border-gray-200 rounded-xl px-4 py-4 mr-2 mt-2 flex items-center justify-center text-black peer-checked:border-black dark:text-gray-50 dark:peer-checked:border-red-600" >
               {{ size }}
             </span>
           </label>

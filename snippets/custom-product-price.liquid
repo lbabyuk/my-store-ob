@@ -8,12 +8,12 @@
 <div id="product_price" class="product_price price-{{ section.id }} flex gap-2" aria-live="polite">
   {%- assign product_price = product.selected_or_first_available_variant -%}
 
-  <span class="initial_price text-neutral-500 text-2xl font-normal" aria-label="Current price">
+  <span class="initial_price text-neutral-500 text-2xl font-normal dark:text-gray-50" aria-label="Current price">
     {{- product_price.price | money_with_currency -}}
   </span>
   {%- if product_price.compare_at_price > product_price.price -%}
     <s
-      class="compare_at_price text-2xl text-black"
+      class="compare_at_price text-2xl text-black dark:text-gray-100"
       aria-label="{{ 'products.product.price.regular_price' | t: default: 'Regular price' }}"
     >
       {{ product_price.compare_at_price | money_with_currency }}
