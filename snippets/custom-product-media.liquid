@@ -27,23 +27,25 @@
             {%- assign product_price = product.selected_or_first_available_variant -%}
             {%- if product_price.price < product_price.compare_at_price -%}
               <div class=" absolute inline-flex items-center top-6 left-6 bg-white text-black text-2xl px-3 py-3 rounded-lg">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M9.99999 13.0721L7.11569 14.6666L7.66666 11.2895L5.33333 8.89805L8.55784 8.40571L9.99999 5.33325L11.4421 8.40571L14.6667 8.89805L12.3333 11.2895L12.8843 14.6666L9.99999 13.0721Z" fill="#111111" stroke="#111111" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                {{ 'star-icon.svg' | inline_asset_content }}
                 <span>
                   {{ 'products.product.on_sale' | t }}
                 </span>
               </div>
             {%- endif -%}
-            <img
-              src="{{ media | image_url: width: 536, height: 536 }}"
-              loading="lazy"
-              width="536"
-              height="536"
-              height="{{ 536 | divided_by: media.preview_image.aspect_ratio }}"
-              alt="{{ media.preview_image.alt  | default: product.title |  escape }}"
-              class="w-full h-full object-cover rounded-xl"
-            >
+            {% assign alt_text = media.preview_image.alt | default: product.title | escape %}
+            {% assign image_height = 536 | divided_by: media.preview_image.aspect_ratio %}
+
+            {{
+              media
+              | image_url: width: 536, height: image_height
+              | image_tag:
+                loading: 'lazy',
+                width: 536,
+                height: image_height,
+                alt: alt_text,
+                class: 'w-full h-full object-cover rounded-xl'
+            }}
           {%- else -%}
             {{ 'product-2' | placeholder_svg_tag: 'placeholder-img' }}
           {%- endif -%}
@@ -71,16 +73,19 @@
           tabindex="0"
         >
           {%- if media != blank -%}
-            <img
-              src="{{ media | image_url: width: 88, height: 88 }}"
-              loading="lazy"
-              loading="lazy"
-              height="88"
-              width="88"
-              height="{{ 80 | divided_by: media.preview_image.aspect_ratio }}"
-              alt="{{ media.preview_image.alt  | default: product.title |  escape }}"
-              class="w-full h-full object-cover rounded-xl"
-            >
+            {% assign alt_text = media.preview_image.alt | default: product.title | escape %}
+            {% assign image_height = 80 | divided_by: media.preview_image.aspect_ratio %}
+
+            {{
+              media
+              | image_url: width: 88, height: image_height
+              | image_tag:
+                loading: 'lazy',
+                width: 88,
+                height: image_height,
+                alt: alt_text,
+                class: 'w-full h-full object-cover rounded-xl'
+            }}
           {%- else -%}
             {{ 'product-2' | placeholder_svg_tag: 'placeholder-img' }}
           {%- endif -%}
