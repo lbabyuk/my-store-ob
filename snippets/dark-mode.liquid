@@ -1,0 +1,19 @@
+{% comment %}
+  Dark- mode
+
+  usage: {% render 'dark-mode' %}
+{% endcomment %}
+
+
+<section class="page-width flex justify-end">
+  <div class="flex items-center pt-12 pl-12 pr-12 pb-4">
+    <span class="mr-2 text-gray-700 dark:text-gray-300 text-5xl">&#9788;</span>
+    <button
+      id="theme-toggle"
+      class="relative w-12 h-6 bg-gray-300 dark:bg-gray-600 rounded-full transition-colors focus:outline-none cursor-pointer"
+    >
+      <span class="dot absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow-md transition-transform"></span>
+    </button>
+    <span class="ml-2 text-gray-700 dark:text-gray-300 text-5xl">&#9789;</span>
+  </div>
+</section>
