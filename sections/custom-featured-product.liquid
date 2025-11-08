@@ -34,9 +34,9 @@
         <div class="product-info flex flex-col gap-8">
           <div class="product_title">
             {%- if product.title == blank -%}
-              <h1 class="text-3xl">{{ product.title | escape }}</h1>
+              <h1 class="product_title">{{ product.title | escape }}</h1>
             {% else %}
-              <h1 class="text-3xl">{{ product.handle | capitalize }}</h1>
+              <h1 class="product_title">{{ product.handle | capitalize }}</h1>
             {%- endif -%}
           </div>
 
