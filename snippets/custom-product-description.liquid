@@ -1,0 +1,14 @@
+{% comment %}
+  Renders product description
+
+  Usage:
+  {% render 'custom-product-description' %}
+{% endcomment %}
+
+{% assign fallback_description_text = 'products.product.fallback_description' | t %}
+
+<div class="product_description text-neutral-500 dark:text-gray-50 text-xs">
+  {%- if product.description != blank -%}
+    {{ product.description | default: fallback_description_text }}
+  {%- endif -%}
+</div>
