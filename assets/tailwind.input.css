@@ -15,7 +15,7 @@ h1 {
 }
 
 h2 {
-  @apply text-black dark:text-gray-50 transition-colors duration-300;
+  @apply text-black dark:text-gray-50 transition-colors duration-300 text-mobile-xl lg:text-xl text-center mb-8 lg:mb-12;
 }
 
 @layer components {
@@ -28,5 +28,12 @@ h2 {
   .swiper-slide-thumb-active::after {
     content: "";
     @apply absolute inset-0 pointer-events-none rounded-xl bg-black/20;
+  }
+
+  @media screen and (max-width: 768px) {
+    .swiper-button-next,
+    .swiper-button-prev {
+      display: none !important;
+    }
   }
 }

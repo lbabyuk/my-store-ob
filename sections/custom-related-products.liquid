@@ -1,0 +1,129 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="section-{{ section.id }}-padding relative">
+  <div
+    id="product-recommendations"
+    data-product-handle="{{ product.handle }}"
+    data-section-id="{{ section.id }}"
+    data-product-id="{{ product.id }}"
+    class="w-full page-width relative"
+  >
+    {%- if recommendations.performed? and recommendations.products_count > 0 -%}
+      <h2 class="section-title">{{ section.settings.heading }}</h2>
+
+      <div class="swiper slider-products">
+        <div class="swiper-wrapper">
+          {%- for product in recommendations.products -%}
+            <div class="swiper-slide flex shrink">
+              <a href="{{ product.url }}">
+                {%- if product.featured_image != blank -%}
+                  {{
+                    product.featured_image
+                    | image_url: width: 312, height: 312
+                    | image_tag:
+                      loading: 'lazy',
+                      class: 'w-full h-auto object-cover rounded-xl object-cover transform transition-transform duration-500 ease-in-out hover:scale-102',
+                      alt: product.featured_image.alt
+                    | default: product.title
+                  }}
+                {%- else -%}
+                  {{ 'product-2' | placeholder_svg_tag: 'placeholder-img ' }}
+                {%- endif -%}
+              </a>
+              <a href="{{ product.url }}" class="product-info flex flex-col gap-2 mt-4">
+                <span class="product-name text-black dark:text-white text-sm hover:underline underline-offset-4">
+                  {{- product.title | escape -}}
+                </span>
+                <span class="product-price text-neutral-500 dark:text-gray-50 text-sm">
+                  {{ product.price | money_with_currency }}
+                </span>
+              </a>
+            </div>
+          {%- endfor -%}
+        </div>
+        <button
+          type="button"
+          name="previous"
+          aria-label="{{ 'sections.slideshow.previous_slideshow' | t }}"
+          aria-controls="Slider-{{ section.id }}"
+          class="swiper-button-prev rotate-180 absolute top-1/2 -translate-y-1/2 -left-5 w-10 h-10 z-50 items-center justify-center rounded-full border border-gray-300 bg-white shadow-sm"
+        >
+          {{ 'custom-icon-arrow.svg' | inline_asset_content }}
+        </button>
+
+        <button
+          type="button"
+          name="next"
+          aria-label="{{ 'sections.slideshow.next_slideshow' | t }}"
+          aria-controls="Slider-{{ section.id }}"
+          class="swiper-button-next absolute top-1/2 -translate-y-1/2 -right-5 w-10 h-10 z-50  items-center justify-center rounded-full border border-gray-300 bg-white shadow-sm"
+        >
+          {{ 'custom-icon-arrow.svg' | inline_asset_content }}
+        </button>
+      </div>
+
+    {%- else -%}
+      <h2 class="empty-product-message">{{ 'products.product.not_found' | t }}</h2>
+    {%- endif -%}
+  </div>
+</section>
+
+<script src="{{ 'custom-related-products.js' | asset_url }}" defer></script>
+<script src="{{ 'slider-related-products.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Custom related products",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.related-products.settings.paragraph__1.content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "t:sections.related-products.settings.paragraph__1.default",
+      "label": "t:sections.related-products.settings.heading.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [{ "name": "Custom related products", "category": "Product" }]
+}
+{% endschema %}
