@@ -114,7 +114,17 @@
     },
     "custom_related_products_VHY8wd": {
       "type": "custom-related-products",
+      "disabled": true,
       "name": "Custom related products",
+      "settings": {
+        "heading": "You may also like",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "recommended_products_CqFQXg": {
+      "type": "recommended-products",
+      "name": "Recommended products",
       "settings": {
         "heading": "You may also like",
         "padding_top": 36,
@@ -126,6 +136,7 @@
     "main",
     "custom_featured_product_6Lm8ry",
     "related-products",
-    "custom_related_products_VHY8wd"
+    "custom_related_products_VHY8wd",
+    "recommended_products_CqFQXg"
   ]
 }
