@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --text-xl: 30px;
+  --text-mobile-xl: 24px;
+  --leading-6: 36px;
+  --text-sm: 16px;
+  --text-xs: 14px;
+}
+
+h1 {
+  @apply text-black dark:text-gray-50 transition-colors duration-300 text-mobile-xl md:text-mobile-xl lg:text-xl font-normal leading-6;
+}
+
+h2 {
+  @apply text-black dark:text-gray-50 transition-colors duration-300;
+}
+
+@layer components {
+  /*for swiper thumb img*/
+  .mySwiper .swiper-slide {
+    width: 8.8rem !important;
+    height: 8.8rem !important;
+  }
+
+  .swiper-slide-thumb-active::after {
+    content: "";
+    @apply absolute inset-0 pointer-events-none rounded-xl bg-black/20;
+  }
+}

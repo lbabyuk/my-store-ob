@@ -1,0 +1,97 @@
+{% comment %}
+  Renders product images
+
+  Usage:
+  {% render 'custom-product-media' %}
+{% endcomment %}
+
+{% assign gallery_viewer_default = 'products.product.media.gallery_viewer_default' | t %}
+
+<div
+  class="product_image w-full flex flex-nowrap flex-col xl:flex-row-reverse lg:flex-col"
+  aria-label="{{ 'products.product.media.gallery_viewer' | t: default: gallery_viewer_default | escape }}"
+>
+  <div
+    class="swiper mySwiper2 w-full aspect-square md:max-w-200 md:max-h-170 lg:max-w-250 lg:max-h-215 mb-4 md:mb-6"
+    role="region"
+    aria-roledescription="{{ 'products.product.media.carousel'}}"
+    aria-label="{{ 'products.product.media.main_images_aria_label' | t | escape }}"
+  >
+    <div class="swiper-wrapper">
+      {%- for media in product.media -%}
+        <div
+          class="image-container swiper-slide flex cursor-pointer relative"
+          role="group"
+          aria-label="Image {{ forloop.index }} of {{ product.media.size }}"
+          data-media-id="{{ media.id }}"
+        >
+          {%- if media != blank -%}
+            {%- assign product_price = product.selected_or_first_available_variant -%}
+            {%- if product_price.price < product_price.compare_at_price -%}
+              <div class=" absolute inline-flex items-center top-6 left-6 bg-white text-black text-2xl px-3 py-3 rounded-lg">
+                {{ 'star-icon.svg' | inline_asset_content }}
+                <span>
+                  {{ 'products.product.on_sale' | t | escape }}
+                </span>
+              </div>
+            {%- endif -%}
+            {% assign alt_text = media.preview_image.alt | default: product.title | escape %}
+            {% assign image_height = 536 | divided_by: media.preview_image.aspect_ratio %}
+
+            {{
+              media
+              | image_url: width: 536, height: image_height
+              | image_tag:
+                loading: 'lazy',
+                width: 536,
+                height: image_height,
+                alt: alt_text,
+                class: 'w-full h-full object-cover rounded-xl'
+            }}
+          {%- else -%}
+            {{ 'product-2' | placeholder_svg_tag: 'placeholder-img' }}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="swiper-button-next hidden"></div>
+    <div class="swiper-button-prev hidden"></div>
+  </div>
+
+  <div
+    class="swiper mySwiper w-full md:max-w-200 md:max-h-40 md:max-200 xl:max-w-40 lg:max-h-215 py-2 mx-auto"
+    role="group"
+    aria-label="{{ 'products.product.media.thumbnail_images_aria_label' | t| escape }}"
+  >
+    <div class="swiper-wrapper">
+      {%- for media in product.media -%}
+        <div
+          class="swiper-slide cursor-pointer rounded-xl"
+          data-media-id="{{ media.id }} "
+          aria-label="Show image {{ forloop.index }} of {{ product.media.size }}"
+          role="button"
+          tabindex="0"
+        >
+          {%- if media != blank -%}
+            {% assign alt_text = media.preview_image.alt | default: product.title | escape %}
+            {% assign image_height = 80 | divided_by: media.preview_image.aspect_ratio %}
+
+            {{
+              media
+              | image_url: width: 88, height: image_height
+              | image_tag:
+                loading: 'lazy',
+                width: 88,
+                height: image_height,
+                alt: alt_text,
+                class: 'w-full h-full object-cover rounded-xl'
+            }}
+          {%- else -%}
+            {{ 'product-2' | placeholder_svg_tag: 'placeholder-img' }}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
