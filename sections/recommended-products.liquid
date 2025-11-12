@@ -13,27 +13,27 @@
 {%- endstyle -%}
 
 <section class="section-{{ section.id }}-padding relative">
-  <div
-    id="product-recommendations"
+  <recommended-products
     data-product-handle="{{ product.handle }}"
     data-section-id="{{ section.id }}"
     data-product-id="{{ product.id }}"
-    class="w-full page-width relative"
   >
-    {% render 'recommended-products-slider',
-      recommendations: recommendations,
-      heading: section.settings.heading,
-      section_id: section.id
-    %}
-  </div>
+    <div class="w-full page-width relative">
+      {% render 'recommended-products-slider',
+        recommendations: recommendations,
+        heading: section.settings.heading,
+        section_id: section.id
+      %}
+    </div>
+  </recommended-products>
 </section>
 
-<script src="{{ 'custom-related-products.js' | asset_url }}" defer></script>
+<script src="{{ 'recommended-products.js' | asset_url }}" defer></script>
 <script src="{{ 'slider-related-products.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
-  "name": "Custom related products",
+  "name": "Recommended products",
   "tag": "section",
   "class": "section",
   "settings": [
@@ -72,6 +72,6 @@
       "default": 36
     }
   ],
-  "presets": [{ "name": "Custom related products", "category": "Product" }]
+  "presets": [{ "name": "Recommended products", "category": "Product" }]
 }
 {% endschema %}

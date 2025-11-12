@@ -1,3 +1,15 @@
+const getSlidesPerView = (breakpoints, viewportWidth, defaultSlides = 1.1) => {
+  let slidesPerView = defaultSlides;
+
+  for (const [key, settings] of Object.entries(breakpoints)) {
+    if (viewportWidth >= +key) {
+      slidesPerView = settings.slidesPerView;
+    }
+  }
+
+  return slidesPerView;
+};
+
 const initSwiper = (containerSelector = ".slider-products") => {
   const sliders = document.querySelectorAll(containerSelector);
 
@@ -22,29 +34,14 @@ const initSwiper = (containerSelector = ".slider-products") => {
       },
       on: {
         init: function () {
-          let slidesPerView = this.params.slidesPerView;
-          if (this.params.breakpoints) {
-            const viewportWidth = window.innerWidth;
-            const breakpoints = this.params.breakpoints;
-            Object.keys(breakpoints).forEach((breakpointKey) => {
-              const breakpointWidth = parseInt(breakpointKey, 10);
-              const settings = breakpoints[breakpointKey];
-
-              if (viewportWidth >= breakpointWidth) {
-                slidesPerView = settings.slidesPerView;
-              }
-            });
-          }
-
+          const viewportWidth = window.innerWidth;
+          const slidesPerView = getSlidesPerView(this.params.breakpoints, viewportWidth, this.params.slidesPerView);
           const prevBtn = slider.querySelector(".swiper-button-prev");
           const nextBtn = slider.querySelector(".swiper-button-next");
-          if (slideCount <= slidesPerView) {
-            if (prevBtn) prevBtn.style.display = "none";
-            if (nextBtn) nextBtn.style.display = "none";
-          } else {
-            if (prevBtn) prevBtn.style.display = "";
-            if (nextBtn) nextBtn.style.display = "";
-          }
+
+          slideCount <= slidesPerView
+            ? (prevBtn?.style.setProperty("display", "none"), nextBtn?.style.setProperty("display", "none"))
+            : (prevBtn?.style.removeProperty("display"), nextBtn?.style.removeProperty("display"));
         }
       }
     });

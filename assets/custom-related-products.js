@@ -4,10 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const productId = section.dataset.productId;
   const sectionId = section.dataset.sectionId;
+  const URL = `${window.Shopify.routes.root}recommendations/products?product_id=${productId}&section_id=${sectionId}&intent=related`;
 
-  fetch(
-    `${window.Shopify.routes.root}recommendations/products?product_id=${productId}&section_id=${sectionId}&intent=related`
-  )
+  fetch(URL)
     .then((response) => response.text())
     .then((htmlText) => {
       const tempDiv = document.createElement("div");
