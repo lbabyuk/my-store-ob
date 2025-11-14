@@ -5,8 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
     slidesPerView: 3,
     freeMode: true,
     watchSlidesProgress: true,
-    centeredSlides: true,
-    centeredSlidesBounds: true,
     direction: "horizontal",
     breakpoints: {
       0: { spaceBetween: 16, direction: "horizontal" },
@@ -18,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const mainSwiper = new Swiper(".mySwiper2", {
     loop: true,
-    direction: "horizontal",
     spaceBetween: 10,
     navigation: {
       nextEl: ".swiper-button-next",
@@ -33,7 +30,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const variantContainer = document.querySelector("#variant-data");
   const addToCartBtn = document.querySelector(".add-to-cart-button");
   const messageBox = document.querySelector(".form-message");
-  const productSection = document.querySelector("[data-section-id]");
 
   const colorRadios = document.querySelectorAll(".color-input");
   if (colorRadios.length && colorSelect) {
@@ -69,32 +65,69 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function filterGalleryByColor(selectedColor) {
+    if (!selectedColor) return;
+
+    const color = selectedColor.trim().toLowerCase();
+
+    const mainSlides = document.querySelectorAll(".mySwiper2 .swiper-slide");
+    const thumbSlides = document.querySelectorAll(".mySwiper .swiper-slide");
+
+    mainSlides.forEach((slide) => {
+      slide.style.display = slide.dataset.mediaColor === color ? "flex" : "none";
+    });
+
+    thumbSlides.forEach((slide) => {
+      slide.style.display = slide.dataset.mediaColor === color ? "block" : "none";
+    });
+
+    mainSwiper.update();
+    thumbsSwiper.update();
+
+    const firstVisible = [...mainSlides].findIndex((s) => s.style.display !== "none");
+
+    if (firstVisible >= 0) {
+      mainSwiper.slideToLoop(firstVisible);
+    }
+  }
+
   function updateImagesForVariant(mediaId) {
     if (!mediaId) return;
     const slides = document.querySelectorAll(".mySwiper2 .swiper-slide");
     const index = Array.from(slides).findIndex((s) => s.dataset.mediaId === mediaId);
-    if (index >= 0 && mainSwiper) mainSwiper.slideTo(index);
+    if (index >= 0) mainSwiper.slideTo(index);
   }
+
+  let messageTimeout;
 
   function showMessage(text, type = "error") {
     if (!messageBox) return;
+
+    if (messageTimeout) clearTimeout(messageTimeout);
+
     messageBox.textContent = text;
     messageBox.style.display = "block";
     messageBox.style.color = type === "error" ? "red" : "green";
-    setTimeout(() => (messageBox.style.display = "none"), 3000);
+
+    messageTimeout = setTimeout(() => {
+      messageBox.style.display = "none";
+    }, 3000);
   }
 
   function updateVariant() {
     const color = colorSelect?.value;
     const size = sizeSelect?.value;
-    const variant = findVariant(color, size);
 
+    filterGalleryByColor(color);
+
+    const variant = findVariant(color, size);
     if (!variant) return;
 
     variantInput.value = variant.id;
     updateImagesForVariant(variant.mediaId);
 
     if (variant.available) {
+      messageBox.style.display = "none";
       addToCartBtn.disabled = false;
       addToCartBtn.textContent = "Add to Cart";
     } else {
