@@ -116,6 +116,7 @@
   "products": {
     "product": {
       "add_to_cart": "Add to cart",
+      "fallback_add_to_cart_text": "Add To Cart",
       "choose_options": "Choose options",
       "choose_product_options": "Choose options for {{ product_name }}",
       "description": "Description",
@@ -125,9 +126,11 @@
       "inventory_low_stock_show_count": "Low stock: {{ quantity }} left",
       "inventory_out_of_stock": "Out of stock",
       "inventory_out_of_stock_continue_selling": "In stock",
+      "fallback_description": "Let your attitude have the edge in your Shoes, a Tuned Air experience that offers premium stability and unbelievable cushioning.",
       "sku": "SKU",
       "on_sale": "Sale",
       "product_variants": "Product variants",
+      "not_found": "No products found",
       "media": {
         "gallery_viewer": "Gallery Viewer",
         "load_image": "Load image {{ index }} in gallery view",
@@ -136,7 +139,11 @@
         "image_available": "Image {{ index }} is now available in gallery view",
         "open_media": "Open media {{ index }} in modal",
         "play_model": "Play 3D Viewer",
-        "play_video": "Play video"
+        "play_video": "Play video",
+        "gallery_viewer_default": "Product image gallery",
+        "carousel": "Carousel",
+        "main_images_aria_label": "Product images",
+        "thumbnail_images_aria_label": "Product thumbnail previews"
       },
       "nested_label": "{{ title }} for {{ parent_title }}",
       "quantity": {
@@ -177,6 +184,7 @@
       },
       "share": "Share this product",
       "sold_out": "Sold out",
+      "fallback_sold_out_text": "Sold out",
       "unavailable": "Unavailable",
       "vendor": "Vendor",
       "value_unavailable": "{{ option_value }} - Unavailable",

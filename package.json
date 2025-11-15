@@ -1,6 +1,14 @@
 {
+  "scripts": {
+    "dev": "concurrently \"shopify theme dev -e development\" \"npx @tailwindcss/cli -i ./assets/tailwind.input.css -o ./assets/tailwind.output.css --watch\""
+  },
   "devDependencies": {
     "@shopify/prettier-plugin-liquid": "^1.10.0",
+    "concurrently": "^9.2.1",
     "prettier": "^3.6.2"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.16",
+    "tailwindcss": "^4.1.16"
   }
 }

@@ -1,0 +1,118 @@
+{% comment %}
+  Renders product options
+
+  Usage:
+  {% render 'custom-product-options' %}
+{% endcomment %}
+
+{%- assign color_index = -1 -%}
+{%- assign size_index = -1 -%}
+
+{%- for option in product.options -%}
+  {%- assign option_normalized = option | downcase | strip -%}
+  {%- if option_normalized contains 'color'
+    or option_normalized contains 'colour'
+    or option_normalized contains 'цвет'
+    or option_normalized contains 'колір'
+  -%}
+    {%- assign color_index = forloop.index0 -%}
+  {%- elsif option_normalized contains 'size'
+    or option_normalized contains 'shoe size'
+    or option_normalized contains 'розмір'
+  -%}
+    {%- assign size_index = forloop.index0 -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if color_index >= 0 -%}
+  {%- assign color_index_plus = color_index | plus: 1 -%}
+  {%- assign color_key = 'option' | append: color_index_plus -%}
+  {%- assign colors = product.variants | map: color_key | uniq -%}
+
+  <fieldset class="product_option text-black">
+    <legend id="color-select" name="color" class="hidden">
+      {%- for color in colors -%}
+        <option value="{{ color | escape }}">{{ color }}</option>
+      {%- endfor -%}
+    </legend>
+
+    <div class="flex flex-wrap gap-4">
+      {%- for color in colors -%}
+        {%- assign variant = product.variants | where: color_key, color | first -%}
+        {%- if variant and variant.featured_image -%}
+          {%- assign image_url = variant.featured_image | image_url: width: 88 -%}
+        {%- else -%}
+          {%- assign image_url = product.featured_image | image_url: width: 88 -%}
+        {%- endif -%}
+
+        <label class="cursor-pointer">
+          <input
+            type="radio"
+            name="color"
+            value="{{ color | escape }}"
+            class="sr-only peer color-input"
+            aria-label="{{ color }}"
+          >
+          {% if image_url != blank %}
+            <span
+              class="block w-34 h-34 rounded-xl ring-1 ring-gray-200 peer-checked:ring-1 peer-checked:ring-black bg-center bg-cover dark:peer-checked:ring-3 dark:ring-red dark:peer-checked:ring-red-600"
+              style="background-image:url({{ image_url }});"
+              title="{{ color }}"
+              role="presentation"
+            ></span>
+          {% else %}
+            <span
+              class="block w-12 h-12 rounded-full ring-1 ring-gray-200 peer-checked:ring-1 peer-checked:ring-black dark:ring-gray-700 dark:peer-checked:ring-white"
+              style="background-color:{{ color | downcase }};"
+              title="{{ color }}"
+            ></span>
+          {% endif %}
+        </label>
+      {%- endfor -%}
+    </div>
+  </fieldset>
+{%- endif -%}
+
+{%- if size_index >= 0 -%}
+  {%- assign size_index_plus = size_index | plus: 1 -%}
+  {%- assign size_key = 'option' | append: size_index_plus -%}
+  {%- assign sizes = product.variants | map: size_key | uniq -%}
+  <div class="product_option text-black">
+    <div class="product_option text-black w-full dark:text-gray-50">
+      <span class="block mb-2 font-medium text-xs"> {{ product.options[size_index] | default: 'Size select' }}: </span>
+      <div id="size-select" class="size-chips grid! grid-cols-2 md:grid-cols-3 gap-3">
+        {%- for size in sizes -%}
+          <label class="chip cursor-pointer">
+            <input
+              type="radio"
+              name="size"
+              value="{{ size | escape }}"
+              class="hidden peer"
+              aria-label="{{ size }}"
+            >
+            <span class="block text-xs text-center border border-gray-200 rounded-xl px-4 py-4 text-black peer-checked:border-black dark:text-gray-50 dark:peer-checked:border-red-600">
+              {{ size }}
+            </span>
+          </label>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+<div
+  id="variant-data"
+  data-color-index="{{ color_index }}"
+  data-size-index="{{ size_index }}"
+>
+  {%- for variant in product.variants -%}
+    <span
+      data-id="{{ variant.id }}"
+      data-option1="{{ variant.option1 | escape }}"
+      data-option2="{{ variant.option2 | escape }}"
+      data-option3="{{ variant.option3 | escape }}"
+      data-media-id="{{ variant.featured_media.id }}"
+      data-available="{{ variant.available }}"
+    ></span>
+  {%- endfor -%}
+</div>
