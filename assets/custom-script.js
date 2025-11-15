@@ -55,6 +55,8 @@ document.addEventListener("DOMContentLoaded", function () {
     available: el.dataset.available === "true"
   }));
 
+  const allThumbSlides = Array.from(document.querySelectorAll(".mySwiper .swiper-slide"));
+
   function findVariant(color, size) {
     return variants.find((v) => {
       const colorVal = colorIndex >= 0 ? v[`option${colorIndex + 1}`] : null;
@@ -65,66 +67,52 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function filterGalleryByColor(selectedColor) {
-    if (!selectedColor) return;
-
-    const color = selectedColor.trim().toLowerCase();
-
-    const mainSlides = document.querySelectorAll(".mySwiper2 .swiper-slide");
-    const thumbSlides = document.querySelectorAll(".mySwiper .swiper-slide");
-
-    mainSlides.forEach((slide) => {
-      slide.style.display = slide.dataset.mediaColor === color ? "flex" : "none";
-    });
-
-    thumbSlides.forEach((slide) => {
-      slide.style.display = slide.dataset.mediaColor === color ? "block" : "none";
-    });
-
-    mainSwiper.update();
-    thumbsSwiper.update();
-
-    const firstVisible = [...mainSlides].findIndex((s) => s.style.display !== "none");
-
-    if (firstVisible >= 0) {
-      mainSwiper.slideToLoop(firstVisible);
-    }
-  }
-
   function updateImagesForVariant(mediaId) {
     if (!mediaId) return;
     const slides = document.querySelectorAll(".mySwiper2 .swiper-slide");
     const index = Array.from(slides).findIndex((s) => s.dataset.mediaId === mediaId);
-    if (index >= 0) mainSwiper.slideTo(index);
+    if (index >= 0 && mainSwiper) mainSwiper.slideTo(index);
   }
 
+  function updateThumbnailsForColor(color) {
+    if (!thumbsSwiper) return;
+
+    thumbsSwiper.removeAllSlides();
+
+    const filteredSlides = allThumbSlides.filter((slide) => {
+      const slideColor = slide.dataset.mediaColor?.toLowerCase();
+      return !color || slideColor === color.toLowerCase();
+    });
+
+    filteredSlides.forEach((slide) => thumbsSwiper.appendSlide(slide.cloneNode(true)));
+
+    thumbsSwiper.slideTo(0);
+
+    if (filteredSlides.length > 0) {
+      const mediaId = filteredSlides[0].dataset.mediaId;
+      updateImagesForVariant(mediaId);
+    }
+  }
   let messageTimeout;
 
   function showMessage(text, type = "error") {
     if (!messageBox) return;
-
     if (messageTimeout) clearTimeout(messageTimeout);
-
     messageBox.textContent = text;
     messageBox.style.display = "block";
     messageBox.style.color = type === "error" ? "red" : "green";
-
-    messageTimeout = setTimeout(() => {
-      messageBox.style.display = "none";
-    }, 3000);
+    setTimeout(() => (messageBox.style.display = "none"), 3000);
   }
 
   function updateVariant() {
     const color = colorSelect?.value;
     const size = sizeSelect?.value;
-
-    filterGalleryByColor(color);
-
     const variant = findVariant(color, size);
     if (!variant) return;
 
     variantInput.value = variant.id;
     updateImagesForVariant(variant.mediaId);
+    updateThumbnailsForColor(color);
 
     if (variant.available) {
       messageBox.style.display = "none";
@@ -144,7 +132,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   addToCartBtn?.addEventListener("click", async (e) => {
     e.preventDefault();
-
     const variantId = variantInput.value;
 
     if (!variantId || addToCartBtn.disabled) {
