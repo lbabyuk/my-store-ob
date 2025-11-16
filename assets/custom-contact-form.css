@@ -1,0 +1,151 @@
+.custom-contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  font-size: 1.6rem;
+  font-family: inherit;
+  letter-spacing: 0.05rem;
+}
+
+ul li {
+  list-style-type: none;
+}
+
+.section-title {
+  font-size: 2.4rem;
+  font-family: inherit;
+}
+
+.contact-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+input {
+  margin-bottom: 0;
+}
+
+input,
+textarea {
+  font-family: inherit;
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #6f6d6d;
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: none;
+  border: 2px solid #111111;
+}
+
+textarea {
+  height: 152px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-row,
+.form-group {
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.full-width {
+  width: 100%;
+  gap: 8px;
+}
+
+.contact-honeypot {
+  position: absolute;
+  left: -9999px;
+  visibility: hidden;
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.help-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.5em;
+  font-size: 1.5rem;
+  letter-spacing: 0.1rem;
+  width: 140px;
+  height: 56px;
+  background-color: #111111;
+  color: #ffff;
+  padding: 1.6rem 3.2rem;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+}
+
+.help-btn:hover {
+  transform: scale(1.02);
+  -webkit-transform: scale(1.02);
+  -moz-transform: scale(1.02);
+  -ms-transform: scale(1.02);
+  -o-transform: scale(1.02);
+}
+
+.form-status--error {
+  color: #d93025;
+}
+
+.form-status--success {
+  color: #44ca6c;
+}
+
+.form-group--error input,
+.form-group--error textarea {
+  border-color: #d41b0e;
+}
+
+.field-error {
+  color: #d41b0e;
+  margin: 0;
+}
+
+.help-btn.is-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@media screen and (min-width: 750px) {
+  .form-row {
+    flex-direction: row;
+  }
+}

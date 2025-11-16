@@ -1,0 +1,274 @@
+.product-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  position: relative;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+.product-wrapper p,
+.product-wrapper h1 {
+  margin: 0 0 1.25rem 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
+
+.form-message {
+  font-size: 14px;
+}
+
+.product-form-wrapper,
+.product_properties {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  width: 100%;
+}
+
+.product_option label,
+.product_quantity label,
+.product_properties label {
+  display: inline-block;
+  font-weight: 500;
+  color: #333;
+  font-size: 1.6rem;
+}
+
+.product_option select,
+.product_properties select,
+.product_properties input[type="text"],
+.product_quantity__count input[type="number"] {
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  border-radius: 0.8rem;
+  border: 1px solid #ccc;
+  font-size: 1.4rem;
+  background-color: #fff;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  -webkit-border-radius: 0.8rem;
+  -moz-border-radius: 0.8rem;
+  -ms-border-radius: 0.8rem;
+  -o-border-radius: 0.8rem;
+}
+
+.product_option select:focus,
+.product_properties input[type="text"]:focus,
+.product_properties select:focus,
+.product_quantity__count input[type="number"]:focus {
+  border-color: #abafb3;
+  box-shadow: 0 0 0.3rem rgba(197, 217, 237, 0.5);
+  outline: none;
+}
+
+.product_quantity,
+.product_option,
+.contact,
+.reason {
+  display: flex;
+  align-items: center;
+}
+
+.product_quantity,
+.product_option {
+  gap: 0.5rem;
+}
+
+.product_quantity__count {
+  display: flex;
+  align-items: center;
+}
+
+.product_quantity__count input[type="number"] {
+  width: 7.5rem;
+  text-align: center;
+}
+
+.product_price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.initial_price,
+.compare_at_price,
+.price-badge {
+  display: inline-block;
+  font-size: 2rem;
+}
+
+.compare_at_price {
+  font-weight: 700;
+}
+
+.price-badge {
+  padding: 0.25rem 1rem;
+  border-radius: 1.5rem;
+  background-color: #000;
+  color: #fff;
+  font-size: 1.6rem;
+}
+
+.add-to-cart-button {
+  width: 100%;
+}
+
+.product_description p {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.product_image {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.swiper {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.swiper-slide {
+  cursor: pointer;
+}
+
+.mySwiper2 {
+  height: 100%;
+  width: 100%;
+}
+
+.mySwiper .swiper-slide {
+  width: 88px !important;
+  height: 88px !important;
+  opacity: 1;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+}
+
+.swiper .swiper-slide-thumb-active::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #11111133;
+  pointer-events: none;
+  border-radius: 8px;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  display: none;
+}
+
+.main {
+  width: 343px;
+  height: 343px;
+}
+
+.thumb {
+  width: 343px;
+}
+
+@media (max-width: 425px) {
+  .main {
+    width: 100%;
+    height: 100%;
+  }
+
+  .thumb {
+    width: 100%;
+  }
+}
+
+@media (min-width: 768px) {
+  .main {
+    width: 525px;
+    height: 525px;
+  }
+
+  .thumb {
+    width: 525px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .product-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 60px;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  .initial_price,
+  .compare_at_price,
+  .price-badge {
+    font-size: 1.6rem;
+  }
+
+  .price-badge {
+    padding: 0.25rem 1rem;
+    font-size: 1.2rem;
+  }
+
+  .product_image {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 648px;
+    gap: 24px;
+    /* flex-direction: column; */
+    flex: 0;
+  }
+
+  .product-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .swiper {
+    width: 100%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .main {
+    width: 536px;
+    height: 536px;
+  }
+
+  .thumb {
+    width: 100px;
+    height: 536px;
+  }
+
+  .thumb .swiper-wrapper {
+    width: 88px;
+    height: 88px;
+  }
+}

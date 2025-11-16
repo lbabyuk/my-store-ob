@@ -1,0 +1,59 @@
+{% comment %}
+  Renders product images
+
+  Usage:
+  {% render 'custom-product-media' %}
+{% endcomment %}
+
+<div class="product_image">
+  <div class="swiper mySwiper2 main">
+    <div class="swiper-wrapper">
+      {%- for media in product.media -%}
+        <div class="image-container swiper-slide" data-media-id="{{ media.id }}">
+          {%- if media != blank -%}
+            {% assign alt_text = media.preview_image.alt | default: product.title | escape %}
+            {% assign image_height = 536 | divided_by: media.preview_image.aspect_ratio %}
+
+            {{
+              media
+              | image_url: width: 536, height: image_height
+              | image_tag: loading: 'lazy', width: 536, height: image_height, alt: alt_text, class: 'image'
+            }}
+
+          {%- else -%}
+            {{ 'product-2' | placeholder_svg_tag: 'placeholder-img' }}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+
+  <div class="swiper mySwiper thumb">
+    <div class="swiper-wrapper">
+      {%- for media in product.media -%}
+        <div class="swiper-slide" data-media-id="{{ media.id }}">
+          {%- if media != blank -%}
+            {% assign alt_text = media.preview_image.alt | default: product.title | escape %}
+            {% assign image_height = 80 | divided_by: media.preview_image.aspect_ratio %}
+
+            {{
+              media
+              | image_url: width: 88, height: image_height
+              | image_tag:
+                loading: 'lazy',
+                width: 88,
+                height: image_height,
+                alt: alt_text,
+                class: 'image'
+            }}
+          {%- else -%}
+            {{ 'product-2' | placeholder_svg_tag: 'placeholder-img' }}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
