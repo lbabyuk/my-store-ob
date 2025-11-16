@@ -1,10 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
   const thumbsSwiper = new Swiper(".mySwiper", {
     loop: true,
-    spaceBetween: 10,
-    slidesPerView: 3,
+    spaceBetween: 24,
+    slidesPerView: "auto",
     freeMode: true,
-    watchSlidesProgress: true
+    direction: "vertical",
+    breakpoints: {
+      0: { direction: "horizontal", spaceBetween: 8 },
+      1024: { direction: "vertical", spaceBetween: 24 }
+    }
   });
 
   const mainSwiper = new Swiper(".mySwiper2", {
