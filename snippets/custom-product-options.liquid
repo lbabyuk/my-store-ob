@@ -55,14 +55,14 @@
           >
           {% if image_url != blank %}
             <span
-              class="block w-34 h-34 rounded-xl ring-1 ring-gray-200 peer-checked:ring-1 peer-checked:ring-black bg-center bg-cover dark:peer-checked:ring-3 dark:ring-red dark:peer-checked:ring-red-600"
+              class="block w-34 h-34 rounded-xl ring-1 ring-gray-200 peer-checked:ring-2 peer-checked:ring-black bg-center bg-cover dark:peer-checked:ring-2 dark:ring-red dark:peer-checked:ring-red-600"
               style="background-image:url({{ image_url }});"
               title="{{ color }}"
               role="presentation"
             ></span>
           {% else %}
             <span
-              class="block w-12 h-12 rounded-full ring-1 ring-gray-200 peer-checked:ring-1 peer-checked:ring-black dark:ring-gray-700 dark:peer-checked:ring-white"
+              class="block w-12 h-12 rounded-full ring-1 ring-gray-200 peer-checked:ring-2 peer-checked:ring-black dark:ring-gray-700 dark:peer-checked:ring-white"
               style="background-color:{{ color | downcase }};"
               title="{{ color }}"
             ></span>

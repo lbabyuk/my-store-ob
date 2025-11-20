@@ -1,29 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const thumbsSwiper = new Swiper(".mySwiper", {
-    loop: true,
-    spaceBetween: 24,
-    slidesPerView: 3,
-    freeMode: true,
-    watchSlidesProgress: true,
-    direction: "horizontal",
-    breakpoints: {
-      0: { spaceBetween: 16, direction: "horizontal" },
-      768: { spaceBetween: 24, direction: "horizontal" },
-      1024: { direction: "horizontal" },
-      1200: { direction: "vertical" }
-    }
-  });
-
-  const mainSwiper = new Swiper(".mySwiper2", {
-    loop: true,
-    spaceBetween: 10,
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev"
-    },
-    thumbs: { swiper: thumbsSwiper }
-  });
-
+  const thumbsSwiperEl = document.querySelector(".mySwiper");
+  const mainSwiperEl = document.querySelector(".mySwiper2");
   const colorSelect = document.querySelector("#color-select");
   const sizeSelect = document.querySelector("#size-select");
   const variantInput = document.querySelector("#selected-variant-id");
@@ -31,17 +8,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const addToCartBtn = document.querySelector(".add-to-cart-button");
   const messageBox = document.querySelector(".form-message");
 
-  const colorRadios = document.querySelectorAll(".color-input");
-  if (colorRadios.length && colorSelect) {
-    colorRadios.forEach((radio) => {
-      radio.addEventListener("change", (e) => {
-        colorSelect.value = e.target.value;
-        colorSelect.dispatchEvent(new Event("change", { bubbles: true }));
-      });
-    });
-  }
+  if (!thumbsSwiperEl || !mainSwiperEl || !variantContainer) return;
 
-  if (!variantContainer) return;
+  const allThumbSlides = Array.from(document.querySelectorAll(".mySwiper .swiper-slide"));
+  const mainSlides = Array.from(document.querySelectorAll(".mySwiper2 .swiper-slide"));
+  const colorRadios = document.querySelectorAll(".color-input");
 
   const colorIndex = parseInt(variantContainer.dataset.colorIndex);
   const sizeIndex = parseInt(variantContainer.dataset.sizeIndex);
@@ -55,8 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
     available: el.dataset.available === "true"
   }));
 
-  const allThumbSlides = Array.from(document.querySelectorAll(".mySwiper .swiper-slide"));
-
   function findVariant(color, size) {
     return variants.find((v) => {
       const colorVal = colorIndex >= 0 ? v[`option${colorIndex + 1}`] : null;
@@ -67,67 +36,113 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function updateImagesForVariant(mediaId) {
+  const thumbsSwiper = new Swiper(".mySwiper", {
+    loop: false,
+    spaceBetween: 16,
+    slidesPerView: "auto",
+    freeMode: true,
+    watchSlidesProgress: true,
+    direction: "horizontal",
+    breakpoints: {
+      0: { spaceBetween: 16, direction: "horizontal" },
+      768: { spaceBetween: 16, direction: "horizontal" },
+      1024: { spaceBetween: 16, direction: "horizontal" },
+      1280: { spaceBetween: 24, direction: "vertical" }
+    }
+  });
+
+  const mainSwiper = new Swiper(".mySwiper2", {
+    loop: mainSlides.length > 1,
+    spaceBetween: 10,
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev"
+    },
+    thumbs: { swiper: thumbsSwiper }
+  });
+
+  function updateMainImage(mediaId) {
     if (!mediaId) return;
-    const slides = document.querySelectorAll(".mySwiper2 .swiper-slide");
-    const index = Array.from(slides).findIndex((s) => s.dataset.mediaId === mediaId);
+    const index = mainSlides.findIndex((s) => s.dataset.mediaId === mediaId);
     if (index >= 0 && mainSwiper) mainSwiper.slideTo(index);
   }
 
   function updateThumbnailsForColor(color) {
-    if (!thumbsSwiper) return;
-
-    thumbsSwiper.removeAllSlides();
-
-    const filteredSlides = allThumbSlides.filter((slide) => {
+    allThumbSlides.forEach((slide) => {
       const slideColor = slide.dataset.mediaColor?.toLowerCase();
-      return !color || slideColor === color.toLowerCase();
+      const shouldShow = !color || (slideColor && slideColor === color.toLowerCase());
+      slide.classList.toggle("hidden", !shouldShow);
     });
-
-    filteredSlides.forEach((slide) => thumbsSwiper.appendSlide(slide.cloneNode(true)));
-
-    thumbsSwiper.slideTo(0);
-
-    if (filteredSlides.length > 0) {
-      const mediaId = filteredSlides[0].dataset.mediaId;
-      updateImagesForVariant(mediaId);
-    }
+    thumbsSwiper.update();
   }
-  let messageTimeout;
 
+  if (colorRadios.length && colorSelect) {
+    colorRadios.forEach((radio) => {
+      radio.addEventListener("change", (e) => {
+        colorSelect.value = e.target.value;
+        colorSelect.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    });
+  }
+
+  function getSelectedSize() {
+    const checked = document.querySelector('input[name="size"]:checked');
+    return checked ? checked.value : null;
+  }
+
+  let currentMessageType = null;
   function showMessage(text, type = "error") {
     if (!messageBox) return;
-    if (messageTimeout) clearTimeout(messageTimeout);
+
     messageBox.textContent = text;
-    messageBox.style.display = "block";
-    messageBox.style.color = type === "error" ? "red" : "green";
-    setTimeout(() => (messageBox.style.display = "none"), 3000);
+    messageBox.classList.remove("text-red-500", "text-green-500", "opacity-0", "invisible", "pointer-events-none");
+    messageBox.classList.add(type === "error" ? "text-red-500" : "text-green-500");
+    messageBox.classList.add("opacity-100");
+    messageBox.classList.remove("invisible", "pointer-events-none");
+
+    currentMessageType = type;
   }
 
+  function hideErrorMessage() {
+    if (!messageBox || currentMessageType !== "error") return;
+    messageBox.classList.remove("opacity-100", "text-red-500");
+    messageBox.classList.add("opacity-0", "invisible", "pointer-events-none");
+    currentMessageType = null;
+  }
+  let hasInteracted = false;
   function updateVariant() {
     const color = colorSelect?.value;
-    const size = sizeSelect?.value;
+    const size = getSelectedSize();
     const variant = findVariant(color, size);
     if (!variant) return;
-
     variantInput.value = variant.id;
-    updateImagesForVariant(variant.mediaId);
+    updateMainImage(variant.mediaId);
     updateThumbnailsForColor(color);
 
     if (variant.available) {
-      messageBox.style.display = "none";
       addToCartBtn.disabled = false;
       addToCartBtn.textContent = "Add to Cart";
+      hideErrorMessage();
     } else {
       addToCartBtn.disabled = true;
       addToCartBtn.textContent = "Sold Out";
-      showMessage("This variant is currently unavailable.");
+      if (hasInteracted && color && size) {
+        showMessage(`Variant ${size}/${color} is currently unavailable.`, "error");
+      }
     }
   }
 
-  colorSelect?.addEventListener("change", updateVariant);
-  sizeSelect?.addEventListener("change", updateVariant);
+  colorSelect?.addEventListener("change", () => {
+    hasInteracted = true;
+    updateVariant();
+  });
 
+  document.querySelectorAll('input[name="size"]').forEach((radio) => {
+    radio.addEventListener("change", () => {
+      hasInteracted = true;
+      updateVariant();
+    });
+  });
   updateVariant();
 
   addToCartBtn?.addEventListener("click", async (e) => {
@@ -142,41 +157,42 @@ document.addEventListener("DOMContentLoaded", function () {
     addToCartBtn.disabled = true;
     addToCartBtn.textContent = "Adding...";
 
-    const formData = new FormData();
-    formData.append("id", variantId);
-
     try {
-      const response = await fetch("/cart/add.js", {
-        method: "POST",
-        body: formData,
-        headers: { Accept: "application/json" }
-      });
-      const data = await response.json();
+      let formData = {
+        items: [
+          {
+            id: variantId,
+            quantity: 1
+          }
+        ]
+      };
 
-      if (data.status && data.status >= 400) {
-        showMessage(data.description || "Error adding to cart.", "error");
-        pushDataLayer("form_error");
-      } else {
-        showMessage("Added to cart successfully!", "success");
-        pushDataLayer("form_success");
+      const response = await fetch(window.Shopify.routes.root + "cart/add.js", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
+      const data = await response.json();
+      showMessage("Added to cart!", "success");
+      return data;
     } catch (err) {
-      showMessage("Network error. Please try again.", "error");
-      pushDataLayer("form_error", null, err.message);
+      showMessage("Network error. Please try again.", err);
     } finally {
       updateVariant();
     }
+  });
 
-    function pushDataLayer(eventType, quantity = null, error = null) {
-      window.dataLayer = window.dataLayer || [];
-      const payload = {
-        event: eventType,
-        form_type: "add_to_cart",
-        productId: variantInput.value,
-        timestamp: new Date().toISOString()
-      };
-      if (error) payload.error = error;
-      window.dataLayer.push(payload);
-    }
+  thumbsSwiperEl.addEventListener("click", (e) => {
+    const slide = e.target.closest(".swiper-slide");
+    if (!slide) return;
+    const mediaId = slide.dataset.mediaId;
+    if (!mediaId) return;
+    updateMainImage(mediaId);
   });
 });

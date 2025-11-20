@@ -1,3 +1,4 @@
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -28,6 +29,7 @@
   </div>
 </section>
 
+<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer></script>
 <script src="{{ 'custom-related-products.js' | asset_url }}" defer></script>
 <script src="{{ 'slider-related-products.js' | asset_url }}" defer></script>
 

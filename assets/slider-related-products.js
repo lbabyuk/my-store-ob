@@ -16,10 +16,21 @@ const initSwiper = (containerSelector = ".slider-products") => {
   sliders.forEach((slider) => {
     const slideCount = slider.querySelectorAll(".swiper-slide").length;
 
+    const viewportWidth = window.innerWidth;
+
+    const breakpoints = {
+      425: { slidesPerView: 2, spaceBetween: 16 },
+      768: { slidesPerView: 2.5, spaceBetween: 24 },
+      1024: { slidesPerView: 4, spaceBetween: 24 }
+    };
+
+    const slidesPerView = getSlidesPerView(breakpoints, viewportWidth, 1.1);
+    const enableLoop = slideCount > slidesPerView;
+
     new Swiper(slider, {
       slidesPerView: 1.1,
       spaceBetween: 16,
-      loop: true,
+      loop: enableLoop,
       mousewheel: true,
       keyboard: true,
       watchOverflow: true,
@@ -27,11 +38,12 @@ const initSwiper = (containerSelector = ".slider-products") => {
         nextEl: slider.querySelector(".swiper-button-next"),
         prevEl: slider.querySelector(".swiper-button-prev")
       },
-      breakpoints: {
-        425: { slidesPerView: 2, spaceBetween: 16 },
-        768: { slidesPerView: 2.5, spaceBetween: 24 },
-        1024: { slidesPerView: 4, spaceBetween: 24 }
+      lazy: {
+        loadPrevNext: true,
+        loadOnTransitionStart: true
       },
+      preloadImages: false,
+      breakpoints: breakpoints,
       on: {
         init: function () {
           const viewportWidth = window.innerWidth;
