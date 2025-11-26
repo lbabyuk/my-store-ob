@@ -1,8 +1,78 @@
+const keyActions = {
+  select: ["Enter", "Space", " "],
+  next: ["ArrowRight", "ArrowDown"],
+  prev: ["ArrowLeft", "ArrowUp"]
+};
+
+const makeRadioGroupKeyboardNavigable = (labelSelector) => {
+  const labels = Array.from(document.querySelectorAll(labelSelector));
+
+  labels.forEach((label, index) => {
+    const radio = label.querySelector('input[type="radio"]');
+
+    label.addEventListener("keydown", (event) => {
+      const { key, code } = event;
+
+      if (keyActions.select.includes(key) || keyActions.select.includes(code)) {
+        event.preventDefault();
+        radio.checked = true;
+        radio.dispatchEvent(new Event("change", { bubbles: true }));
+        return;
+      }
+
+      let newIndex = null;
+      if (keyActions.next.includes(key)) {
+        newIndex = (index + 1) % labels.length;
+      } else if (keyActions.prev.includes(key)) {
+        newIndex = (index - 1 + labels.length) % labels.length;
+      }
+
+      if (newIndex !== null) {
+        event.preventDefault();
+        const newLabel = labels[newIndex];
+        const newRadio = newLabel.querySelector('input[type="radio"]');
+        newRadio.checked = true;
+        newRadio.dispatchEvent(new Event("change", { bubbles: true }));
+        newLabel.focus();
+      }
+    });
+  });
+};
+
+function enableThumbKeyboardNavigation(swiper) {
+  if (!swiper || !swiper.slides) return;
+
+  swiper.slides.forEach((slide) => {
+    slide.addEventListener("keydown", (event) => {
+      const { key, code } = event;
+      const visibleSlides = swiper.slides.filter((s) => !s.classList.contains("hidden"));
+      const index = visibleSlides.indexOf(slide);
+      if (index === -1) return;
+
+      if (keyActions.select.includes(key) || keyActions.select.includes(code)) {
+        event.preventDefault();
+        swiper.slideTo(swiper.slides.indexOf(slide));
+        slide.click();
+        return;
+      }
+
+      if (keyActions.next.includes(key)) {
+        event.preventDefault();
+        const next = visibleSlides[index + 1] || visibleSlides[0];
+        next.focus();
+      } else if (keyActions.prev.includes(key)) {
+        event.preventDefault();
+        const prev = visibleSlides[index - 1] || visibleSlides[visibleSlides.length - 1];
+        prev.focus();
+      }
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
-  const thumbsSwiperEl = document.querySelector(".mySwiper");
-  const mainSwiperEl = document.querySelector(".mySwiper2");
+  const thumbsSwiperEl = document.querySelector(".thumbSwiper");
+  const mainSwiperEl = document.querySelector(".mainSwiper");
   const colorSelect = document.querySelector("#color-select");
-  const sizeSelect = document.querySelector("#size-select");
   const variantInput = document.querySelector("#selected-variant-id");
   const variantContainer = document.querySelector("#variant-data");
   const addToCartBtn = document.querySelector(".add-to-cart-button");
@@ -10,8 +80,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (!thumbsSwiperEl || !mainSwiperEl || !variantContainer) return;
 
-  const allThumbSlides = Array.from(document.querySelectorAll(".mySwiper .swiper-slide"));
-  const mainSlides = Array.from(document.querySelectorAll(".mySwiper2 .swiper-slide"));
+  const allThumbSlides = Array.from(document.querySelectorAll(".thumbSwiper .swiper-slide"));
+  const mainSlides = Array.from(document.querySelectorAll(".mainSwiper .swiper-slide"));
   const colorRadios = document.querySelectorAll(".color-input");
 
   const colorIndex = parseInt(variantContainer.dataset.colorIndex);
@@ -36,13 +106,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  const thumbsSwiper = new Swiper(".mySwiper", {
+  const thumbsSwiper = new Swiper(".thumbSwiper", {
     loop: false,
     spaceBetween: 16,
     slidesPerView: "auto",
     freeMode: true,
     watchSlidesProgress: true,
     direction: "horizontal",
+    keyboard: true,
     breakpoints: {
       0: { spaceBetween: 16, direction: "horizontal" },
       768: { spaceBetween: 16, direction: "horizontal" },
@@ -51,15 +122,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  const mainSwiper = new Swiper(".mySwiper2", {
+  const mainSwiper = new Swiper(".mainSwiper", {
     loop: mainSlides.length > 1,
-    spaceBetween: 10,
+    spaceBetween: 5,
     navigation: {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev"
     },
+    keyboard: true,
     thumbs: { swiper: thumbsSwiper }
   });
+
+  enableThumbKeyboardNavigation(thumbsSwiper);
 
   function updateMainImage(mediaId) {
     if (!mediaId) return;
@@ -72,6 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const slideColor = slide.dataset.mediaColor?.toLowerCase();
       const shouldShow = !color || (slideColor && slideColor === color.toLowerCase());
       slide.classList.toggle("hidden", !shouldShow);
+      slide.setAttribute("tabindex", shouldShow ? "0" : "-1");
     });
     thumbsSwiper.update();
   }
@@ -89,6 +164,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const checked = document.querySelector('input[name="size"]:checked');
     return checked ? checked.value : null;
   }
+
+  makeRadioGroupKeyboardNavigable(".color-label");
+  makeRadioGroupKeyboardNavigable(".size-label");
 
   let currentMessageType = null;
   function showMessage(text, type = "error") {
@@ -158,32 +236,39 @@ document.addEventListener("DOMContentLoaded", function () {
     addToCartBtn.textContent = "Adding...";
 
     try {
-      let formData = {
-        items: [
-          {
-            id: variantId,
-            quantity: 1
-          }
-        ]
-      };
-
-      const response = await fetch(window.Shopify.routes.root + "cart/add.js", {
+      const addResponse = await fetch(window.Shopify.routes.root + "cart/add.js", {
         method: "POST",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json"
-        }
+        body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] }),
+        headers: { "Content-Type": "application/json" }
       });
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
+      if (!addResponse.ok) throw new Error("Add to cart failed");
+      const addedItem = await addResponse.json();
       showMessage("Added to cart!", "success");
-      return data;
+
+      const cartResponse = await fetch(window.Shopify.routes.root + "cart.js");
+      if (!cartResponse.ok) throw new Error("Fetch cart failed");
+      const cart = await cartResponse.json();
+      console.log(cart.item_count);
+
+      const cartCountBubble = document.querySelector(".cart-count-bubble span:first-child");
+      if (cartCountBubble) cartCountBubble.textContent = cart.item_count;
+      const cartCountVisuallyHidden = document.querySelector(".cart-count-bubble .visually-hidden");
+      if (cartCountVisuallyHidden) cartCountVisuallyHidden.textContent = `${cart.item_count} items`;
+
+      const cartNotification = document.querySelector("cart-notification");
+
+      if (cartNotification) {
+        cartNotification.items = addedItem;
+        cartNotification.open(cart);
+        cartNotification.renderContents();
+      }
     } catch (err) {
-      showMessage("Network error. Please try again.", err);
+      console.error(err);
+      showMessage("Network error. Please try again.", "error");
     } finally {
+      addToCartBtn.disabled = false;
+      addToCartBtn.textContent = "Add to Cart";
       updateVariant();
     }
   });

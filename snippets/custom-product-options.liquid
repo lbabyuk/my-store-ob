@@ -12,7 +12,6 @@
   {%- assign option_normalized = option | downcase | strip -%}
   {%- if option_normalized contains 'color'
     or option_normalized contains 'colour'
-    or option_normalized contains 'цвет'
     or option_normalized contains 'колір'
   -%}
     {%- assign color_index = forloop.index0 -%}
@@ -29,13 +28,13 @@
   {%- assign color_key = 'option' | append: color_index_plus -%}
   {%- assign colors = product.variants | map: color_key | uniq -%}
 
-  <fieldset class="product_option text-black">
-    <legend id="color-select" name="color" class="hidden">
+  <div class="product_option">
+    <label for="color-select" class="hidden sr-only">Choose color</label>
+    <select id="color-select" name="color" class="hidden sr-only">
       {%- for color in colors -%}
         <option value="{{ color | escape }}">{{ color }}</option>
       {%- endfor -%}
-    </legend>
-
+    </select>
     <div class="flex flex-wrap gap-4">
       {%- for color in colors -%}
         {%- assign variant = product.variants | where: color_key, color | first -%}
@@ -45,24 +44,31 @@
           {%- assign image_url = product.featured_image | image_url: width: 88 -%}
         {%- endif -%}
 
-        <label class="cursor-pointer">
+        <label class="cursor-pointer color-label">
           <input
             type="radio"
             name="color"
             value="{{ color | escape }}"
-            class="sr-only peer color-input"
-            aria-label="{{ color }}"
+            class="sr-only-focusable peer color-input"
+            aria-label="color-input-{{ color}}"
+            id="color-input-{{ color }}"
           >
+          <span id="color-label-{{ forloop.index }}" class="sr-only">
+            {{ color }}
+          </span>
+
           {% if image_url != blank %}
             <span
-              class="block w-34 h-34 rounded-xl ring-1 ring-gray-200 peer-checked:ring-2 peer-checked:ring-black bg-center bg-cover dark:peer-checked:ring-2 dark:ring-red dark:peer-checked:ring-red-600"
+              tabindex="0"
+              class="block w-34 h-34 rounded-xl ring-1 ring-gray-200 peer-checked:ring-2 peer-checked:ring-black bg-center bg-cover dark:peer-checked:ring-2 dark:ring-red dark:peer-checked:ring-red-600 focus-visible"
               style="background-image:url({{ image_url }});"
               title="{{ color }}"
               role="presentation"
             ></span>
           {% else %}
             <span
-              class="block w-12 h-12 rounded-full ring-1 ring-gray-200 peer-checked:ring-2 peer-checked:ring-black dark:ring-gray-700 dark:peer-checked:ring-white"
+              tabindex="0"
+              class="block w-12 h-12 rounded-full ring-1 ring-gray-200 peer-checked:ring-2 peer-checked:ring-black dark:ring-gray-700 dark:peer-checked:ring-white focus-visible"
               style="background-color:{{ color | downcase }};"
               title="{{ color }}"
             ></span>
@@ -70,27 +76,32 @@
         </label>
       {%- endfor -%}
     </div>
-  </fieldset>
+  </div>
 {%- endif -%}
 
 {%- if size_index >= 0 -%}
   {%- assign size_index_plus = size_index | plus: 1 -%}
   {%- assign size_key = 'option' | append: size_index_plus -%}
   {%- assign sizes = product.variants | map: size_key | uniq -%}
-  <div class="product_option text-black">
-    <div class="product_option text-black w-full dark:text-gray-50">
-      <span class="block mb-2 font-medium text-xs"> {{ product.options[size_index] | default: 'Size select' }}: </span>
+  <div class="product_option">
+    <div class="product_option w-full">
+      <span class="block mb-2 font-medium text-xs"> {{ product.options[size_index] | default: 'Size select' }}:</span>
       <div id="size-select" class="size-chips grid! grid-cols-2 md:grid-cols-3 gap-3">
         {%- for size in sizes -%}
-          <label class="chip cursor-pointer">
+          {%- assign safe_size = size | remove: '(' | remove: ')' | replace: ' ', '-' -%}
+          <label class="chip cursor-pointer size-label focus-visible">
             <input
               type="radio"
               name="size"
               value="{{ size | escape }}"
-              class="hidden peer"
-              aria-label="{{ size }}"
+              class="sr-only-focusable peer size-input"
+              aria-label="size-input-{{ safe_size }}"
+              id="size-input-{{ safe_size }}"
             >
-            <span class="block text-xs text-center border border-gray-200 rounded-xl px-4 py-4 text-black peer-checked:border-black dark:text-gray-50 dark:peer-checked:border-red-600">
+            <span
+              tabindex="0"
+              class="block text-xs text-center border border-gray-200 rounded-xl px-4 py-4 text-gray-950 peer-checked:border-black dark:text-gray-50 dark:peer-checked:border-red-600 focus-visible"
+            >
               {{ size }}
             </span>
           </label>
@@ -102,6 +113,7 @@
 
 <div
   id="variant-data"
+  aria-hidden="true"
   data-color-index="{{ color_index }}"
   data-size-index="{{ size_index }}"
 >

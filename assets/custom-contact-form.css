@@ -100,8 +100,6 @@ textarea {
   letter-spacing: 0.1rem;
   width: 140px;
   height: 56px;
-  background-color: #111111;
-  color: #ffff;
   padding: 1.6rem 3.2rem;
   border: none;
   border-radius: 8px;
@@ -111,14 +109,6 @@ textarea {
   -moz-border-radius: 8px;
   -ms-border-radius: 8px;
   -o-border-radius: 8px;
-}
-
-.help-btn:hover {
-  transform: scale(1.02);
-  -webkit-transform: scale(1.02);
-  -moz-transform: scale(1.02);
-  -ms-transform: scale(1.02);
-  -o-transform: scale(1.02);
 }
 
 .form-status--error {

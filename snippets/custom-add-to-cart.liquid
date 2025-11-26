@@ -10,18 +10,29 @@
 
 <button
   type="button"
-  class="add-to-cart-button bg-black text-white w-full pt-6 pb-6 rounded-lg cursor-pointer disabled:cursor-not-allowed transition-colors duration-300 hover:bg-neutral-500 dark:bg-white dark:text-black dark:hover:bg-neutral-700"
   name="add"
+  class="
+    add-to-cart-button  bg-gray-950 text-gray-200 w-full pt-6 pb-6 rounded-lg cursor-pointer
+    disabled:cursor-not-allowed transition-colors duration-300 hover:bg-gray-800
+    dark:bg-gray-50 dark:text-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-200 focus-visible
+  "
   {%- unless product.selected_or_first_available_variant.available -%}
     disabled
   {%- endunless -%}
 >
-  <span aria-live="polite  dark:text-gray-50">
+  <span aria-live="polite" aria-hidden="true">
     {%- if product.selected_or_first_available_variant.available -%}
       {{ 'products.product.add_to_cart' | t: default: fallback_add_to_cart_text | escape }}
     {%- else -%}
       {{ 'products.product.sold_out' | t: default: fallback_sold_out_text | escape }}
     {%- endif -%}
+  </span>
+  <span class="sr-only">
+    {% if product.selected_or_first_available_variant.available %}
+      {{ 'products.product.add_to_cart' | t: default: fallback_add_to_cart_text | escape }}
+    {% else %}
+      {{ 'products.product.sold_out' | t: default: fallback_sold_out_text | escape }}
+    {% endif %}
   </span>
 </button>
 <div
