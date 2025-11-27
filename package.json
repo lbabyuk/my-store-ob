@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "dev":"run-p -sr shopify:dev watch",
+    "dev": "run-p -sr shopify:dev watch",
     "shopify:dev": "shopify theme dev -e development",
-    "build": "vite build --minify",
-    "watch": "vite build --watch"
+    "watch": "vite build --watch",
+    "build": "vite build --minify"
   },
   "devDependencies": {
     "@shopify/prettier-plugin-liquid": "^1.10.0",
