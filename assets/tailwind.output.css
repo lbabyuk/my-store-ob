@@ -7,7 +7,6 @@
       --tw-rotate-z: initial;
       --tw-skew-x: initial;
       --tw-skew-y: initial;
-      --tw-font-weight: initial;
       --tw-shadow: 0 0 #0000;
       --tw-shadow-color: initial;
       --tw-shadow-alpha: 100%;
@@ -44,10 +43,6 @@
   :root, :host {
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    --color-amber-800: oklch(47.3% .137 46.201);
-    --text-7xl: 4.5rem;
-    --text-7xl--line-height: 1;
-    --font-weight-extrabold: 800;
     --default-transition-duration: .15s;
     --default-transition-timing-function: cubic-bezier(.4, 0, .2, 1);
     --default-font-family: var(--font-sans);
@@ -397,20 +392,6 @@
     overflow: hidden;
   }
 
-  .text-7xl {
-    font-size: var(--text-7xl);
-    line-height: var(--tw-leading, var(--text-7xl--line-height));
-  }
-
-  .font-extrabold {
-    --tw-font-weight: var(--font-weight-extrabold);
-    font-weight: var(--font-weight-extrabold);
-  }
-
-  .text-amber-800 {
-    color: var(--color-amber-800);
-  }
-
   .capitalize {
     text-transform: capitalize;
   }
@@ -447,6 +428,10 @@
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
 }
 
 @property --tw-rotate-x {
@@ -470,11 +455,6 @@
 }
 
 @property --tw-skew-y {
-  syntax: "*";
-  inherits: false
-}
-
-@property --tw-font-weight {
   syntax: "*";
   inherits: false
 }
