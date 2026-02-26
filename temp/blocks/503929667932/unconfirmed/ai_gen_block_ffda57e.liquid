@@ -1,6 +1,616 @@
+{% doc %}
+  @prompt
+    generate tabs section in which tab hedding - title + icon
+    tab content : list of text with bollets points. Let user to choose icons from customizer 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-tabs-container-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: 40px 20px;
+    background-color: {{ block.settings.background_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+  }
+
+  .ai-tabs-header-{{ ai_gen_id }} {
+    display: flex;
+    gap: 10px;
+    border-bottom: 2px solid {{ block.settings.tab_border_color }};
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+
+  .ai-tab-button-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: {{ block.settings.tab_font_size }}px;
+    color: {{ block.settings.tab_inactive_color }};
+    transition: all 0.3s ease;
+    margin-bottom: -2px;
+  }
+
+  .ai-tab-button-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.tab_hover_color }};
+  }
+
+  .ai-tab-button-{{ ai_gen_id }}.active {
+    color: {{ block.settings.tab_active_color }};
+    border-bottom-color: {{ block.settings.tab_active_border_color }};
+  }
+
+  .ai-tab-icon-{{ ai_gen_id }} {
+    width: {{ block.settings.icon_size }}px;
+    height: {{ block.settings.icon_size }}px;
+    flex-shrink: 0;
+  }
+
+  .ai-tab-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+
+  .ai-tabs-content-{{ ai_gen_id }} {
+    position: relative;
+  }
+
+  .ai-tab-panel-{{ ai_gen_id }} {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-tab-panel-{{ ai_gen_id }}.active {
+    display: block;
+    opacity: 1;
+  }
+
+  .ai-tab-content-list-{{ ai_gen_id }} {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .ai-tab-content-item-{{ ai_gen_id }} {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    font-size: {{ block.settings.content_font_size }}px;
+    color: {{ block.settings.content_text_color }};
+    line-height: 1.6;
+  }
+
+  .ai-bullet-{{ ai_gen_id }} {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: {{ block.settings.bullet_color }};
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-tabs-container-{{ ai_gen_id }} {
+      padding: 20px 15px;
+    }
+
+    .ai-tab-button-{{ ai_gen_id }} {
+      padding: 10px 16px;
+      font-size: calc({{ block.settings.tab_font_size }}px * 0.9);
+    }
+
+    .ai-tab-icon-{{ ai_gen_id }} {
+      width: calc({{ block.settings.icon_size }}px * 0.85);
+      height: calc({{ block.settings.icon_size }}px * 0.85);
+    }
+
+    .ai-tab-content-item-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.content_font_size }}px * 0.9);
+    }
+  }
+{% endstyle %}
+
+<tabs-component-{{ ai_gen_id }} class="ai-tabs-container-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-tabs-header-{{ ai_gen_id }}" role="tablist">
+    {% for i in (1..3) %}
+      {% liquid
+        assign tab_enabled_key = 'tab_' | append: i | append: '_enabled'
+        assign tab_title_key = 'tab_' | append: i | append: '_title'
+        assign tab_icon_key = 'tab_' | append: i | append: '_icon'
+        
+        assign tab_enabled = block.settings[tab_enabled_key]
+        assign tab_title = block.settings[tab_title_key]
+        assign tab_icon = block.settings[tab_icon_key]
+      %}
+      
+      {% if tab_enabled %}
+        <button
+          class="ai-tab-button-{{ ai_gen_id }} {% if forloop.first %}active{% endif %}"
+          data-tab="tab-{{ i }}"
+          role="tab"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          aria-controls="panel-{{ i }}-{{ ai_gen_id }}"
+          id="tab-{{ i }}-{{ ai_gen_id }}"
+        >
+          {% if tab_icon != blank %}
+            <span class="ai-tab-icon-{{ ai_gen_id }}">
+              {% if tab_icon == 'star' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              {% elsif tab_icon == 'heart' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+              {% elsif tab_icon == 'check' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+              {% elsif tab_icon == 'info' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="12" y1="16" x2="12" y2="12"/>
+                  <line x1="12" y1="8" x2="12.01" y2="8"/>
+                </svg>
+              {% elsif tab_icon == 'settings' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+              {% elsif tab_icon == 'box' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                  <line x1="12" y1="22.08" x2="12" y2="12"/>
+                </svg>
+              {% elsif tab_icon == 'shield' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              {% elsif tab_icon == 'truck' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <rect x="1" y="3" width="15" height="13"/>
+                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+                  <circle cx="5.5" cy="18.5" r="2.5"/>
+                  <circle cx="18.5" cy="18.5" r="2.5"/>
+                </svg>
+              {% elsif tab_icon == 'gift' %}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <polyline points="20 12 20 22 4 22 4 12"/>
+                  <rect x="2" y="7" width="20" height="5"/>
+                  <line x1="12" y1="22" x2="12" y2="7"/>
+                  <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+                  <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+                </svg>
+              {% endif %}
+            </span>
+          {% endif %}
+          <span>{{ tab_title }}</span>
+        </button>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="ai-tabs-content-{{ ai_gen_id }}">
+    {% for i in (1..3) %}
+      {% liquid
+        assign tab_enabled_key = 'tab_' | append: i | append: '_enabled'
+        assign tab_content_key = 'tab_' | append: i | append: '_content'
+        
+        assign tab_enabled = block.settings[tab_enabled_key]
+        assign tab_content = block.settings[tab_content_key]
+      %}
+      
+      {% if tab_enabled %}
+        <div
+          class="ai-tab-panel-{{ ai_gen_id }} {% if forloop.first %}active{% endif %}"
+          data-panel="tab-{{ i }}"
+          role="tabpanel"
+          aria-labelledby="tab-{{ i }}-{{ ai_gen_id }}"
+          id="panel-{{ i }}-{{ ai_gen_id }}"
+        >
+          {% if tab_content != blank %}
+            {% assign content_lines = tab_content | newline_to_br | split: '<br />' %}
+            <ul class="ai-tab-content-list-{{ ai_gen_id }}">
+              {% for line in content_lines %}
+                {% assign trimmed_line = line | strip %}
+                {% if trimmed_line != blank %}
+                  <li class="ai-tab-content-item-{{ ai_gen_id }}">
+                    <span class="ai-bullet-{{ ai_gen_id }}"></span>
+                    <span>{{ trimmed_line }}</span>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% else %}
+            <div class="ai-tab-content-item-{{ ai_gen_id }}">
+              <span class="ai-bullet-{{ ai_gen_id }}"></span>
+              <span>Add content for this tab in the customizer</span>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</tabs-component-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class TabsComponent{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.tabButtons = this.querySelectorAll('.ai-tab-button-{{ ai_gen_id }}');
+        this.tabPanels = this.querySelectorAll('.ai-tab-panel-{{ ai_gen_id }}');
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.tabButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const targetTab = button.getAttribute('data-tab');
+            this.switchTab(targetTab, button);
+          });
+        });
+      }
+
+      switchTab(targetTab, clickedButton) {
+        this.tabButtons.forEach((btn) => {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-selected', 'false');
+        });
+
+        this.tabPanels.forEach((panel) => {
+          panel.classList.remove('active');
+        });
+
+        clickedButton.classList.add('active');
+        clickedButton.setAttribute('aria-selected', 'true');
+
+        const targetPanel = this.querySelector(`[data-panel="${targetTab}"]`);
+        if (targetPanel) {
+          targetPanel.classList.add('active');
+        }
+      }
+    }
+
+    customElements.define('tabs-component-{{ ai_gen_id }}', TabsComponent{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Tabs with icons",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Tab style"
+    },
+    {
+      "type": "range",
+      "id": "tab_font_size",
+      "label": "Tab font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "tab_inactive_color",
+      "label": "Inactive tab color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "tab_hover_color",
+      "label": "Hover tab color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_color",
+      "label": "Active tab color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_border_color",
+      "label": "Active tab border color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "tab_border_color",
+      "label": "Tab border color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "header",
+      "content": "Content style"
+    },
+    {
+      "type": "range",
+      "id": "content_font_size",
+      "label": "Content font size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "content_text_color",
+      "label": "Content text color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "bullet_color",
+      "label": "Bullet point color",
+      "default": "#121212"
+    },
+    {
+      "type": "header",
+      "content": "Tab 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "tab_1_enabled",
+      "label": "Enable tab 1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_1_title",
+      "label": "Title",
+      "default": "Features"
+    },
+    {
+      "type": "select",
+      "id": "tab_1_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "star",
+          "label": "Star"
+        },
+        {
+          "value": "heart",
+          "label": "Heart"
+        },
+        {
+          "value": "check",
+          "label": "Check"
+        },
+        {
+          "value": "info",
+          "label": "Info"
+        },
+        {
+          "value": "settings",
+          "label": "Settings"
+        },
+        {
+          "value": "box",
+          "label": "Box"
+        },
+        {
+          "value": "shield",
+          "label": "Shield"
+        },
+        {
+          "value": "truck",
+          "label": "Truck"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        }
+      ],
+      "default": "star"
+    },
+    {
+      "type": "textarea",
+      "id": "tab_1_content",
+      "label": "Content",
+      "info": "Add each bullet point on a new line",
+      "default": "Premium quality materials\nDurable construction\nModern design\nEasy to use"
+    },
+    {
+      "type": "header",
+      "content": "Tab 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "tab_2_enabled",
+      "label": "Enable tab 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_2_title",
+      "label": "Title",
+      "default": "Specifications"
+    },
+    {
+      "type": "select",
+      "id": "tab_2_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "star",
+          "label": "Star"
+        },
+        {
+          "value": "heart",
+          "label": "Heart"
+        },
+        {
+          "value": "check",
+          "label": "Check"
+        },
+        {
+          "value": "info",
+          "label": "Info"
+        },
+        {
+          "value": "settings",
+          "label": "Settings"
+        },
+        {
+          "value": "box",
+          "label": "Box"
+        },
+        {
+          "value": "shield",
+          "label": "Shield"
+        },
+        {
+          "value": "truck",
+          "label": "Truck"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        }
+      ],
+      "default": "settings"
+    },
+    {
+      "type": "textarea",
+      "id": "tab_2_content",
+      "label": "Content",
+      "info": "Add each bullet point on a new line",
+      "default": "Dimensions: 10 x 5 x 3 inches\nWeight: 2 lbs\nMaterial: Premium cotton\nColor options available"
+    },
+    {
+      "type": "header",
+      "content": "Tab 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "tab_3_enabled",
+      "label": "Enable tab 3",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_3_title",
+      "label": "Title",
+      "default": "Shipping"
+    },
+    {
+      "type": "select",
+      "id": "tab_3_icon",
+      "label": "Icon",
+      "options": [
+        {
+          "value": "star",
+          "label": "Star"
+        },
+        {
+          "value": "heart",
+          "label": "Heart"
+        },
+        {
+          "value": "check",
+          "label": "Check"
+        },
+        {
+          "value": "info",
+          "label": "Info"
+        },
+        {
+          "value": "settings",
+          "label": "Settings"
+        },
+        {
+          "value": "box",
+          "label": "Box"
+        },
+        {
+          "value": "shield",
+          "label": "Shield"
+        },
+        {
+          "value": "truck",
+          "label": "Truck"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        }
+      ],
+      "default": "truck"
+    },
+    {
+      "type": "textarea",
+      "id": "tab_3_content",
+      "label": "Content",
+      "info": "Add each bullet point on a new line",
+      "default": "Free shipping on orders over $50\n2-3 business days delivery\nTracking number provided\n30-day return policy"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tabs with icons"
+    }
+  ]
+}
 {% endschema %}
