@@ -1,6 +1,589 @@
+{% doc %}
+  @prompt
+    genetate tab block for product information. Tabs hedding: text + icon (icon user choose from settings):
+    content - list of items, tab content - riach text
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-product-tabs-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .ai-product-tabs__container-{{ ai_gen_id }} {
+    background-color: {{ block.settings.background_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    padding: {{ block.settings.container_padding }}px;
+  }
+
+  .ai-product-tabs__header-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.tab_spacing }}px;
+    border-bottom: {{ block.settings.border_thickness }}px solid {{ block.settings.border_color }};
+    margin-bottom: {{ block.settings.content_spacing }}px;
+    flex-wrap: wrap;
+  }
+
+  .ai-product-tabs__tab-button-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: {{ block.settings.tab_padding }}px;
+    background: none;
+    border: none;
+    border-bottom: {{ block.settings.active_border_thickness }}px solid transparent;
+    cursor: pointer;
+    font-size: {{ block.settings.tab_font_size }}px;
+    color: {{ block.settings.tab_text_color }};
+    transition: all 0.3s ease;
+    margin-bottom: -{{ block.settings.border_thickness }}px;
+  }
+
+  .ai-product-tabs__tab-button-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.tab_hover_color }};
+  }
+
+  .ai-product-tabs__tab-button-{{ ai_gen_id }}.active {
+    color: {{ block.settings.tab_active_color }};
+    border-bottom-color: {{ block.settings.tab_active_border_color }};
+  }
+
+  .ai-product-tabs__tab-icon-{{ ai_gen_id }} {
+    width: {{ block.settings.icon_size }}px;
+    height: {{ block.settings.icon_size }}px;
+    flex-shrink: 0;
+  }
+
+  .ai-product-tabs__tab-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+
+  .ai-product-tabs__content-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  .ai-product-tabs__content-{{ ai_gen_id }}.active {
+    display: block;
+  }
+
+  .ai-product-tabs__richtext-{{ ai_gen_id }} {
+    font-size: {{ block.settings.content_font_size }}px;
+    color: {{ block.settings.content_text_color }};
+    line-height: 1.6;
+  }
+
+  .ai-product-tabs__richtext-{{ ai_gen_id }} p {
+    margin: 0 0 16px 0;
+  }
+
+  .ai-product-tabs__richtext-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-product-tabs__richtext-{{ ai_gen_id }} ul,
+  .ai-product-tabs__richtext-{{ ai_gen_id }} ol {
+    margin: 0 0 16px 0;
+    padding-left: 24px;
+  }
+
+  .ai-product-tabs__richtext-{{ ai_gen_id }} li {
+    margin-bottom: 8px;
+  }
+
+  .ai-product-tabs__richtext-{{ ai_gen_id }} h1,
+  .ai-product-tabs__richtext-{{ ai_gen_id }} h2,
+  .ai-product-tabs__richtext-{{ ai_gen_id }} h3,
+  .ai-product-tabs__richtext-{{ ai_gen_id }} h4,
+  .ai-product-tabs__richtext-{{ ai_gen_id }} h5,
+  .ai-product-tabs__richtext-{{ ai_gen_id }} h6 {
+    margin: 0 0 12px 0;
+    color: {{ block.settings.content_text_color }};
+  }
+
+  .ai-product-tabs__richtext-{{ ai_gen_id }} strong {
+    font-weight: 600;
+  }
+
+  .ai-product-tabs__richtext-{{ ai_gen_id }} a {
+    color: {{ block.settings.link_color }};
+    text-decoration: underline;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-product-tabs__header-{{ ai_gen_id }} {
+      gap: {{ block.settings.tab_spacing | times: 0.5 }}px;
+    }
+
+    .ai-product-tabs__tab-button-{{ ai_gen_id }} {
+      font-size: {{ block.settings.tab_font_size | times: 0.9 }}px;
+      padding: {{ block.settings.tab_padding | times: 0.8 }}px;
+    }
+
+    .ai-product-tabs__tab-icon-{{ ai_gen_id }} {
+      width: {{ block.settings.icon_size | times: 0.8 }}px;
+      height: {{ block.settings.icon_size | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<product-tabs-{{ ai_gen_id }} class="ai-product-tabs-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-product-tabs__container-{{ ai_gen_id }}">
+    <div class="ai-product-tabs__header-{{ ai_gen_id }}" role="tablist">
+      {% for i in (1..3) %}
+        {% liquid
+          assign tab_enabled_key = 'tab_' | append: i | append: '_enabled'
+          assign tab_title_key = 'tab_' | append: i | append: '_title'
+          assign tab_icon_key = 'tab_' | append: i | append: '_icon'
+          
+          assign tab_enabled = block.settings[tab_enabled_key]
+          assign tab_title = block.settings[tab_title_key]
+          assign tab_icon = block.settings[tab_icon_key]
+        %}
+        
+        {% if tab_enabled %}
+          <button
+            class="ai-product-tabs__tab-button-{{ ai_gen_id }} {% if forloop.first %}active{% endif %}"
+            data-tab="tab-{{ i }}"
+            role="tab"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            aria-controls="content-{{ i }}-{{ ai_gen_id }}"
+          >
+            {% if tab_icon != 'none' %}
+              <span class="ai-product-tabs__tab-icon-{{ ai_gen_id }}">
+                {% case tab_icon %}
+                  {% when 'info' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                  {% when 'check' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  {% when 'star' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                  {% when 'heart' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                  {% when 'package' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                      <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                      <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                    </svg>
+                  {% when 'truck' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="1" y="3" width="15" height="13"></rect>
+                      <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                      <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                      <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                    </svg>
+                  {% when 'shield' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                  {% when 'award' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="8" r="7"></circle>
+                      <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                    </svg>
+                  {% when 'tag' %}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                      <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                    </svg>
+                {% endcase %}
+              </span>
+            {% endif %}
+            <span>{{ tab_title }}</span>
+          </button>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="ai-product-tabs__body-{{ ai_gen_id }}">
+      {% for i in (1..3) %}
+        {% liquid
+          assign tab_enabled_key = 'tab_' | append: i | append: '_enabled'
+          assign tab_content_key = 'tab_' | append: i | append: '_content'
+          
+          assign tab_enabled = block.settings[tab_enabled_key]
+          assign tab_content = block.settings[tab_content_key]
+        %}
+        
+        {% if tab_enabled %}
+          <div
+            class="ai-product-tabs__content-{{ ai_gen_id }} {% if forloop.first %}active{% endif %}"
+            data-content="tab-{{ i }}"
+            id="content-{{ i }}-{{ ai_gen_id }}"
+            role="tabpanel"
+          >
+            <div class="ai-product-tabs__richtext-{{ ai_gen_id }}">
+              {{ tab_content }}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</product-tabs-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class ProductTabs{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.tabButtons = this.querySelectorAll('.ai-product-tabs__tab-button-{{ ai_gen_id }}');
+        this.tabContents = this.querySelectorAll('.ai-product-tabs__content-{{ ai_gen_id }}');
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.tabButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const tabId = button.getAttribute('data-tab');
+            this.switchTab(tabId, button);
+          });
+        });
+      }
+
+      switchTab(tabId, clickedButton) {
+        this.tabButtons.forEach((btn) => {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-selected', 'false');
+        });
+
+        this.tabContents.forEach((content) => {
+          content.classList.remove('active');
+        });
+
+        clickedButton.classList.add('active');
+        clickedButton.setAttribute('aria-selected', 'true');
+
+        const activeContent = this.querySelector(`[data-content="${tabId}"]`);
+        if (activeContent) {
+          activeContent.classList.add('active');
+        }
+      }
+    }
+
+    customElements.define('product-tabs-{{ ai_gen_id }}', ProductTabs{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Product info tabs",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "container_padding",
+      "label": "Container padding",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "content_spacing",
+      "label": "Content spacing",
+      "min": 10,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Tab style"
+    },
+    {
+      "type": "range",
+      "id": "tab_spacing",
+      "label": "Tab spacing",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "tab_padding",
+      "label": "Tab padding",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "tab_font_size",
+      "label": "Tab font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "tab_text_color",
+      "label": "Tab text color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "tab_hover_color",
+      "label": "Tab hover color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_color",
+      "label": "Tab active color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_border_color",
+      "label": "Active border color",
+      "default": "#121212"
+    },
+    {
+      "type": "range",
+      "id": "border_thickness",
+      "label": "Border thickness",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "active_border_thickness",
+      "label": "Active border thickness",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Content style"
+    },
+    {
+      "type": "range",
+      "id": "content_font_size",
+      "label": "Content font size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "content_text_color",
+      "label": "Content text color",
+      "default": "#121212"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link color",
+      "default": "#121212"
+    },
+    {
+      "type": "header",
+      "content": "Tab 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "tab_1_enabled",
+      "label": "Enable tab 1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_1_title",
+      "label": "Title",
+      "default": "Features"
+    },
+    {
+      "type": "select",
+      "id": "tab_1_icon",
+      "label": "Icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "info", "label": "Info" },
+        { "value": "check", "label": "Check" },
+        { "value": "star", "label": "Star" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "package", "label": "Package" },
+        { "value": "truck", "label": "Truck" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "award", "label": "Award" },
+        { "value": "tag", "label": "Tag" }
+      ],
+      "default": "check"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_1_content",
+      "label": "Content",
+      "default": "<p>Premium quality materials ensure long-lasting durability and comfort. Each product is carefully crafted with attention to detail.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Tab 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "tab_2_enabled",
+      "label": "Enable tab 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_2_title",
+      "label": "Title",
+      "default": "Shipping"
+    },
+    {
+      "type": "select",
+      "id": "tab_2_icon",
+      "label": "Icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "info", "label": "Info" },
+        { "value": "check", "label": "Check" },
+        { "value": "star", "label": "Star" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "package", "label": "Package" },
+        { "value": "truck", "label": "Truck" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "award", "label": "Award" },
+        { "value": "tag", "label": "Tag" }
+      ],
+      "default": "truck"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_2_content",
+      "label": "Content",
+      "default": "<p>Free shipping on orders over $50. Express delivery available for faster service. All orders ship within 24 hours.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Tab 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "tab_3_enabled",
+      "label": "Enable tab 3",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_3_title",
+      "label": "Title",
+      "default": "Care"
+    },
+    {
+      "type": "select",
+      "id": "tab_3_icon",
+      "label": "Icon",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "info", "label": "Info" },
+        { "value": "check", "label": "Check" },
+        { "value": "star", "label": "Star" },
+        { "value": "heart", "label": "Heart" },
+        { "value": "package", "label": "Package" },
+        { "value": "truck", "label": "Truck" },
+        { "value": "shield", "label": "Shield" },
+        { "value": "award", "label": "Award" },
+        { "value": "tag", "label": "Tag" }
+      ],
+      "default": "heart"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_3_content",
+      "label": "Content",
+      "default": "<p>Machine washable for easy care. Do not bleach. Tumble dry on low heat for best results.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product info tabs"
+    }
+  ]
+}
 {% endschema %}
