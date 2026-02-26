@@ -255,6 +255,124 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "17721176262794da5f": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_ffda57e_UippAj": {
+          "type": "ai_gen_block_ffda57e",
+          "name": "Tabs with icons",
+          "settings": {
+            "desktop_width_percent": 100,
+            "background_color": "#ffffff",
+            "border_radius": 8,
+            "tab_font_size": 16,
+            "icon_size": 20,
+            "tab_inactive_color": "#666666",
+            "tab_hover_color": "#121212",
+            "tab_active_color": "#121212",
+            "tab_active_border_color": "#121212",
+            "tab_border_color": "#e0e0e0",
+            "content_font_size": 14,
+            "content_text_color": "#121212",
+            "bullet_color": "#121212",
+            "tab_1_enabled": true,
+            "tab_1_title": "Features",
+            "tab_1_icon": "star",
+            "tab_1_content": "Premium quality materials\nDurable construction\nModern design\nEasy to use",
+            "tab_2_enabled": true,
+            "tab_2_title": "Specifications",
+            "tab_2_icon": "settings",
+            "tab_2_content": "Dimensions: 10 x 5 x 3 inches\nWeight: 2 lbs\nMaterial: Premium cotton\nColor options available",
+            "tab_3_enabled": true,
+            "tab_3_title": "Shipping",
+            "tab_3_icon": "truck",
+            "tab_3_content": "Free shipping on orders over $50\n2-3 business days delivery\nTracking number provided\n30-day return policy"
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_3bba373_NP3cRF": {
+          "type": "ai_gen_block_3bba373",
+          "name": "Product info tabs",
+          "settings": {
+            "desktop_width_percent": 100,
+            "background_color": "#ffffff",
+            "border_radius": 8,
+            "container_padding": 24,
+            "content_spacing": 24,
+            "tab_spacing": 20,
+            "tab_padding": 15,
+            "tab_font_size": 16,
+            "tab_text_color": "#666666",
+            "tab_hover_color": "#121212",
+            "tab_active_color": "#121212",
+            "tab_active_border_color": "#121212",
+            "border_thickness": 1,
+            "active_border_thickness": 2,
+            "border_color": "#e5e5e5",
+            "icon_size": 20,
+            "content_font_size": 14,
+            "content_text_color": "#121212",
+            "link_color": "#121212",
+            "tab_1_enabled": true,
+            "tab_1_title": "Features",
+            "tab_1_icon": "check",
+            "tab_1_content": "<p>Premium quality materials ensure long-lasting durability and comfort. Each product is carefully crafted with attention to detail.</p>",
+            "tab_2_enabled": true,
+            "tab_2_title": "Shipping",
+            "tab_2_icon": "truck",
+            "tab_2_content": "<p>Free shipping on orders over $50. Express delivery available for faster service. All orders ship within 24 hours.</p>",
+            "tab_3_enabled": true,
+            "tab_3_title": "Care",
+            "tab_3_icon": "heart",
+            "tab_3_content": "<p>Machine washable for easy care. Do not bleach. Tumble dry on low heat for best results.</p>"
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_3bba373_W7WxLH": {
+          "type": "ai_gen_block_3bba373",
+          "settings": {
+            "desktop_width_percent": 100,
+            "background_color": "#ffffff",
+            "border_radius": 8,
+            "container_padding": 24,
+            "content_spacing": 24,
+            "tab_spacing": 20,
+            "tab_padding": 15,
+            "tab_font_size": 16,
+            "tab_text_color": "#666666",
+            "tab_hover_color": "#121212",
+            "tab_active_color": "#121212",
+            "tab_active_border_color": "#121212",
+            "border_thickness": 1,
+            "active_border_thickness": 2,
+            "border_color": "#e5e5e5",
+            "icon_size": 20,
+            "content_font_size": 14,
+            "content_text_color": "#121212",
+            "link_color": "#121212",
+            "tab_1_enabled": true,
+            "tab_1_title": "Features",
+            "tab_1_icon": "check",
+            "tab_1_content": "<ul><li>Premium quality materials ensure long-lasting durability and comfort. Each product is carefully crafted with attention to detail.</li></ul>",
+            "tab_2_enabled": true,
+            "tab_2_title": "Shipping",
+            "tab_2_icon": "truck",
+            "tab_2_content": "<p>Free shipping on orders over $50. Express delivery available for faster service. All orders ship within 24 hours.</p>",
+            "tab_3_enabled": true,
+            "tab_3_title": "Care",
+            "tab_3_icon": "heart",
+            "tab_3_content": "<p>Machine washable for easy care. Do not bleach. Tumble dry on low heat for best results.</p>"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_ffda57e_UippAj",
+        "ai_gen_block_3bba373_NP3cRF",
+        "ai_gen_block_3bba373_W7WxLH"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -262,6 +380,7 @@
     "related-products",
     "image_with_text_ae7FnG",
     "collage_jQWTT4",
-    "multicolumn_wbgzJi"
+    "multicolumn_wbgzJi",
+    "17721176262794da5f"
   ]
 }
