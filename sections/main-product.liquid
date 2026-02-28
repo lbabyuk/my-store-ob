@@ -525,14 +525,14 @@
                 {%- endif -%}
                 {%-when 'badges_with_icons' -%}
 <div class="badges-with-icons-block display-block" {{ block.shopify_attributes }}>
-{% assign badges = product.metafields.custom.new_badge.value %}
+{% assign badges = product.metafields.custom.product_badge.value %}
 
 {% if badges %}
   <ul class="badges-with-icons-block--list">
     {% for badge in badges %}
       <li 
         class="badges-with-icons-block--item"
-        style="background-color: {{ badge.bg-color }};"
+        style="background-color: {{ badge.bg_color }};"
       >
         
         {% if badge.icon %}
@@ -548,7 +548,7 @@
         {% if badge.text %}
           <div 
             class="badges-with-icons-text"
-            style="color: {{ badge.text-color }};"
+            style="color: {{ badge.text_color }};"
           >
             {{ badge.text | newline_to_br }}
           </div>
