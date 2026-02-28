@@ -552,7 +552,7 @@
         {% if badge.text %}
           <div 
             class="badges-with-icons-text"
-            style="color: {{ text_color}};"
+            style="color: {% if badge.text_color %}{% else %}{{block.settings.text_color}}{% endif %};"
           >
             {{ badge.text | newline_to_br }}
           </div>
