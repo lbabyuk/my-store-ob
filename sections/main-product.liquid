@@ -537,9 +537,8 @@
 %}
       <li 
         class="badges-with-icons-block--item"
-        style="background-color: {{ bg_color }};"
+        style="background-color: {% if badge.bg_color %}{{ bg_color }}{% else %}{{block.settings.bg_color}}{% endif %};"
       >
-        
         {% if badge.icon %}
           <div class="badges-with-icons-icon">
             <img 
