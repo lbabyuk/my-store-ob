@@ -56,6 +56,13 @@
             "text_color": "#000000"
           }
         },
+        "badges_with_icons_Yry6yM": {
+          "type": "badges_with_icons",
+          "settings": {
+            "bg_color": "#f5f5f5",
+            "text_color": "#000000"
+          }
+        },
         "share": {
           "type": "share",
           "settings": {
@@ -72,6 +79,7 @@
         "buy_buttons",
         "description",
         "badges_with_icons_JJRj8k",
+        "badges_with_icons_Yry6yM",
         "share"
       ],
       "settings": {
