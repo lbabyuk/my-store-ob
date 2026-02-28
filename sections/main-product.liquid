@@ -527,36 +527,32 @@
                   
                         {% assign badges = product.metafields.custom.new_badges.value %}
 
-{% if badges != blank %}
-  <div class="badges-with-icons-block display-block" {{ block.shopify_attributes }}>
-    <ul class="badges-with-icons-block--list">
-      
-      {% for badge in badges %}
-        <li class="badges-with-icons-block--item" 
-            style="background-color: {{ block.settings.bg_color }}">
-          
-          {% if badge.icon != blank %}
-            <div class="badges-with-icons-icon">
-              <img 
-                src="{{ badge.image | image_url: width: 12 }}" 
-                alt="{{ badge.multi_line_text | escape }}"
-                loading="lazy"
-              >
-            </div>
-          {% endif %}
-          
-          {% if badge.text != blank %}
-            <div class="badges-with-icons-text"
-                 style="color: {{ block.settings.text_color }}">
-              {{ badge.multi_line_text | newline_to_br }}
-            </div>
-          {% endif %}
-          
-        </li>
-      {% endfor %}
-      
-    </ul>
-  </div>
+{% assign badges = product.metafields.custom.badges.value %}
+
+{% if badges %}
+  <ul class="badges-with-icons-block--list">
+    {% for badge in badges %}
+      <li class="badges-with-icons-block--item">
+        
+        {% if badge.icon %}
+          <div class="badges-with-icons-icon">
+            <img 
+              src="{{ badge.image | image_url: width: 48 }}" 
+              alt="{{ badge.text | escape }}"
+              loading="lazy"
+            >
+          </div>
+        {% endif %}
+        
+        {% if badge.text %}
+          <div class="badges-with-icons-text">
+            {{ badge.text | newline_to_br }}
+          </div>
+        {% endif %}
+        
+      </li>
+    {% endfor %}
+  </ul>
 {% endif %}
                       
               {%- when 'complementary' -%}
@@ -2123,7 +2119,7 @@
         }
       ]
     },
-     {
+    {
       "type": "badges_with_icons",
       "name": "Badges",
       "settings": [
@@ -2140,7 +2136,7 @@
           "default": "#000000"
         }
       ]
-    }
+    },
   ],
   "settings": [
     {
