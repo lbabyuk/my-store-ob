@@ -49,6 +49,18 @@
           "type": "description",
           "settings": {}
         },
+        "badges_wrapper_mKbaem": {
+          "type": "badges_wrapper",
+          "settings": {}
+        },
+        "badge_item_QBWEWx": {
+          "type": "badge_item",
+          "settings": {
+            "badge": "badge",
+            "bg_color": "#e8ecee",
+            "text_color": "#4f5153"
+          }
+        },
         "share": {
           "type": "share",
           "settings": {
@@ -64,6 +76,8 @@
         "quantity_selector",
         "buy_buttons",
         "description",
+        "badges_wrapper_mKbaem",
+        "badge_item_QBWEWx",
         "share"
       ],
       "settings": {
