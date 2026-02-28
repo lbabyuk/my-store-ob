@@ -523,6 +523,42 @@
                     </p>
                   </div>
                 {%- endif -%}
+                {%-when 'badges_with_icons' -%}
+                  
+                        {% assign badges = product.metafields.custom.new_badges_list.value %}
+
+{% if badges != blank %}
+  <div class="badges-with-icons-block display-block" {{ block.shopify_attributes }}>
+    <ul class="badges-with-icons-block--list">
+      
+      {% for badge in badges %}
+        <li class="badges-with-icons-block--item" 
+            style="background-color: {{ block.settings.bg_color }}">
+          
+          {% if badge.image != blank %}
+            <div class="badges-with-icons-icon">
+              <img 
+                src="{{ badge.image | image_url: width: 12 }}" 
+                alt="{{ badge.multi_line_text | escape }}"
+                loading="lazy"
+              >
+            </div>
+          {% endif %}
+          
+          {% if badge.multi_line_text != blank %}
+            <div class="badges-with-icons-text"
+                 style="color: {{ block.settings.text_color }}">
+              {{ badge.multi_line_text | newline_to_br }}
+            </div>
+          {% endif %}
+          
+        </li>
+      {% endfor %}
+      
+    </ul>
+  </div>
+{% endif %}
+                      
               {%- when 'complementary' -%}
                 <product-recommendations
                   class="complementary-products quick-add-hidden{% if block.settings.make_collapsible_row %} is-accordion{% endif %}{% if block.settings.enable_quick_add %} complementary-products-contains-quick-add{% endif %}"
@@ -2086,7 +2122,31 @@
           "info": "t:sections.main-product.blocks.icon_with_text.settings.heading.info"
         }
       ]
-    }
+    },
+      {
+    "type": "badges_with_icons",
+    "name": "Badges with icons",
+    "settings": [
+        {
+          "type": "metaobject_list",
+          "id": "badges",
+          "label": "Badges",
+          "metaobject_type": "badge"
+        },
+        {    
+        "type": "color",
+        "id": "bg_color",
+        "label": "t:sections.all.bg_color",
+        "default": "#E8ECEE"
+        },  
+        {    
+        "type": "color",
+        "id": "text_color",
+        "label": "t:sections.all.text_color",
+        "default": "#4F5153"
+        }, 
+      ]
+    },
   ],
   "settings": [
     {
