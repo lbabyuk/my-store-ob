@@ -527,12 +527,17 @@
 <div class="badges-with-icons-block display-block" {{ block.shopify_attributes }}>
 {% assign badges = product.metafields.custom.product_badge.value %}
 
+
 {% if badges %}
   <ul class="badges-with-icons-block--list">
     {% for badge in badges %}
+      {% liquid
+  assign bg_color = badge.bg_color
+  assign text_color = badge.text_color
+%}
       <li 
         class="badges-with-icons-block--item"
-        style="background-color: {{ badge.bg_color }};"
+        style="background-color: {{ bg_color }};"
       >
         
         {% if badge.icon %}
@@ -548,7 +553,7 @@
         {% if badge.text %}
           <div 
             class="badges-with-icons-text"
-            style="color: {{ badge.text_color }};"
+            style="color: {{ text_color}};"
           >
             {{ badge.text | newline_to_br }}
           </div>
