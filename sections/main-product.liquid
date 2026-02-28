@@ -535,7 +535,7 @@
         <li class="badges-with-icons-block--item" 
             style="background-color: {{ block.settings.bg_color }}">
           
-          {% if badge.image != blank %}
+          {% if badge.icon != blank %}
             <div class="badges-with-icons-icon">
               <img 
                 src="{{ badge.image | image_url: width: 12 }}" 
@@ -545,7 +545,7 @@
             </div>
           {% endif %}
           
-          {% if badge.multi_line_text != blank %}
+          {% if badge.text != blank %}
             <div class="badges-with-icons-text"
                  style="color: {{ block.settings.text_color }}">
               {{ badge.multi_line_text | newline_to_br }}
