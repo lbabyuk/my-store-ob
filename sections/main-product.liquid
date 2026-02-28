@@ -544,9 +544,9 @@
     {{ block.shopify_attributes }}
   >
 
-    {% if badge.icon != blank %}
+    {% if badge.image != blank %}
       <div class="badges-with-icons-icon" style="color: {{ text_color }};">
-        {{ badge.icon | image_url: width: 12 | image_tag }}
+        {{ badge.image | image_url: width: 12 | image_tag }}
       </div>
     {% endif %}
 
