@@ -552,6 +552,44 @@
     {% endfor %}
   </ul>
 {% endif %}
+<style>
+  .badges-with-icons-block .badges-with-icons-block--list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badges-with-icons-block .badges-with-icons-block--item {
+  background-color: #E8ECEE;
+  width: fit-content;
+  padding: 4px 12px;
+  color: #4F5153;
+  text-transform: uppercase;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.6px;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+}
+
+.badges-with-icons-icon svg {
+  display: block;
+}
+</style>
                       
               {%- when 'complementary' -%}
                 <product-recommendations
