@@ -57,6 +57,14 @@
             "text_color": "#4f5153"
           }
         },
+        "badge_item_h7QbxW": {
+          "type": "badge_item",
+          "settings": {
+            "badge": "color",
+            "bg_color": "#e8ecee",
+            "text_color": "#4f5153"
+          }
+        },
         "share": {
           "type": "share",
           "settings": {
@@ -73,6 +81,7 @@
         "buy_buttons",
         "description",
         "badge_item_TyjVdc",
+        "badge_item_h7QbxW",
         "share"
       ],
       "settings": {
