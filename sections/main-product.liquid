@@ -524,7 +524,7 @@
                   </div>
                 {%- endif -%}
                 {%-when 'badges_with_icons' -%}
-
+<div class="badges-with-icons-block display-block" {{ block.shopify_attributes }}>
 {% assign badges = product.metafields.custom.badge.value %}
 
 {% if badges %}
@@ -552,6 +552,7 @@
     {% endfor %}
   </ul>
 {% endif %}
+</div>
 <style>
   .badges-with-icons-block .badges-with-icons-block--list {
   display: flex;
