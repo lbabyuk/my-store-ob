@@ -525,7 +525,7 @@
                 {%- endif -%}
                 {%-when 'badges_with_icons' -%}
                   
-                        {% assign badges = product.metafields.custom.new_badges_list.value %}
+                        {% assign badges = product.metafields.custom.new_badges.value %}
 
 {% if badges != blank %}
   <div class="badges-with-icons-block display-block" {{ block.shopify_attributes }}>
