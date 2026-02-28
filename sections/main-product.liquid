@@ -537,7 +537,7 @@
         {% if badge.icon %}
           <div class="badges-with-icons-icon">
             <img 
-              src="{{ badge.image | image_url: width: 48 }}" 
+              src="{{ badge.icon | image_url: width: 48 }}" 
               alt="{{ badge.text | escape }}"
               loading="lazy"
             >
