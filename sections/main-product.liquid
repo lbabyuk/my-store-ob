@@ -523,7 +523,7 @@
                     </p>
                   </div>
                 {%- endif -%}
- {%- when 'badges_wrapper' -%}               
+ {%- when 'badges_item' -%}               
 <div class="badges-with-icons-block display-block" {{ block.shopify_attributes }}>
 
    
@@ -2166,11 +2166,6 @@
           "info": "t:sections.main-product.blocks.icon_with_text.settings.heading.info"
         }
       ]
-    },
-        {
-      "type": "badges_wrapper",
-      "name": "Badges wrapper",
-      "limit": 1
     },
     {
       "type": "badge_item",
