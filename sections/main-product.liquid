@@ -932,7 +932,7 @@ document.addEventListener("DOMContentLoaded", function() {
               
               {% if spec.icon != blank %}
                 <img 
-                  src="{{ spec.icon | image_url: width: 20 }}"
+                  src="{{ spec.icon | image_url: width: 12 }}"
                   alt="{{ spec.label | escape }}"
                   width="{{ spec.icon.width }}"
                   height="{{ spec.icon.height }}"
