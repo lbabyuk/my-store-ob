@@ -534,8 +534,7 @@
    
        
           <li class="highlights-block--item"
-             style=" --highlight-bg: {{ bg_color }};
-                    --highlight-text: {{ text_color }};">
+             style=" --highlight-bg: {{ bg_color }};">
               {% if highlight.icon %}
                 <img 
                   src="{{ highlight.icon | image_url: width: 14 }}"
@@ -544,7 +543,7 @@
                 >
               {% endif %}
               {% if highlight.text %}
-                <span class="highlights-text">
+                <span class="highlights-text" style="--highlight-text: {{ text_color }};">
                   {{ highlight.text }}
                 </span>
               {% endif %}
@@ -566,7 +565,7 @@
   background-color:var(--highlight-bg);
   width: fit-content;
   padding: 4px 12px;
-  color: var(--highlight-tex);
+  color: var(--highlight-text);
   text-transform: uppercase;
   display: -webkit-box;
   display: -ms-flexbox;
