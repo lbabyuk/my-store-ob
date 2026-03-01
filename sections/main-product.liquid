@@ -714,13 +714,15 @@ document.addEventListener("DOMContentLoaded", function() {
           </ul>
       </div> 
     </div>
-    <p class="tab-footer__p"><b>SKIN TYPES: </b</p>
-    <ul class="tab-footer__list">
-       <li>Oily Skin</li>
+    <div>
+      <p class="tab-footer__p"><b>SKIN TYPES: </b</p>
+      <ul class="tab-footer__list">
+        <li>Oily Skin</li>
         <li>Combination Skin</li>
         <li>Dry Skin</li>
-         <li>Normal Skin</li>
-    </ul>
+        <li>Normal Skin</li>
+      </ul>
+    </div>
 </div>
 
 {% endcomment %}
@@ -779,13 +781,15 @@ document.addEventListener("DOMContentLoaded", function() {
               </div>
           </details>  
         </div>
-        <p class="tab-footer__p"><b>SKIN TYPES: </b</p>
+        <div class="tab-footer">
+          <p class="tab-footer__p"><b>SKIN TYPES: </b></p>
           <ul class="tab-footer__list">
             <li>Oily Skin</li>
-              <li>Combination Skin</li>
-              <li>Dry Skin</li>
-              <li>Normal Skin</li>
+            <li>Combination Skin</li>
+            <li>Dry Skin</li>
+            <li>Normal Skin</li>
           </ul>
+      </div>
       </div> {% endcomment %}
     {%- endif -%}
 
@@ -913,6 +917,116 @@ document.addEventListener("DOMContentLoaded", function() {
     font-size: calc(10px + .00125 * (100vw - 320px));
 }
 </style>
+
+<div class="pdp-collapsibles">
+
+  <!-- ROW 1: SPECS -->
+  {% if product.metafields.custom.product_spec_list != blank %}
+    <details class="pdp-collapse">
+      <summary>Details</summary>
+
+      <div class="pdp-collapse__content">
+        <div class="product-specs">
+          {% for spec in product.metafields.custom.product_spec_list.value %}
+            <div class="product-spec">
+              
+              {% if spec.icon != blank %}
+                <img 
+                  src="{{ spec.icon | image_url: width: 20 }}"
+                  alt="{{ spec.label | escape }}"
+                  width="{{ spec.icon.width }}"
+                  height="{{ spec.icon.height }}"
+                >
+              {% endif %}
+
+              <div>
+                <div class="product-spec__label">{{ spec.title }}</div>
+                <div class="product-spec__value">{{ spec.subtitle }}</div>
+              </div>
+
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </details>
+  {% endif %}
+
+
+  <!-- ROW 2: RICH TEXT + BADGES -->
+  {% assign extra = product.metafields.custom.ingredient_list%}
+  {% if extra != blank %}
+    <details class="pdp-collapse">
+      <summary>Product Info</summary>
+
+      <div class="pdp-collapse__content">
+
+        {% if extra.content != blank %}
+          <div class="pdp-richtext rte">
+            {{ extra.text }}
+          </div>
+        {% endif %}
+
+        {% if extra.badges.value != blank %}
+          <div class="pdp-badges">
+            {% for badge in extra.badges.value %}
+              <div 
+                class="badge"
+                style="
+                  {% if badge.bg_color %}--badge-bg: {{ badge.bg_color }};{% endif %}
+                  {% if badge.text_color %}--badge-text: {{ badge.text_color }};{% endif %}
+                "
+              >
+                {% if badge.icon %}
+                  <img 
+                    src="{{ badge.icon | image_url: width: 16 }}"
+                    alt="{{ badge.text }}"
+                    width="{{ badge.icon.width }}"
+                    height="{{ badge.icon.height }}"
+                  >
+                {% endif %}
+                <span>{{ badge.text }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+      </div>
+    </details>
+  {% endif %}
+
+
+  <!-- ROW 3: BADGES ONLY -->
+  {% if product.metafields.custom.product_badges.value != blank %}
+    <details class="pdp-collapse">
+      <summary>Highlights</summary>
+
+      <div class="pdp-collapse__content">
+        <div class="pdp-badges">
+          {% for badge in product.metafields.custom.product_badges.value %}
+            <div 
+              class="badge"
+              style="
+                {% if badge.bg_color %}--badge-bg: {{ badge.bg_color }};{% endif %}
+                {% if badge.text_color %}--badge-text: {{ badge.text_color }};{% endif %}
+              "
+            >
+              {% if badge.icon %}
+                <img 
+                  src="{{ badge.icon | image_url: width: 16 }}"
+                  alt="{{ badge.text }}"
+                  width="{{ badge.icon.width }}"
+                  height="{{ badge.icon.height }}"
+                >
+              {% endif %}
+              <span>{{ badge.text }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </details>
+  {% endif %}
+
+</div>
               {%- when 'complementary' -%}
                 <product-recommendations
                   class="complementary-products quick-add-hidden{% if block.settings.make_collapsible_row %} is-accordion{% endif %}{% if block.settings.enable_quick_add %} complementary-products-contains-quick-add{% endif %}"
