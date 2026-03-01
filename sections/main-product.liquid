@@ -528,11 +528,7 @@
       <div class="highlights-block display-block" {{ block.shopify_attributes }}>
        <ul class="highlights-block--list">  
       {% for highlight in product.metafields.custom.badges.value %}
-
-        {% assign bg_color = highlight.bg_color | default: block.settings.bg_color %}
-        {% assign text_color = highlight.text_color | default: block.settings.text_color %}
    
-       
           <li class="highlights-block--item"
              style="  --highlight-bg: {{ highlight.bg_color }};
                       --highlight-text: {{ highlight.text_color }};
@@ -565,8 +561,8 @@
 }
 
 .highlights-block .highlights-block--item {
-  background-color: var(--highlight-bg, --default-bg);
-  color: var(--highlight-text, --default-text);
+  background-color: var(--highlight-bg, var(--default-bg));
+  color: var(--highlight-text, var(--default-text));
   width: fit-content;
   padding: 4px 12px;
   text-transform: uppercase;
