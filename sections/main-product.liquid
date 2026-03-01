@@ -526,12 +526,13 @@
  {%- when 'highlights' -%}               
 {% if product.metafields.custom.badges.value != blank %}
       <div class="highlights-block display-block" {{ block.shopify_attributes }}>
+       <ul class="highlights-block--list">  
       {% for highlight in product.metafields.custom.badges.value %}
 
         {% assign bg_color = highlight.bg_color | default: block.settings.bg_color %}
         {% assign text_color = highlight.text_color | default: block.settings.text_color %}
    
-        <ul class="highlights-block--list">
+       
           <li class="highlights-block--item"
              style=" --highlight-bg: {{ bg_color }};
                     --highlight-text: {{ text_color }};">
@@ -548,8 +549,9 @@
                 </span>
               {% endif %}
           </li>
-        </ul>
+        
       {% endfor %}
+    </ul>
     </div>
 {% endif %}
 
