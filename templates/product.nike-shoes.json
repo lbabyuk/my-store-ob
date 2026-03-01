@@ -12,6 +12,10 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "product_tabs_GhFFhH": {
+          "type": "product_tabs",
+          "settings": {}
+        },
         "highlights_kpQnHW": {
           "type": "highlights",
           "settings": {
@@ -56,10 +60,6 @@
           "type": "description",
           "settings": {}
         },
-        "product_tabs_U3FQ4K": {
-          "type": "product_tabs",
-          "settings": {}
-        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -78,6 +78,7 @@
         }
       },
       "block_order": [
+        "product_tabs_GhFFhH",
         "highlights_kpQnHW",
         "vendor",
         "title",
@@ -86,7 +87,6 @@
         "variant_picker",
         "quantity_selector",
         "description",
-        "product_tabs_U3FQ4K",
         "buy_buttons",
         "collapsible_tab_DatmYW"
       ],
