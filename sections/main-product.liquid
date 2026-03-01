@@ -669,7 +669,7 @@ document.querySelectorAll('.product-tabs').forEach(tabSection => {
                   {% if product.metafields.custom.product_tabs != blank %}
                     <div class="pdp-text-block product__description ">
                       {%- if product.metafields.custom.product_tabs != blank -%}
-                        {{ product.metafields.custom.description_table }}
+                        {{ product.metafields.custom.product_tabs }}
                       
                       {% endif %}
                     </div>
