@@ -20,6 +20,22 @@
             "icon": ""
           }
         },
+        "tab_mib6EP": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "title2",
+            "tab_content": "<p>dfgd</p><p>dfgd</p><p>dfgdfg</p><p>fdgdfg</p>",
+            "icon": ""
+          }
+        },
+        "tab_Enfheh": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "",
+            "tab_content": "",
+            "icon": ""
+          }
+        },
         "highlights_kpQnHW": {
           "type": "highlights",
           "settings": {
@@ -83,6 +99,8 @@
       },
       "block_order": [
         "tab_Hf8Gzb",
+        "tab_mib6EP",
+        "tab_Enfheh",
         "highlights_kpQnHW",
         "vendor",
         "title",
