@@ -589,98 +589,20 @@
 
 </style>
 
- {% comment %} <!--start tabs 2 -->
-  {%- when 'product_tabs' -%}               
-{% if product.metafields.custom.tabs.value != blank %}
-                        
-
-  <div class="product-tabs">
-    <ul class="tab-titles">
-      {% for tab in product.metafields.custom.tabs.value %}
-        <li class="tab-title" data-tab="tab-{{ forloop.index }}">
-          {% if tab.icon != blank %}
-            <img src="{{ tab.icon | image_url : width: 14 }}" alt="{{ tab.title }}">
-          {% endif %}
-          <span class="tab-title">{{ tab.title }}</span>
-        </li>
-      {% endfor %}
-    </ul>
-
-    <div class="tab-contents">
-      {% for tab in product.metafields.custom.tabs.value %}
-        <div class="tab-content" id="tab-{{ forloop.index }}">
-         {% if tab.content != blank %}
-            {{ tab.content | metafield_tag }}
-         {% endif %}
-        </div>
-      {% endfor %}
-    </div>
-  </div>
-
-{% endif %}
-                  <!--end tabs -->
-
-<style>
-.product-tabs {
-  border-top: 1px solid #eee;
-}
-.tab-titles {
-  display: flex;
-  gap: 1rem;
-  cursor: pointer;
-}
-.tab-title.active {
-  font-weight: bold;
-}
-.tab-content {
-  display: none;
-  margin-top: 1rem;
-}
-img {
-  fill: currentColor;
-  stroke: currentColor;
-  width: 14px;
-  height: 14px;
-}
-</style>
-<script>
-document.querySelectorAll('.product-tabs').forEach(tabSection => {
-  const tabs = tabSection.querySelectorAll('.tab-title');
-  const contents = tabSection.querySelectorAll('.tab-content');
-
-  if (tabs.length === 0) return;
-
-  contents.forEach((c, i) => c.style.display = i === 0 ? 'block' : 'none');
-  tabs.forEach((t, i) => t.classList.toggle('active', i === 0));
-
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const target = tab.dataset.tab;
-      contents.forEach(c => c.style.display = 'none');
-      tabSection.querySelector(`#${target}`).style.display = 'block';
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-    });
-  });
-});
-</script>
-                  {% endcomment %}
  {%- when 'product_tabs' -%}
-                  {% if product.metafields.custom.product_tabs != blank %}
-                    <div class="pdp-text-block product__description ">
-                      {%- if product.metafields.custom.product_tabs != blank -%}
-                        {{ product.metafields.custom.product_tabs }}
-                      
-                      {% endif %}
-                    </div>
-                  {%- endif -%}
-
-
-
+    {% if product.metafields.custom.product_tabs != blank %}
+        <div class="pdp-text-block product__description mt0 mb16 rte h5 product__description_tabs_new_style" {{ block.shopify_attributes }}>
+          <div class="product__description_tabs-grid">
+            {%- if product.metafields.custom.product_tabs != blank -%}
+              {{ product.metafields.custom.product_tabs }}
+            {% endif %}
+          </div>
+        </div>
+    {%- endif -%}
 
 <style>
 
-  .custom-tabs {
+.custom-tabs {
   width: 100%;
   margin-top: 30px;
   font-family: inherit;
@@ -706,8 +628,8 @@ document.querySelectorAll('.product-tabs').forEach(tabSection => {
 }
 
 .tab-btn img {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   object-fit: contain;
 }
 
