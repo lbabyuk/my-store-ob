@@ -15,8 +15,8 @@
         "product_badges_7JeqmY": {
           "type": "product_badges",
           "settings": {
-            "default_text_color": "",
-            "default_bg_color": ""
+            "default_text_color": "#e42828",
+            "default_bg_color": "#ffffff"
           }
         },
         "vendor": {
