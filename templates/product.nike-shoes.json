@@ -56,6 +56,14 @@
             "show_gift_card_recipient": true
           }
         },
+        "badge_item_JLEigF": {
+          "type": "badge_item",
+          "settings": {
+            "badge": "",
+            "bg_color": "#e8ecee",
+            "text_color": "#4f5153"
+          }
+        },
         "collapsible_tab_DatmYW": {
           "type": "collapsible_tab",
           "settings": {
@@ -75,6 +83,7 @@
         "quantity_selector",
         "description",
         "buy_buttons",
+        "badge_item_JLEigF",
         "collapsible_tab_DatmYW"
       ],
       "settings": {
