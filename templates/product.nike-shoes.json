@@ -56,16 +56,16 @@
           "type": "description",
           "settings": {}
         },
+        "product_tabs_6CP4RK": {
+          "type": "product_tabs",
+          "settings": {}
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true
           }
-        },
-        "product_tabs_BN7igq": {
-          "type": "product_tabs",
-          "settings": {}
         },
         "collapsible_tab_DatmYW": {
           "type": "collapsible_tab",
@@ -86,8 +86,8 @@
         "variant_picker",
         "quantity_selector",
         "description",
+        "product_tabs_6CP4RK",
         "buy_buttons",
-        "product_tabs_BN7igq",
         "collapsible_tab_DatmYW"
       ],
       "settings": {
