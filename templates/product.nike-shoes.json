@@ -53,8 +53,8 @@
           "type": "product_badges",
           "repeater": "{{ product.metafields.custom.badges.value }}",
           "settings": {
-            "default_text_color": "#1A1A1A",
-            "default_bg_color": "#F2F2F2"
+            "default_text_color": "#ffffff",
+            "default_bg_color": "#121212"
           }
         },
         "buy_buttons": {
