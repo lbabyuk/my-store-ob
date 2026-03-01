@@ -12,11 +12,11 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "pdp_highlights_A4hFgn": {
-          "type": "pdp_highlights",
+        "highlights_kpQnHW": {
+          "type": "highlights",
           "settings": {
-            "badge_bg_color": "#ffffff",
-            "text_color": "#121212"
+            "bg_color": "",
+            "text_color": ""
           }
         },
         "vendor": {
@@ -74,7 +74,7 @@
         }
       },
       "block_order": [
-        "pdp_highlights_A4hFgn",
+        "highlights_kpQnHW",
         "vendor",
         "title",
         "price",
