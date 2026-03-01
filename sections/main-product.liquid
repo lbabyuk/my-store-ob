@@ -588,7 +588,7 @@
 }
 
 </style>
-
+{% comment %} 
  {%- when 'product_tabs' -%}
     {% if product.metafields.custom.product_tabs != blank %}
         <div class="pdp-text-block product__description mt0 mb16 rte h5 product__description_tabs_new_style" {{ block.shopify_attributes }}>
@@ -671,6 +671,248 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 </script>
+
+
+ <div class="custom-tabs">
+  <div class="tabs-nav">
+    <button class="tab-btn active" data-tab="tab1">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_105_613)"> <path d="M5.79651 9.04165C5.74443 8.83977 5.6392 8.65554 5.49178 8.50812C5.34436 8.3607 5.16013 8.25548 4.95826 8.2034L1.37951 7.28057C1.31845 7.26324 1.26471 7.22646 1.22645 7.17583C1.18818 7.12519 1.16748 7.06345 1.16748 6.99998C1.16748 6.93651 1.18818 6.87478 1.22645 6.82414C1.26471 6.7735 1.31845 6.73673 1.37951 6.7194L4.95826 5.79598C5.16006 5.74395 5.34424 5.63882 5.49166 5.49151C5.63907 5.34419 5.74434 5.16008 5.79651 4.95832L6.71934 1.37957C6.7365 1.31827 6.77323 1.26427 6.82394 1.2258C6.87466 1.18733 6.93656 1.1665 7.00022 1.1665C7.06387 1.1665 7.12577 1.18733 7.17649 1.2258C7.2272 1.26427 7.26394 1.31827 7.28109 1.37957L8.20334 4.95832C8.25542 5.16019 8.36064 5.34442 8.50806 5.49184C8.65548 5.63926 8.83972 5.74449 9.04159 5.79657L12.6203 6.71882C12.6819 6.73579 12.7362 6.77249 12.7748 6.82328C12.8135 6.87407 12.8345 6.93614 12.8345 6.99998C12.8345 7.06382 12.8135 7.1259 12.7748 7.17669C12.7362 7.22748 12.6819 7.26417 12.6203 7.28115L9.04159 8.2034C8.83972 8.25548 8.65548 8.3607 8.50806 8.50812C8.36064 8.65554 8.25542 8.83977 8.20334 9.04165L7.28051 12.6204C7.26335 12.6817 7.22662 12.7357 7.1759 12.7742C7.12519 12.8126 7.06329 12.8335 6.99963 12.8335C6.93598 12.8335 6.87407 12.8126 6.82336 12.7742C6.77265 12.7357 6.73591 12.6817 6.71876 12.6204L5.79651 9.04165Z" stroke="#2A2622" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M11.6665 1.75V4.08333" stroke="#2A2622" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M12.8333 2.91675H10.5" stroke="#2A2622" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M2.3335 9.91675V11.0834" stroke="#2A2622" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M2.91667 10.5H1.75" stroke="#2A2622" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> </g> <defs> <clipPath id="clip0_105_613"> <rect width="14" height="14" fill="white"/> </clipPath> </defs> </svg>
+        BENEFITS 
+    </button> 
+    <button class="tab-btn" data-tab="tab2"> 
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_105_621)"> <path d="M6.99984 9.33341C8.2885 9.33341 9.33317 8.28875 9.33317 7.00008C9.33317 5.71142 8.2885 4.66675 6.99984 4.66675C5.71117 4.66675 4.6665 5.71142 4.6665 7.00008C4.6665 8.28875 5.71117 9.33341 6.99984 9.33341Z" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M7 1.16675V2.33341" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M7 11.6667V12.8334" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M2.87598 2.87573L3.69848 3.69823" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M10.3018 10.3018L11.1243 11.1243" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M1.1665 7H2.33317" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M11.6665 7H12.8332" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M3.69848 10.3018L2.87598 11.1243" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M11.1243 2.87573L10.3018 3.69823" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> </g> <defs> <clipPath id="clip0_105_621"> <rect width="14" height="14" fill="white"/> </clipPath> </defs> </svg>
+      USAGE 
+    </button>
+    <button class="tab-btn" data-tab="tab3"> 
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_105_633)"> <path d="M4.08333 9.50822C5.36667 9.50822 6.41667 8.44072 6.41667 7.14572C6.41667 6.46905 6.08417 5.82739 5.41917 5.28489C4.75417 4.74239 4.2525 3.93739 4.08333 3.09155C3.91417 3.93739 3.41833 4.74822 2.7475 5.28489C2.07667 5.82155 1.75 6.47489 1.75 7.14572C1.75 8.44072 2.8 9.50822 4.08333 9.50822Z" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M7.3269 3.85005C7.72809 3.20904 8.01249 2.50199 8.1669 1.76172C8.45857 3.22005 9.33357 4.62005 10.5002 5.55339C11.6669 6.48672 12.2502 7.59505 12.2502 8.76172C12.2536 9.56806 12.0174 10.3572 11.5717 11.0292C11.126 11.7011 10.4908 12.2256 9.74664 12.5362C9.00249 12.8467 8.1829 12.9293 7.39175 12.7735C6.60061 12.6176 5.87355 12.2304 5.30273 11.6609" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> </g> <defs> <clipPath id="clip0_105_633"> <rect width="14" height="14" fill="white"/> </clipPath> </defs> </svg> 
+    CONCERNS 
+    </button> 
+  </div> 
+  <div class="tabs-content">
+      <div id="tab1" class="tab-panel active">
+          <ul>
+            <li>Brightening</li>
+            <li>Clearer and smoother skin</li>
+            <li>Even skin tone</li>
+            <li>Hydrating</li>
+          </ul>
+      </div>
+      <div id="tab2" class="tab-panel">
+          <ul>
+            <li>AM/PM</li>
+            <li>Apply after cleansing</li>
+            <li>If it’s your first time, start gradually (3 or 4 times p/w)</li>
+            <li>Apply your moisturizer/spf after</li>
+          </ul>
+      </div> 
+      <div id="tab3" class="tab-panel"> 
+          <ul>
+            <li>Hyperpigmentation</li>
+            <li>Dullness</li>
+            <li>Uneven skin tone, rough texture</li>
+            <li>Loss of elasticity</li>
+          </ul>
+      </div> 
+    </div>
+    <p class="tab-footer__p"><b>SKIN TYPES: </b</p>
+    <ul class="tab-footer__list">
+       <li>Oily Skin</li>
+        <li>Combination Skin</li>
+        <li>Dry Skin</li>
+         <li>Normal Skin</li>
+    </ul>
+</div>
+
+{% endcomment %}
+
+{%- when 'product_tabs' -%}
+    {% if product.metafields.custom.product_tabs != blank %}
+      <div class="pdp-text-block product__description mt0 mb16 rte h5 product__description_tabs_new_style" {{ block.shopify_attributes }}>
+          <div class="product__description_tabs-grid">
+            {%- if product.metafields.custom.product_tabs != blank -%}
+              {{ product.metafields.custom.product_tabs }}
+            {% endif %}
+          </div>
+        </div>
+        {% comment %} <div class="pdp-text-block product__description mt0 mb16 rte h5 product__description_tabs_new_style" {{ block.shopify_attributes }}>
+          <div class="product__description_tabs-grid">
+          <details name="alpha" style="--n: 1" open>
+              <summary>
+                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_105_613)"> <path d="M5.79651 9.04165C5.74443 8.83977 5.6392 8.65554 5.49178 8.50812C5.34436 8.3607 5.16013 8.25548 4.95826 8.2034L1.37951 7.28057C1.31845 7.26324 1.26471 7.22646 1.22645 7.17583C1.18818 7.12519 1.16748 7.06345 1.16748 6.99998C1.16748 6.93651 1.18818 6.87478 1.22645 6.82414C1.26471 6.7735 1.31845 6.73673 1.37951 6.7194L4.95826 5.79598C5.16006 5.74395 5.34424 5.63882 5.49166 5.49151C5.63907 5.34419 5.74434 5.16008 5.79651 4.95832L6.71934 1.37957C6.7365 1.31827 6.77323 1.26427 6.82394 1.2258C6.87466 1.18733 6.93656 1.1665 7.00022 1.1665C7.06387 1.1665 7.12577 1.18733 7.17649 1.2258C7.2272 1.26427 7.26394 1.31827 7.28109 1.37957L8.20334 4.95832C8.25542 5.16019 8.36064 5.34442 8.50806 5.49184C8.65548 5.63926 8.83972 5.74449 9.04159 5.79657L12.6203 6.71882C12.6819 6.73579 12.7362 6.77249 12.7748 6.82328C12.8135 6.87407 12.8345 6.93614 12.8345 6.99998C12.8345 7.06382 12.8135 7.1259 12.7748 7.17669C12.7362 7.22748 12.6819 7.26417 12.6203 7.28115L9.04159 8.2034C8.83972 8.25548 8.65548 8.3607 8.50806 8.50812C8.36064 8.65554 8.25542 8.83977 8.20334 9.04165L7.28051 12.6204C7.26335 12.6817 7.22662 12.7357 7.1759 12.7742C7.12519 12.8126 7.06329 12.8335 6.99963 12.8335C6.93598 12.8335 6.87407 12.8126 6.82336 12.7742C6.77265 12.7357 6.73591 12.6817 6.71876 12.6204L5.79651 9.04165Z" stroke="#2A2622" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M11.6665 1.75V4.08333" stroke="#2A2622" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M12.8333 2.91675H10.5" stroke="#2A2622" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M2.3335 9.91675V11.0834" stroke="#2A2622" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M2.91667 10.5H1.75" stroke="#2A2622" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> </g> <defs> <clipPath id="clip0_105_613"> <rect width="14" height="14" fill="white"/> </clipPath> </defs> </svg>
+                    BENEFITS                          
+              </summary>
+              <div>
+                <ul>
+                  <li>Brightening</li>
+                  <li>Clearer and smoother skin</li>
+                  <li>Even skin tone</li>
+                  <li>Hydrating</li>
+                </ul>
+              </div>
+          </details>  
+          <details name="alpha" style="--n: 2">
+              <summary>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_105_621)"> <path d="M6.99984 9.33341C8.2885 9.33341 9.33317 8.28875 9.33317 7.00008C9.33317 5.71142 8.2885 4.66675 6.99984 4.66675C5.71117 4.66675 4.6665 5.71142 4.6665 7.00008C4.6665 8.28875 5.71117 9.33341 6.99984 9.33341Z" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M7 1.16675V2.33341" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M7 11.6667V12.8334" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M2.87598 2.87573L3.69848 3.69823" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M10.3018 10.3018L11.1243 11.1243" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M1.1665 7H2.33317" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M11.6665 7H12.8332" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M3.69848 10.3018L2.87598 11.1243" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M11.1243 2.87573L10.3018 3.69823" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> </g> <defs> <clipPath id="clip0_105_621"> <rect width="14" height="14" fill="white"/> </clipPath> </defs> </svg>
+                  USAGE                         
+              </summary>
+              <div>
+                <ul>
+                  <li>Hyperpigmentation</li>
+                  <li>Dullness</li>
+                  <li>Uneven skin tone, rough texture</li>
+                  <li>Loss of elasticity</li>
+                </ul>
+              </div>
+          </details>  
+          <details name="alpha" style="--n: 3">
+              <summary>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_105_633)"> <path d="M4.08333 9.50822C5.36667 9.50822 6.41667 8.44072 6.41667 7.14572C6.41667 6.46905 6.08417 5.82739 5.41917 5.28489C4.75417 4.74239 4.2525 3.93739 4.08333 3.09155C3.91417 3.93739 3.41833 4.74822 2.7475 5.28489C2.07667 5.82155 1.75 6.47489 1.75 7.14572C1.75 8.44072 2.8 9.50822 4.08333 9.50822Z" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> <path d="M7.3269 3.85005C7.72809 3.20904 8.01249 2.50199 8.1669 1.76172C8.45857 3.22005 9.33357 4.62005 10.5002 5.55339C11.6669 6.48672 12.2502 7.59505 12.2502 8.76172C12.2536 9.56806 12.0174 10.3572 11.5717 11.0292C11.126 11.7011 10.4908 12.2256 9.74664 12.5362C9.00249 12.8467 8.1829 12.9293 7.39175 12.7735C6.60061 12.6176 5.87355 12.2304 5.30273 11.6609" stroke="#8A8075" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/> </g> <defs> <clipPath id="clip0_105_633"> <rect width="14" height="14" fill="white"/> </clipPath> </defs> </svg> 
+                  CONCERNS                         
+              </summary>
+              <div>
+                  <ul>
+                    <li>Hyperpigmentation</li>
+                    <li>Dullness</li>
+                    <li>Uneven skin tone, rough texture</li>
+                    <li>Loss of elasticity</li>
+                  </ul>
+              </div>
+          </details>  
+        </div>
+        <p class="tab-footer__p"><b>SKIN TYPES: </b</p>
+          <ul class="tab-footer__list">
+            <li>Oily Skin</li>
+              <li>Combination Skin</li>
+              <li>Dry Skin</li>
+              <li>Normal Skin</li>
+          </ul>
+      </div> {% endcomment %}
+    {%- endif -%}
+
+
+   
+
+<style>
+.product__description_tabs_new_style {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    gap: 11px;
+    margin-bottom: 10px;
+}
+
+.product__description_tabs_new_style .product__description_tabs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto 1fr;
+  font-size: calc(10px + .00125*(100vw - 320px));
+}
+
+.product__description_tabs_new_style details {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-row: 1 / span 2;
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
+}
+
+.product__description_tabs_new_style summary {
+  grid-column: var(--n) / span 1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 2px solid #E7E1DA;
+  color: #8A8075;
+  padding-bottom: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  text-transform: uppercase;
+  z-index: 1;
+}
+
+.product__description_tabs_new_style summary svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.product__description_tabs_new_style summary svg path,
+  summary svg circle,
+  summary svg rect,
+  summary svg line,
+  summary svg polyline,
+  summary svg polygon {
+  stroke: currentColor !important;
+}
+
+.product__description_tabs_new_style details[open] :is(summary, .summary) {
+  font-weight: bold;
+  border-bottom: 2px solid #D49A35;
+  color: #2A2622;
+}
+
+.product__description_tabs_new_style details::details-content {
+  grid-row: 2;
+  grid-column: 1 / -1;
+  padding: 1rem; 
+}
+
+.product__description_tabs_new_style details:not([open])::details-content {
+  display: none;
+} 
+
+.product__description_tabs_new_style details ul li {
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+@media (max-width: 360px) {
+  .product__description_tabs_new_style summary {
+    gap: 2px;
+  }
+}
+
+.product__description_tabs_new_style .tab-footer {
+  display: flex;
+  gap: 10px;
+}
+
+.product__description_tabs_new_style .tab-footer__list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+}
+
+.product__description_tabs_new_style .tab-footer__p b {
+  color: #8a8075;
+   font-size: calc(10px + .00125 * (100vw - 320px));
+}
+
+.product__description_tabs_new_style .tab-footer__list li {
+    list-style: none;
+    background-color: #F2EEE9;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+    text-transform: capitalize;
+    color: #464039;
+    flex: 0 1 auto;
+    padding-inline: 10px;
+    font-size: calc(10px + .00125 * (100vw - 320px));
+}
+</style>
               {%- when 'complementary' -%}
                 <product-recommendations
                   class="complementary-products quick-add-hidden{% if block.settings.make_collapsible_row %} is-accordion{% endif %}{% if block.settings.enable_quick_add %} complementary-products-contains-quick-add{% endif %}"
