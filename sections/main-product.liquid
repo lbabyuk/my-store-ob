@@ -534,7 +534,10 @@
    
        
           <li class="highlights-block--item"
-             style=" --highlight-bg: {{ bg_color }}; --highlight-text: {{ text_color }};">
+             style="  --highlight-bg: {{ highlight.bg_color }};
+                      --highlight-text: {{ highlight.text_color }};
+                      --default-bg: {{ block.settings.bg_color }};
+                      --default-text: {{ block.settings.text_color }};">
               {% if highlight.icon %}
                 <img 
                   src="{{ highlight.icon | image_url: width: 14 }}"
@@ -562,10 +565,10 @@
 }
 
 .highlights-block .highlights-block--item {
-  background-color:var(--highlight-bg);
+  background-color: var(--highlight-bg, var(--default-bg));
+  color: var(--highlight-text, var(--default-text));
   width: fit-content;
   padding: 4px 12px;
-  color: var(--highlight-text);
   text-transform: uppercase;
   display: -webkit-box;
   display: -ms-flexbox;
