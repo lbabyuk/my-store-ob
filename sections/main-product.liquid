@@ -610,7 +610,7 @@
       {% for tab in product.metafields.custom.tabs.value %}
         <div class="tab-content" id="tab-{{ forloop.index }}">
          
-            {{tab.content}}
+            {{ tab.content | raw }}
          
         </div>
       {% endfor %}
