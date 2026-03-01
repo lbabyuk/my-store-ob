@@ -589,7 +589,7 @@
 
 </style>
 
- <!--start tabs 2 -->
+ {% comment %} <!--start tabs 2 -->
   {%- when 'product_tabs' -%}               
 {% if product.metafields.custom.tabs.value != blank %}
                         
@@ -664,7 +664,85 @@ document.querySelectorAll('.product-tabs').forEach(tabSection => {
   });
 });
 </script>
-                 
+                  {% endcomment %}
+
+                  {% if product.metafields.custom.product_tab != blank %}
+  <div class="pdp-tabs-wrapper">
+    {{ product.metafields.custom.custom_tab }}
+  </div>
+{% endif %}
+
+<style>
+
+  .custom-tabs {
+  width: 100%;
+  margin-top: 30px;
+  font-family: inherit;
+}
+
+.tabs-nav {
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 12px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  border-bottom: 2px solid transparent;
+  transition: 0.3s;
+}
+
+.tab-btn img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.tab-btn.active {
+  border-bottom: 2px solid #000;
+  font-weight: 600;
+}
+
+.tabs-content {
+  padding-top: 20px;
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".custom-tabs").forEach(function(tabWrapper){
+
+    const buttons = tabWrapper.querySelectorAll(".tab-btn");
+    const panels = tabWrapper.querySelectorAll(".tab-panel");
+
+    buttons.forEach(function(button){
+      button.addEventListener("click", function(){
+
+        buttons.forEach(btn => btn.classList.remove("active"));
+        panels.forEach(panel => panel.classList.remove("active"));
+
+        button.classList.add("active");
+        tabWrapper.querySelector("#" + button.dataset.tab).classList.add("active");
+      });
+    });
+
+  });
+});
+</script>
               {%- when 'complementary' -%}
                 <product-recommendations
                   class="complementary-products quick-add-hidden{% if block.settings.make_collapsible_row %} is-accordion{% endif %}{% if block.settings.enable_quick_add %} complementary-products-contains-quick-add{% endif %}"
