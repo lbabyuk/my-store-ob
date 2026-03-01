@@ -523,84 +523,73 @@
                     </p>
                   </div>
                 {%- endif -%}
- {%- when 'badges_item' -%}               
-<div class="badges-with-icons-block display-block" {{ block.shopify_attributes }}>
+ {%- when 'product_badges' -%}               
+{% if product.metafields.custom.product_badges.value != blank %}
+  <div class="product-badges">
+    {% for badge in product.metafields.custom.product_badges.value %}
+      
+      {% assign badge_text = badge.text %}
+      {% assign badge_text_color = badge.text_color | default: block.settings.default_text_color %}
+      {% assign badge_bg_color = badge.background_color | default: block.settings.default_bg_color %}
+      {% assign badge_icon = badge.icon %}
 
-   
+      <div 
+        class="product-badge"
+        style="
+          --badge-text-color: {{ badge_text_color }};
+          --badge-bg-color: {{ badge_bg_color }};
+        "
+      >
+        {% if badge_icon != blank %}
+          <img 
+            class="badge-icon"
+            src="{{ badge_icon | image_url: width: 40 }}" 
+            alt="{{ badge_text }}"
+            loading="lazy"
+            width="16"
+            height="16"
+          >
+        {% endif %}
 
-      <ul class="badges-with-icons-block--list">
-            {% for inner_block in section.blocks %}
-              {% if inner_block.type == 'badge_item' %}
-                {% assign badge = block.settings.badge.value %}
-
-{% if badge != blank %}
-
-  {% assign bg_color = badge.bg_color | default: block.settings.bg_color %}
-  {% assign text_color = badge.text_color | default: block.settings.text_color %}
-
-  <li 
-    class="badges-with-icons-block--item"
-    style="background-color: {{ bg_color }};"
-    {{ block.shopify_attributes }}
-  >
-
-    {% if badge.image != blank %}
-      <div class="badges-with-icons-icon" style="color: {{ text_color }};">
-        {{ badge.image | image_url: width: 12 | image_tag }}
+        {% if badge_text != blank %}
+          <span class="badge-text">
+            {{ badge_text }}
+          </span>
+        {% endif %}
       </div>
-    {% endif %}
 
-    {% if badge.text != blank %}
-      <div class="badges-with-icons-text" style="color: {{ text_color }};">
-        {{ badge.text }}
-      </div>
-    {% endif %}
-
-  </li>
-
+    {% endfor %}
+  </div>
 {% endif %}
-            {% endif %}
-          {% endfor %}
-      </ul>
- 
-</div>
+
 <style>
-  .badges-with-icons-block .badges-with-icons-block--list {
+.product-badges {
   display: flex;
-  gap: 8px;
   flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
-.badges-with-icons-block .badges-with-icons-block--item {
-  background-color: #E8ECEE;
-  width: fit-content;
-  padding: 4px 12px;
-  color: #4F5153;
-  text-transform: uppercase;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+.product-badge {
+  display: inline-flex;
+  align-items: center;
   gap: 6px;
-  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
   font-weight: 500;
-  line-height: 16px;
-  letter-spacing: 0.6px;
-  border-radius: 20px;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  -ms-border-radius: 20px;
-  -o-border-radius: 20px;
+  background: var(--badge-bg-color);
+  color: var(--badge-text-color);
+  line-height: 1;
 }
 
-.badges-with-icons-icon svg {
-  display: block;
+.product-badge .badge-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
 }
+</style>
+
 </style>
                       
               {%- when 'complementary' -%}
@@ -2167,30 +2156,24 @@
         }
       ]
     },
+   {
+  "type": "product_badges",
+  "name": "Product badges",
+  "settings": [
     {
-      "type": "badge_item",
-      "name": "Badge",
-      "settings": [
-        {
-          "type": "metaobject",
-          "id": "badge",
-          "label": "Select badge",
-          "metaobject_type": "badge"
-        },
-        {
-          "type": "color",
-          "id": "bg_color",
-          "label": "Fallback background color",
-          "default": "#E8ECEE"
-        },
-        {
-          "type": "color",
-          "id": "text_color",
-          "label": "Fallback text color",
-          "default": "#4F5153"
-        }
-      ]
+      "type": "color",
+      "id": "default_text_color",
+      "label": "Default text color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "default_bg_color",
+      "label": "Default background color",
+      "default": "#F2F2F2"
     }
+  ]
+}
   ],
   "settings": [
     {
