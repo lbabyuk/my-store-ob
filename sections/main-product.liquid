@@ -637,21 +637,26 @@
   margin-top: 1rem;
 }
 </style>
-<script defer>
-  document.querySelectorAll('.tab-title').forEach(tab => {
-  tab.addEventListener('click', () => {
-    const target = tab.dataset.tab;
+<script>
+document.querySelectorAll('.product-tabs').forEach(tabSection => {
+  const tabs = tabSection.querySelectorAll('.tab-title');
+  const contents = tabSection.querySelectorAll('.tab-content');
 
-    document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-    document.querySelector(`#${target}`).style.display = 'block');
+  if (tabs.length === 0) return;
 
-    document.querySelectorAll('.tab-title').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
+  contents.forEach((c, i) => c.style.display = i === 0 ? 'block' : 'none');
+  tabs.forEach((t, i) => t.classList.toggle('active', i === 0));
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+      contents.forEach(c => c.style.display = 'none');
+      tabSection.querySelector(`#${target}`).style.display = 'block';
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
   });
-
-// Show first tab by default
-document.querySelectorAll('.tab-content')[0].style.display = 'block';
-document.querySelectorAll('.tab-title')[0].classList.add('active');
+});
 </script>
                  
               {%- when 'complementary' -%}
