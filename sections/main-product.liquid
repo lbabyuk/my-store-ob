@@ -525,73 +525,54 @@
                 {%- endif -%}
  {%- when 'product_badges' -%}               
 {% if product.metafields.custom.badges.value != blank %}
-  <div class="product-badges">
-    {% for badge in product.metafields.custom.badges.value %}
-      
-      {% assign badge_text = badge.text %}
-      {% assign badge_text_color = badge.text_color | default: block.settings.default_text_color %}
-      {% assign badge_bg_color = badge.bg_color | default: block.settings.default_bg_color %}
-      {% assign badge_icon = badge.icon %}
-
-      <div 
-        class="product-badge"
-        style="
-          --badge-bg-color: {{ badge_bg_color }};
-        "
-      >
-        {% if badge_icon != blank %}
-          <img 
-            class="badge-icon"
-            src="{{ badge_icon | image_url: width: 40 }}" 
-            alt="{{ badge_text }}"
-            loading="lazy"
-            width="16"
-            height="16"
-          >
-        {% endif %}
-
-        {% if badge_text != blank %}
-          <span class="badge-text"  style="
-          --badge-text-color: {{ badge_text_color }};
-        ">
-            {{ badge_text }}
-          </span>
-        {% endif %}
-      </div>
-
-    {% endfor %}
-  </div>
+    <div class="pdp-highlights">
+      {% for highlight in product.metafields.custom.badges.value %}
+        <div 
+          class="pdp-highlight"
+          style="
+            background-color: {{ highlight.bg_color }};
+            color: {{ highlight.text_color }};
+          "
+        >
+          {% if highlight.icon %}
+            <img 
+              src="{{ highlight.icon | image_url: width: 32 }}" 
+              alt="{{ highlight.text }}"
+              class="pdp-highlight__icon"
+            >
+          {% endif %}
+          <span>{{ highlight.text }}</span>
+        </div>
+      {% endfor %}
+    </div>
 {% endif %}
 
 <style>
-.product-badges {
+.pdp-highlights {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
+  overflow-x: auto;
   margin-bottom: 16px;
 }
 
-.product-badge {
+.pdp-highlight {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
   border-radius: 999px;
-  font-size: 13px;
-  font-weight: 500;
-  background: var(--badge-bg-color);
-  color: var(--badge-text-color);
-  line-height: 1;
+  font-size: 14px;
+  white-space: nowrap;
 }
 
-.product-badge .badge-icon {
-  width: 14px;
-  height: 14px;
-  object-fit: contain;
+.pdp-highlight__icon {
+  width: 16px;
+  height: 16px;
 }
 </style>
 
-</style>
+
                       
               {%- when 'complementary' -%}
                 <product-recommendations
@@ -2158,22 +2139,12 @@
       ]
     },
    {
-  "type": "product_badges",
-  "name": "Product badges",
-  "settings": [
-    {
-      "type": "color",
-      "id": "default_text_color",
-      "label": "Default text color",
-      
-    },
-    {
-      "type": "color",
-      "id": "default_bg_color",
-      "label": "Default background color",
-   
-    }
-  ]
+ 
+      "type": "pdp_highlights",
+      "name": "Highlights",
+      "limit": 1,
+      "settings": []
+    
 }
   ],
   "settings": [
