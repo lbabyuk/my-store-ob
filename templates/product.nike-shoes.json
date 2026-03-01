@@ -12,6 +12,14 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "tab_Hf8Gzb": {
+          "type": "tab",
+          "settings": {
+            "tab_title": "title1",
+            "tab_content": "<p>1</p><p>2</p><p>2</p><p>2</p><p>2</p>",
+            "icon": ""
+          }
+        },
         "highlights_kpQnHW": {
           "type": "highlights",
           "settings": {
@@ -74,6 +82,7 @@
         }
       },
       "block_order": [
+        "tab_Hf8Gzb",
         "highlights_kpQnHW",
         "vendor",
         "title",
