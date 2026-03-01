@@ -31,8 +31,8 @@
         "tab_Enfheh": {
           "type": "tab",
           "settings": {
-            "tab_title": "",
-            "tab_content": "",
+            "tab_title": "title3",
+            "tab_content": "<ul><li>dfsdf</li><li>sdfsdf</li><li>sdfsdf</li><li>sdfsdf</li></ul>",
             "icon": ""
           }
         },
