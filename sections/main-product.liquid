@@ -607,7 +607,7 @@
     </ul>
 
     <div class="tab-contents">
-      {% for tab in product_tabs %}
+      {% for tab in product.metafields.custom.tabs.value %}
         <div class="tab-content" id="tab-{{ forloop.index }}">
          
             {{tab.content}}
