@@ -528,6 +528,7 @@
       <div class="highlights-block display-block" {{ block.shopify_attributes }}>
        <ul class="highlights-block--list">  
       {% for highlight in product.metafields.custom.badges.value %}
+        {% liquid 
           assign final_bg = highlight.bg_color | default: block.settings.bg_color
           assign final_text = highlight.text_color | default: block.settings.text_color
 
@@ -538,7 +539,7 @@
           if final_text != blank
             echo '--text-color: ' | append: final_text | append: ';'
           endif
-   
+   %}
           <li class="highlights-block--item"
               {% if highlight.icon %}
                 <img 
