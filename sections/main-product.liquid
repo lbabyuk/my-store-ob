@@ -540,7 +540,11 @@
         >
           {% if highlight.icon %}
             <span class="pdp-highlight__icon-wrapper">
-              {{ highlight.icon | image_url: width: 12 | image_tag }}
+               <img 
+    src="{{ highlight.icon.value.url }}"
+    alt="{{ highlight.text }}"
+    class="pdp-highlight__icon"
+  >
             </span>
           {% endif %}
           <span class="pdp-highlight__text">
