@@ -590,163 +590,70 @@
 </style>
 
  <!--start tabs 2 -->
- {%  when 'tab' %}
-                        {% assign tab_index = 0 %}
-                          {% if section.blocks.size > 0 %}
-                            <div class="pdp-text-block product__description mt0 mb16 rte h5 product__description_tabs_new_style">
-                              <div class="product__description_tabs-grid">
-                                {% for block in section.blocks %}
-                                  {% if block.type == 'tab' %}
-                                    {% assign tab_index = tab_index | plus: 1 %}
-                                    <details name="alpha" style="--n: {{ tab_index }}" {% if tab_index %}open{% endif %} {{ block.shopify_attributes }}>
-                                      <summary>
-                                        {% if block.settings.icon != blank %}
-                                          {{ block.settings.icon }}
-                                        {% endif %}
-                                        {{ block.settings.tab_title }}
-                                      </summary>
-                                      <div>
-                                        {{ block.settings.tab_content }}
-                                      </div>
-                                    </details>
-                                  {% endif %}
-                                {% endfor %}
-                              </div>
-                            
-                                <p class="tab-footer__p"><b>SKIN TYPES: </b></p>
-                                  <ul class="tab-footer__list">
-                                    <li>Oily Skin</li>
-                                    <li>Combination Skin</li>
-                                    <li>Dry Skin</li>
-                                    <li>Normal Skin</li>
-                                  </ul>
-                                
-                            </div>
-                          {% endif %} 
+  {%- when 'tabs' -%}               
+{% if product.metafields.custom.tabs.value != blank %}
+                        
+
+  <div class="product-tabs">
+    <ul class="tab-titles">
+      {% for tab in product.metafields.custom.tabs.value %}
+        <li class="tab-title" data-tab="tab-{{ forloop.index }}">
+          {% if tab.icon != blank %}
+            <img src="{{ tab.icon | image_url }}" alt="{{ tab.tab_title }}">
+          {% endif %}
+          {{ tab.tab_title }}
+        </li>
+      {% endfor %}
+    </ul>
+
+    <div class="tab-contents">
+      {% for tab in product_tabs %}
+        <div class="tab-content" id="tab-{{ forloop.index }}">
+         
+            {{tab.content}}
+         
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+{% endif %}
                   <!--end tabs -->
 
 <style>
-.product-inner-info .product__description_tabs_new_style {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    gap: 11px;
-    margin-bottom: 10px;
+.product-tabs {
+  border-top: 1px solid #eee;
 }
-
-.product__description_tabs_new_style .product__description_tabs-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto 1fr;
-  font-size: calc(10px + .00125*(100vw - 320px));
-}
-
-.product__description_tabs_new_style details {
-  display: grid;
-  grid-column: 1 / -1;
-  grid-row: 1 / span 2;
-  grid-template-columns: subgrid;
-  grid-template-rows: subgrid;
-}
-
-.product__description_tabs_new_style summary {
-  grid-column: var(--n) / span 1;
-  grid-row: 1;
+.tab-titles {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  border-bottom: 2px solid #E7E1DA;
-  color: #8A8075;
-  padding-bottom: 10px;
-  font-weight: 500;
+  gap: 1rem;
   cursor: pointer;
-  text-transform: uppercase;
-  z-index: 1;
 }
-
-.product__description_tabs_new_style summary svg {
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
-}
-
-.product__description_tabs_new_style summary svg path,
-  summary svg circle,
-  summary svg rect,
-  summary svg line,
-  summary svg polyline,
-  summary svg polygon {
-  stroke: currentColor !important;
-}
-
-.product__description_tabs_new_style details[open] :is(summary, .summary) {
+.tab-title.active {
   font-weight: bold;
-  border-bottom: 2px solid #D49A35;
-  color: #2A2622;
 }
-
-.product__description_tabs_new_style details::details-content {
-  grid-row: 2;
-  grid-column: 1 / -1;
-  padding: 1rem; 
-}
-
-.product__description_tabs_new_style details:not([open])::details-content {
+.tab-content {
   display: none;
-} 
-
-.product__description_tabs_new_style details ul li {
-  font-weight: 400;
-  line-height: 1.5;
-}
-
-@media (max-width: 360px) {
-  .product__description_tabs_new_style summary {
-    gap: 2px;
-  }
-}
-
-.product__description_tabs_new_style .tab-footer {
-  display: flex;
- 
-  gap: 10px;
-}
-
-.product__description_tabs_new_style .tab-footer__list {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 7px;
-}
-
-.product__description_tabs_new_style .tab-footer__p b {
-  color: #8a8075;
-   font-size: calc(10px + .00125 * (100vw - 320px));
-}
-
-.product__description_tabs_new_style .tab-footer__list li {
-    list-style: none;
-    background-color: #F2EEE9;
-    border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
-    text-transform: capitalize;
-    color: #464039;
-    flex: 0 1 auto;
-    padding-inline: 10px;
-    font-size: calc(10px + .00125 * (100vw - 320px));
+  margin-top: 1rem;
 }
 </style>
+<script>
+  document.querySelectorAll('.tab-title').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+
+    document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+    document.querySelector(`#${target}`).style.display = 'block');
+
+    document.querySelectorAll('.tab-title').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+
+// Show first tab by default
+document.querySelectorAll('.tab-content')[0].style.display = 'block';
+document.querySelectorAll('.tab-title')[0].classList.add('active');
+</script>
                  
               {%- when 'complementary' -%}
                 <product-recommendations
@@ -2332,25 +2239,10 @@
       ]
     },
      {
-      "type": "tab",
-      "name": "Product Tab",
+      "type": "product_tabs", 
+      "name": "Product Tabs",
       "settings": [
-        {
-          "type": "inline_richtext",
-          "id": "tab_title",
-          "label": "Tab title",
-        },
-         {
-          "type": "richtext",
-          "id": "tab_content",
-          "label": "Tab content",
-        },
-        {
-          "type": "html",
-          "id": "icon",
-          "label": "Custom SVG Icon",
-          "info": "Paste SVG code. Icon color will follow text color."
-        }
+        
       ]
     }
   
