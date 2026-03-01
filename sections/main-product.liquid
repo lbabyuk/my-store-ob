@@ -525,87 +525,68 @@
                 {%- endif -%}
  {%- when 'pdp_highlights' -%}               
 {% if product.metafields.custom.badges.value != blank %}
-    <div class="pdp-highlights">
+      <div class="highlights-block display-block" {{ block.shopify_attributes }}>
       {% for highlight in product.metafields.custom.badges.value %}
 
-        {% assign bg_color = highlight.bg_color | default: block.settings.badge_bg_color %}
+        {% assign bg_color = highlight.bg_color | default: block.settings.bg_color %}
         {% assign text_color = highlight.text_color | default: block.settings.text_color %}
-
-        <div 
-          class="pdp-highlight"
-          style="
-            --highlight-bg: {{ bg_color }};
-            --highlight-text: {{ text_color }};
-          "
-        >
-          
-     {% if highlight.icon %}
-            <img 
-              src="{{ highlight.icon | image_url: width: 32 }}"
-              alt="{{ highlight.title }}"
-              class="pdp-highlight__icon"
-            >
-          {% endif %}
-          
-         
-          <span class="pdp-highlight__text">
-            {{ highlight.text }}
-          </span>
-        </div>
-
+   
+        <ul class="highlights-block--list">
+          <li class="highlights-block--item"
+             style=" --highlight-bg: {{ bg_color }};
+                    --highlight-text: {{ text_color }};">
+              {% if highlight.icon %}
+                <img 
+                  src="{{ highlight.icon | image_url: width: 14 }}"
+                  alt="{{ highlight.text }}"
+                  class="highlights-icon"
+                >
+              {% endif %}
+              {% if highlight.text %}
+                <span class="highlights-text">
+                  {{ highlight.text }}
+                </span>
+              {% endif %}
+          </li>
+        </ul>
       {% endfor %}
     </div>
 {% endif %}
 
 <style>
-.pdp-highlights {
+.highlights-block .highlights-block--list {
   display: flex;
-  flex-wrap: nowrap;
   gap: 8px;
-  overflow-x: auto;
-  margin-bottom: 16px;
+  flex-wrap: wrap;
 }
 
-.pdp-highlight {
-  --highlight-bg: #f3f3f3;
-  --highlight-text: #000000;
-
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  white-space: nowrap;
-
-  background-color: var(--highlight-bg);
-  color: var(--highlight-text);
-}
-
-.pdp-highlight__text {
-  font-size: 14px;
-  line-height: 1;
-}
-
-/* 🔹 Іконка наслідує колір тексту */
-.pdp-highlight__icon-wrapper {
+.highlights-block .highlights-block--item {
+  background-color:var(--highlight-bg);
+  width: fit-content;
+  padding: 4px 12px;
+  color: var(--highlight-tex);
+  text-transform: uppercase;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.6px;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
 }
 
-.pdp-highlight__icon-wrapper svg {
-  width: 16px;
-  height: 16px;
-  fill: currentColor;
-}
-
-.pdp-highlight__icon-wrapper img {
-  width: 16px;
-  height: 16px;
-  object-fit: contain;
-
-  /* fallback для PNG */
-  filter: brightness(0) saturate(100%);
-}
 </style>
 
 
@@ -2175,13 +2156,13 @@
       ]
     },
    {
-      "type": "pdp_highlights",
+      "type": "highlights",
       "name": "Highlights",
       "limit": 1,
       "settings": [
         {
           "type": "color",
-          "id": "badge_bg_color",
+          "id": "bg_color",
           "label": "Default badge background",
           
         },
