@@ -590,6 +590,7 @@
 </style>
 
  <!--start tabs 2 -->
+ {%  when 'tab' %}
                         {% assign tab_index = 0 %}
                           {% if section.blocks.size > 0 %}
                             <div class="pdp-text-block product__description mt0 mb16 rte h5 product__description_tabs_new_style">
@@ -597,7 +598,7 @@
                                 {% for block in section.blocks %}
                                   {% if block.type == 'tab' %}
                                     {% assign tab_index = tab_index | plus: 1 %}
-                                    <details name="alpha" style="--n: {{ tab_index }}" {% if tab_index %}open{% endif %} {{ block.shopify_attributes }}>
+                                    <details name="alpha" style="--n: {{ tab_index }}" {{ block.shopify_attributes }}>
                                       <summary>
                                         {% if block.settings.icon != blank %}
                                           {{ block.settings.icon }}
@@ -624,9 +625,8 @@
                           {% endif %} 
                   <!--end tabs -->
 
-                  <style>
-
-                    .product-inner-info .product__description_tabs_new_style {
+<style>
+.product-inner-info .product__description_tabs_new_style {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -746,7 +746,7 @@
     padding-inline: 10px;
     font-size: calc(10px + .00125 * (100vw - 320px));
 }
-                  </style>
+</style>
                  
               {%- when 'complementary' -%}
                 <product-recommendations
@@ -2343,7 +2343,7 @@
          {
           "type": "richtext",
           "id": "tab_content",
-          "label": "Tab title",
+          "label": "Tab content",
         },
         {
           "type": "html",
