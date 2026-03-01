@@ -526,7 +526,7 @@
  {%- when 'product_badges' -%}               
 {% if product.metafields.custom.badges.value != blank %}
   <div class="product-badges">
-    {% for badge in product.metafields.custom.product_badges.value %}
+    {% for badge in product.metafields.custom.badges.value %}
       
       {% assign badge_text = badge.text %}
       {% assign badge_text_color = badge.text_color | default: block.settings.default_text_color %}
