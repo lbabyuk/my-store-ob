@@ -12,6 +12,10 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "product_tabs_BN7igq": {
+          "type": "product_tabs",
+          "settings": {}
+        },
         "highlights_kpQnHW": {
           "type": "highlights",
           "settings": {
@@ -74,6 +78,7 @@
         }
       },
       "block_order": [
+        "product_tabs_BN7igq",
         "highlights_kpQnHW",
         "vendor",
         "title",
