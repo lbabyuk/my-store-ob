@@ -12,6 +12,13 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "product_badges_G66RHK": {
+          "type": "product_badges",
+          "settings": {
+            "default_text_color": "#1a1a1a",
+            "default_bg_color": "#f2f2f2"
+          }
+        },
         "vendor": {
           "type": "text",
           "settings": {
@@ -49,14 +56,6 @@
           "type": "description",
           "settings": {}
         },
-        "product_badges_HpCFUg": {
-          "type": "product_badges",
-          "repeater": "{{ product.metafields.custom.badges.value }}",
-          "settings": {
-            "default_text_color": "{{ block.repeater.text_color.value }}",
-            "default_bg_color": "{{ block.repeater.bg_color.value }}"
-          }
-        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -75,6 +74,7 @@
         }
       },
       "block_order": [
+        "product_badges_G66RHK",
         "vendor",
         "title",
         "price",
@@ -82,7 +82,6 @@
         "variant_picker",
         "quantity_selector",
         "description",
-        "product_badges_HpCFUg",
         "buy_buttons",
         "collapsible_tab_DatmYW"
       ],
