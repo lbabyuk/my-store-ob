@@ -528,18 +528,16 @@
       <div class="highlights-block display-block" {{ block.shopify_attributes }}>
        <ul class="highlights-block--list">  
       {% for highlight in product.metafields.custom.badges.value %}
-        {% liquid 
-          assign final_bg = highlight.bg_color | default: block.settings.bg_color
-          assign final_text = highlight.text_color | default: block.settings.text_color
-
-          if final_bg != blank
-            echo '--bg-color: ' | append: final_bg | append: ';'
-          endif
-
-          if final_text != blank
-            echo '--text-color: ' | append: final_text | append: ';'
-          endif
-   %}
+        {% style %}
+          {% if highlight.bg_color or highlight.text_color %}
+            --bg-color: {{ highlight.bg_color  }};
+            --text-color: {{highlight.text_color}};
+           {% else   %}
+            --default-bg-color: {{block.settings.bg_color}};
+            --default-text-color: {{block.settings.text_color}}
+          {% endif %}
+      {% endstyle %}
+   
           <li class="highlights-block--item"
               {% if highlight.icon %}
                 <img 
