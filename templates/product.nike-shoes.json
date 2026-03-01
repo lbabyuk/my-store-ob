@@ -49,19 +49,19 @@
           "type": "description",
           "settings": {}
         },
+        "product_badges_HpCFUg": {
+          "type": "product_badges",
+          "repeater": "{{ product.metafields.custom.badges.value }}",
+          "settings": {
+            "default_text_color": "{{ block.repeater.text_color.value }}",
+            "default_bg_color": "{{ block.repeater.bg_color.value }}"
+          }
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true
-          }
-        },
-        "badge_item_JLEigF": {
-          "type": "badge_item",
-          "settings": {
-            "badge": "",
-            "bg_color": "#e8ecee",
-            "text_color": "#4f5153"
           }
         },
         "collapsible_tab_DatmYW": {
@@ -82,8 +82,8 @@
         "variant_picker",
         "quantity_selector",
         "description",
+        "product_badges_HpCFUg",
         "buy_buttons",
-        "badge_item_JLEigF",
         "collapsible_tab_DatmYW"
       ],
       "settings": {
