@@ -599,9 +599,9 @@
       {% for tab in product.metafields.custom.tabs.value %}
         <li class="tab-title" data-tab="tab-{{ forloop.index }}">
           {% if tab.icon != blank %}
-            <img src="{{ tab.icon | image_url }}" alt="{{ tab.tab_title }}">
+            <img src="{{ tab.icon | image_url }}" alt="{{ tab.title }}">
           {% endif %}
-          {{ tab.tab_title }}
+          {{ tab.title }}
         </li>
       {% endfor %}
     </ul>
