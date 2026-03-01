@@ -12,30 +12,6 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "tab_eU6pcQ": {
-          "type": "tab",
-          "settings": {
-            "tab_title": "rtertert",
-            "tab_content": "<p>rtertertet</p>",
-            "icon": ""
-          }
-        },
-        "tab_wcB6aD": {
-          "type": "tab",
-          "settings": {
-            "tab_title": "ertertert",
-            "tab_content": "<p>er</p>",
-            "icon": ""
-          }
-        },
-        "tab_WgbhCN": {
-          "type": "tab",
-          "settings": {
-            "tab_title": "",
-            "tab_content": "",
-            "icon": ""
-          }
-        },
         "highlights_kpQnHW": {
           "type": "highlights",
           "settings": {
@@ -98,9 +74,6 @@
         }
       },
       "block_order": [
-        "tab_eU6pcQ",
-        "tab_wcB6aD",
-        "tab_WgbhCN",
         "highlights_kpQnHW",
         "vendor",
         "title",
