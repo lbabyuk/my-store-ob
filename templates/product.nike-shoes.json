@@ -14,7 +14,10 @@
       "blocks": {
         "pdp_highlights_A4hFgn": {
           "type": "pdp_highlights",
-          "settings": {}
+          "settings": {
+            "badge_bg_color": "#e72d2d",
+            "text_color": "#121212"
+          }
         },
         "vendor": {
           "type": "text",
