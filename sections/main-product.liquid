@@ -524,7 +524,7 @@
                   </div>
                 {%- endif -%}
  {%- when 'product_badges' -%}               
-{% if product.metafields.custom.product_badge.value != blank %}
+{% if product.metafields.custom.badges.value != blank %}
   <div class="product-badges">
     {% for badge in product.metafields.custom.product_badges.value %}
       
