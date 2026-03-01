@@ -601,7 +601,7 @@
           {% if tab.icon != blank %}
             <img src="{{ tab.icon | image_url : width: 14 }}" alt="{{ tab.title }}">
           {% endif %}
-          {{ tab.title }}
+          <span class="tab-title">{{ tab.title }}</span>
         </li>
       {% endfor %}
     </ul>
