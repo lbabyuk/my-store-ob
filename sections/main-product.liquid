@@ -538,15 +538,16 @@
             --highlight-text: {{ text_color }};
           "
         >
-          {% if highlight.icon %}
-            <span class="pdp-highlight__icon-wrapper">
-              <img 
-    src="{{ highlight.icon | image_url: width: 12 }}"
-    alt="{{ highlight.text }}"
-    class="pdp-highlight__icon"
-  >
-            </span>
+          
+     {% if highlight.icon %}
+            <img 
+              src="{{ highlight.icon | image_url: width: 32 }}"
+              alt="{{ highlight.title }}"
+              class="pdp-highlight__icon"
+            >
           {% endif %}
+          
+         
           <span class="pdp-highlight__text">
             {{ highlight.text }}
           </span>
