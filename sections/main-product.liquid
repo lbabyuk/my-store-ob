@@ -598,7 +598,7 @@
                                 {% for block in section.blocks %}
                                   {% if block.type == 'tab' %}
                                     {% assign tab_index = tab_index | plus: 1 %}
-                                    <details name="alpha" style="--n: {{ tab_index }}" {{ block.shopify_attributes }}>
+                                    <details name="alpha" style="--n: {{ tab_index }}" {% if tab_index %}open{% endif %} {{ block.shopify_attributes }}>
                                       <summary>
                                         {% if block.settings.icon != blank %}
                                           {{ block.settings.icon }}
