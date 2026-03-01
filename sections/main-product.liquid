@@ -530,7 +530,7 @@
       
       {% assign badge_text = badge.text %}
       {% assign badge_text_color = badge.text_color | default: block.settings.default_text_color %}
-      {% assign badge_bg_color = badge.background_color | default: block.settings.default_bg_color %}
+      {% assign badge_bg_color = badge.bg_color | default: block.settings.default_bg_color %}
       {% assign badge_icon = badge.icon %}
 
       <div 
