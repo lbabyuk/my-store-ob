@@ -666,7 +666,7 @@ document.querySelectorAll('.product-tabs').forEach(tabSection => {
 </script>
                   {% endcomment %}
  {%- when 'product_tabs' -%}  
-                  {% if product.metafields.custom.product_tabs != blank %}
+                  {% if product.metafields.custom.product_tabs.value != blank %}
   <div class="pdp-tabs-wrapper">
     {{ product.metafields.custom.custom_tab }}
   </div>
