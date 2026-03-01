@@ -527,22 +527,27 @@
 {% if product.metafields.custom.badges.value != blank %}
     <div class="pdp-highlights">
       {% for highlight in product.metafields.custom.badges.value %}
+
+        {% assign bg_color = highlight.bg_color | default: block.settings.badge_bg_color %}
+        {% assign text_color = highlight.text_color | default: block.settings.text_color %}
+
         <div 
           class="pdp-highlight"
           style="
-            background-color: {{ highlight.bg_color }};
-            color: {{ highlight.text_color }};
+            --highlight-bg: {{ bg_color }};
+            --highlight-text: {{ text_color }};
           "
         >
           {% if highlight.icon %}
-            <img 
-              src="{{ highlight.icon | image_url: width: 32 }}" 
-              alt="{{ highlight.text }}"
-              class="pdp-highlight__icon"
-            >
+            <span class="pdp-highlight__icon-wrapper">
+              {{ highlight.icon | image_url: width: 32 | image_tag }}
+            </span>
           {% endif %}
-          <span>{{ highlight.text }}</span>
+          <span class="pdp-highlight__text">
+            {{ highlight.text }}
+          </span>
         </div>
+
       {% endfor %}
     </div>
 {% endif %}
@@ -557,18 +562,44 @@
 }
 
 .pdp-highlight {
+  --highlight-bg: #f3f3f3;
+  --highlight-text: #000000;
+
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
   border-radius: 999px;
-  font-size: 14px;
   white-space: nowrap;
+
+  background-color: var(--highlight-bg);
+  color: var(--highlight-text);
 }
 
-.pdp-highlight__icon {
+.pdp-highlight__text {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* 🔹 Іконка наслідує колір тексту */
+.pdp-highlight__icon-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.pdp-highlight__icon-wrapper svg {
   width: 16px;
   height: 16px;
+  fill: currentColor;
+}
+
+.pdp-highlight__icon-wrapper img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+
+  /* fallback для PNG */
+  filter: brightness(0) saturate(100%);
 }
 </style>
 
@@ -2139,13 +2170,25 @@
       ]
     },
    {
- 
       "type": "pdp_highlights",
       "name": "Highlights",
       "limit": 1,
-      "settings": []
-    
-}
+      "settings": [
+        {
+          "type": "color",
+          "id": "badge_bg_color",
+          "label": "Default badge background",
+          
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Default text color",
+          
+        }
+      ]
+    }
+  
   ],
   "settings": [
     {
