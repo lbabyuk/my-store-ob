@@ -15,8 +15,8 @@
         "highlights_kpQnHW": {
           "type": "highlights",
           "settings": {
-            "bg_color": "#436170",
-            "text_color": "#e8ecee"
+            "bg_color": "#e8ecee",
+            "text_color": "#436170"
           }
         },
         "vendor": {
