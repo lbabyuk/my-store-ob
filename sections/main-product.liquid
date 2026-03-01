@@ -529,7 +529,7 @@
        <ul class="highlights-block--list">  
       {% for highlight in product.metafields.custom.badges.value %}
         {% style %}
-          {% if highlight.bg_color or highlight.text_color %}
+          {% if highlight.bg_color != blank or highlight.text_color != blank %}
             --bg-color: {{ highlight.bg_color  }};
             --text-color: {{highlight.text_color}};
            {% else   %}
