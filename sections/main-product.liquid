@@ -1027,6 +1027,46 @@ document.addEventListener("DOMContentLoaded", function() {
   {% endif %}
 
 </div>
+
+<style>
+  .pdp-collapse {
+  border-top: 1px solid #e5e5e5;
+  padding: 12px 0;
+}
+
+.pdp-collapse summary {
+  cursor: pointer;
+  font-weight: 600;
+  list-style: none;
+}
+
+.pdp-collapse__content {
+  margin-top: 12px;
+}
+
+.product-specs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 30px;
+}
+
+.product-spec {
+  display: flex;
+  gap: 10px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: var(--badge-bg, #f2f2f2);
+  color: var(--badge-text, #000);
+  font-size: 13px;
+  margin: 4px 6px 4px 0;
+}
+</style>
               {%- when 'complementary' -%}
                 <product-recommendations
                   class="complementary-products quick-add-hidden{% if block.settings.make_collapsible_row %} is-accordion{% endif %}{% if block.settings.enable_quick_add %} complementary-products-contains-quick-add{% endif %}"
