@@ -12,12 +12,9 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "product_badges_7JeqmY": {
-          "type": "product_badges",
-          "settings": {
-            "default_text_color": "#e42828",
-            "default_bg_color": "#ffffff"
-          }
+        "pdp_highlights_A4hFgn": {
+          "type": "pdp_highlights",
+          "settings": {}
         },
         "vendor": {
           "type": "text",
@@ -74,7 +71,7 @@
         }
       },
       "block_order": [
-        "product_badges_7JeqmY",
+        "pdp_highlights_A4hFgn",
         "vendor",
         "title",
         "price",
