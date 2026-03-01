@@ -528,14 +528,14 @@
       <div class="highlights-block display-block" {{ block.shopify_attributes }}>
        <ul class="highlights-block--list">  
       {% for highlight in product.metafields.custom.badges.value %}
-       
-          <li class="highlights-block--item" style="
-              {% if highlight.bg_color != blank %}--bg-color: {{ highlight.bg_color }}{% endif %}
-              {% if highlight.text_color != blank %}--text-color: {{ highlight.text_color }}{% endif %}
-              {% if highlight.bg_color == blank %}--default-bg-color: {{ block.settings.bg_color }}{% endif %}
-              {% if highlight.text_color == blank %}--default-text-color: {{ block.settings.text_color }}{% endif %}
-            ">
-
+        {% liquid
+            assign final_bg = highlight.bg_color | default: block.settings.bg_color
+            assign final_text = highlight.text_color | default: block.settings.text_color
+        %}
+   
+          <li class="highlights-block--item"
+             style="  background-color: {{ final_bg }};
+                      color: {{ final_text }};
               {% if highlight.icon %}
                 <img 
                   src="{{ highlight.icon | image_url: width: 14 }}"
@@ -563,8 +563,8 @@
 }
 
 .highlights-block .highlights-block--item {
-  background-color: var(--bg-color, var(--default-bg-color));
-  color: var(--text-color, var(--default-text-color));
+  {% comment %} background-color: var(--highlight-bg, var(--default-bg));
+  color: var(--highlight-text, var(--default-text)); {% endcomment %}
   width: fit-content;
   padding: 4px 12px;
   text-transform: uppercase;
