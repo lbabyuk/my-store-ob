@@ -1072,19 +1072,25 @@ document.addEventListener("DOMContentLoaded", function() {
   margin: 4px 6px 4px 0;
 }
 </style>
-{% if product.metafields.custom.skin_types.value  %}
-<div class="skin__types" {{ block.shopify_attributes }}>
-  
-  {% for type in product.metafields.custom.skin_types.value  %}
-                            <p class="skin__types-heading"><span>{{type.title}}</span></p>
-                              <ul class="skin__types-list">
+{% assign skin = product.metafields.custom.skin_types.value %}
 
-                                  <li>{{type.lable}}</li>
-                                 
-                                </ul>
-                                 {% endfor %}
-                            </div>
-                          {% endif %}
+{% if skin != blank %}
+  <div class="skin-types">
+    
+    {% if skin.title != blank %}
+      <h4>{{ skin.title }}</h4>
+    {% endif %}
+
+    {% if skin.label != blank %}
+      <ul>
+        {% for item in skin.label %}
+          <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+  </div>
+{% endif %}
 
                           <script>console.log({{ product.metafields.custom.skin_types.value | json }})</script>
               {%- when 'complementary' -%}
