@@ -1083,8 +1083,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     {% if skin.label != blank %}
       <ul>
-        {% for item in skin.label.value %}
+        {% for item in skin.label %}
           <li>{{ item }}</li>
+          <p>{{skin.label}}</p>
         {% endfor %}
       </ul>
     {% endif %}
