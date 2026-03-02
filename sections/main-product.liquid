@@ -1074,18 +1074,15 @@ document.addEventListener("DOMContentLoaded", function() {
 </style>
 {% assign skin = product.metafields.custom.skin_types.value %}
 
-{% if skin != blank %}
+{% if skin %}
   <div class="skin-types">
     
-    {% if skin.title != blank %}
-      <h4>{{ skin.title }}</h4>
-    {% endif %}
+    <h4>{{ skin.title }}</h4>
 
-    {% if skin.label != blank %}
+    {% if skin.lable != blank %}
       <ul>
-        {% for item in skin.label %}
+        {% for item in skin.lable %}
           <li>{{ item }}</li>
-          <p>{{skin.label}}</p>
         {% endfor %}
       </ul>
     {% endif %}
