@@ -1075,19 +1075,15 @@ document.addEventListener("DOMContentLoaded", function() {
 {% assign skin = product.metafields.custom.skin_types.value %}
 
 {% if skin %}
-  <div class="skin-types">
-    
-    <h4>{{ skin.title }}</h4>
+  <h4>{{ skin.title }}</h4>
 
-    {% if skin.lable != blank %}
-      <ul>
-        {% for item in skin.lable %}
-          <li>{{ item }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-
-  </div>
+  {% if skin.lable.value != blank %}
+    <ul>
+      {% for item in skin.lable.value %}
+        <li>{{ item }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
 {% endif %}
 
                           <script>console.log({{ product.metafields.custom.skin_types.value | json }})</script>
