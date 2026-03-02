@@ -1118,7 +1118,7 @@ document.addEventListener("DOMContentLoaded", function() {
     <div class="details-content content-{{ forloop.index }}">
       {% if tab.items != blank %}
         <ul>
-          {% for item in tab.items.value %}
+          {% for item in tab.list.value %}
             <li>{{ item }}</li>
           {% endfor %}
         </ul>
