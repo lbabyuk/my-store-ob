@@ -1072,6 +1072,16 @@ document.addEventListener("DOMContentLoaded", function() {
   margin: 4px 6px 4px 0;
 }
 </style>
+
+<div class="skin__types" {{ block.shopify_attributes }}>
+                            <p class="skin__types-heading"><span>SKIN TYPES: </span></p>
+                              <ul class="skin__types-list">
+                                  <li>Oily</li>
+                                  <li>Combination</li>
+                                  <li>Dry</li>
+                                  <li>Normal</li>
+                                </ul>
+                            </div>
               {%- when 'complementary' -%}
                 <product-recommendations
                   class="complementary-products quick-add-hidden{% if block.settings.make_collapsible_row %} is-accordion{% endif %}{% if block.settings.enable_quick_add %} complementary-products-contains-quick-add{% endif %}"
