@@ -1085,6 +1085,8 @@ document.addEventListener("DOMContentLoaded", function() {
                                  {% endfor %}
                             </div>
                           {% endif %}
+
+                          <script>console.log({{ product.metafields.custom.skin_types.value | json }})</script>
               {%- when 'complementary' -%}
                 <product-recommendations
                   class="complementary-products quick-add-hidden{% if block.settings.make_collapsible_row %} is-accordion{% endif %}{% if block.settings.enable_quick_add %} complementary-products-contains-quick-add{% endif %}"
