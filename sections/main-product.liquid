@@ -1085,7 +1085,47 @@ document.addEventListener("DOMContentLoaded", function() {
     </ul>
   {% endif %}
 {% endif %}
+{% assign tabs = product.metafields.custom.description_tabs.value %}
+{% if tabs != blank %}
+  
+  {% for tab in tabs %}
+    <input 
+      type="radio" 
+      name="tabs" 
+      id="tab-{{ forloop.index }}" 
+      {% if forloop.first %}checked{% endif %} 
+      hidden>
+  {% endfor %}
+        {% for tab in tabs %}
+    <label 
+      for="tab-{{ forloop.index }}" 
+      class="summary" 
+      style="--n:{{ forloop.index }}">
 
+      {% if tab.icon != blank %}
+        <img 
+          src="{{ tab.icon | image_url: width: 14 }}"
+          alt="{{ tab.title }}"
+          width="14"
+          height="14"
+        >
+      {% endif %}
+
+      {{ tab.title }}
+    </label>
+  {% endfor %}
+       {% for tab in tabs.value %}
+    <div class="details-content content-{{ forloop.index }}">
+      {% if tab.items != blank %}
+        <ul>
+          {% for item in tab.items %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  {% endfor %}
+      {% endif %}
                           <script>console.log({{ product.metafields.custom.skin_types.value | json }})</script>
               {%- when 'complementary' -%}
                 <product-recommendations
