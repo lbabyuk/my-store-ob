@@ -1,0 +1,92 @@
+.promo-banners {
+  display: block;
+}
+
+.promo-banners__inner {
+  width: min(100%, 1200px);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+.promo-banners__heading {
+  font-size: 2rem;
+  margin-bottom: 0.5em;
+}
+
+.promo-banners__subheading {
+  margin-bottom: 2rem;
+  color: #000;
+}
+
+.promo-banners__grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+.promo-banner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.promo-banner__image-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.promo-banner__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.aspect-16-9 {
+  aspect-ratio: 16 / 9;
+}
+.aspect-1-1 {
+  aspect-ratio: 1 / 1;
+}
+.aspect-3-2 {
+  aspect-ratio: 3 / 2;
+}
+
+.promo-banner__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+}
+
+.promo-banner__title {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.25rem;
+}
+
+.button,
+.promo-banner__button {
+  align-self: start;
+  padding: 0.5rem 1.25rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.promo-banner__button:hover {
+  opacity: 0.85;
+}
+
+@media (min-width: 750px) {
+  .promo-banners__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .promo-banners__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -38,47 +38,78 @@
       "settings": {
         "image_overlay_opacity": 40,
         "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
         "image_behavior": "none",
+        "desktop_content_position": "bottom-center",
         "desktop_content_alignment": "center",
+        "show_text_box": false,
         "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
         "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
         "show_text_below": false
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "feature_products_7zXmij": {
+      "type": "feature-products",
+      "name": "Feature Products",
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "heading": "Feature Products",
+        "collection": "frontpage",
+        "product_count": 2,
+        "show_price": true,
+        "show_rating": true,
+        "add_to_cart": true
+      }
+    },
+    "promo_banners_qfdeeM": {
+      "type": "promo-banners",
+      "blocks": {
+        "banner_mYUxCd": {
+          "type": "banner",
+          "settings": {
+            "heading": "<h3>Browse our latest deal!</h3>",
+            "button_link": "",
+            "button_text": "Shop Now",
+            "aspect_ratio": "16:9"
+          }
+        },
+        "banner_TrRTLx": {
+          "type": "banner",
+          "settings": {
+            "heading": "<h3>Browse our latest deal!</h3>",
+            "button_link": "",
+            "button_text": "Shop Now",
+            "aspect_ratio": "16:9"
+          }
+        },
+        "banner_THqA8W": {
+          "type": "banner",
+          "settings": {
+            "heading": "<h3>Browse our latest deal!</h3>",
+            "button_link": "",
+            "button_text": "Shop Now",
+            "aspect_ratio": "16:9"
+          }
+        }
+      },
+      "block_order": [
+        "banner_mYUxCd",
+        "banner_TrRTLx",
+        "banner_THqA8W"
+      ],
+      "name": "Promo Banner",
+      "settings": {
+        "heading": "Promotion Banners",
+        "subheading": "<p>Your special offer here!</p>",
+        "alignment": "center",
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "color_scheme": ""
       }
     }
   },
   "order": [
     "image_banner",
-    "featured_collection"
+    "feature_products_7zXmij",
+    "promo_banners_qfdeeM"
   ]
 }
