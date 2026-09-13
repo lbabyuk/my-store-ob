@@ -1,5 +1,5 @@
 {% comment %}
-  Recommended (related) products slider snippet 
+  Recommended (related) products slider snippet
 
     Usage: {% render 'recommended-products-slider',
           recommendations: recommendations,
@@ -7,26 +7,31 @@
           section_id: section.id
         %}
 {% endcomment %}
- 
+
 {%- if recommendations.performed? and recommendations.products_count > 0 -%}
   <h2 class="section-title">{{ section.settings.heading }}</h2>
-  <div class="swiper slider-products">
+  <div
+    class="swiper slider-products"
+    aria-roledescription="carousel"
+    aria-label="{{ section.settings.heading }}"
+    id="Slider-{{ section.id }}"
+  >
     <div class="swiper-wrapper">
       {%- for product in recommendations.products -%}
         <div class="swiper-slide flex shrink">
-          <a href="{{ product.url }}">
+          <a href="{{ product.url }}" class="product-image-link">
             {%- if product.featured_image != blank -%}
               {{
                 product.featured_image
                 | image_url: width: 312, height: 312
                 | image_tag:
                   loading: 'lazy',
-                  class: 'w-full h-auto object-cover rounded-xl object-cover transform transition-transform duration-500 ease-in-out hover:scale-102',
+                  class: 'w-full h-auto rounded-xl transform transition-transform duration-500 ease-in-out hover:scale-105',
                   alt: product.featured_image.alt
                 | default: product.title
               }}
             {%- else -%}
-              {{ 'product-2' | placeholder_svg_tag: 'placeholder-img ' }}
+              {{'product-2' | placeholder_svg_tag: 'placeholder-img '}}
             {%- endif -%}
           </a>
           <a href="{{ product.url }}" class="product-info flex flex-col gap-2 mt-4">
@@ -42,7 +47,6 @@
     </div>
     <button
       type="button"
-      name="previous"
       aria-label="{{ 'sections.slideshow.previous_slideshow' | t }}"
       aria-controls="Slider-{{ section.id }}"
       class="swiper-button-prev rotate-180 absolute top-1/2 -translate-y-1/2 -left-5 w-10 h-10 z-50 items-center justify-center rounded-full border border-gray-300 bg-white shadow-sm"

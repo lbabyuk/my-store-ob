@@ -7,8 +7,13 @@
 
 {% assign fallback_description_text = 'products.product.fallback_description' | t %}
 
-<div class="product_description text-neutral-500 dark:text-gray-50 text-xs">
+<div
+  class="product_description text-xs  text-neutral-500 dark:text-gray-50 leading-relaxed"
+  aria-label="{{fallback_description_text  }}"
+>
   {%- if product.description != blank -%}
-    {{ product.description | default: fallback_description_text }}
+    {{ product.description | truncate: 150, '...' }}
+  {%- else -%}
+    {{ fallback_description_text | truncate: 150, '...' }}
   {%- endif -%}
 </div>
