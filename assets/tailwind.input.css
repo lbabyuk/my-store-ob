@@ -11,16 +11,34 @@
 }
 
 h1 {
-  @apply text-black dark:text-gray-50 transition-colors duration-300 text-mobile-xl md:text-mobile-xl lg:text-xl font-normal leading-6;
+  @apply dark:text-gray-200 transition-colors duration-300 text-mobile-xl md:text-mobile-xl lg:text-xl font-normal leading-6;
 }
 
 h2 {
-  @apply text-black dark:text-gray-50 transition-colors duration-300 text-mobile-xl lg:text-xl text-center mb-8 lg:mb-12;
+  @apply dark:text-gray-200 transition-colors duration-300 text-mobile-xl lg:text-xl text-center mb-8 lg:mb-12;
+}
+
+.focus-visible {
+  @apply dark:focus-visible:outline-2 dark:focus-visible:outline-offset-4 dark:focus-visible:outline-red-700;
+}
+
+@layer utilities {
+  .sr-only-focusable {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
 }
 
 @layer components {
   /*for swiper thumb img*/
-  .mySwiper .swiper-slide {
+  .thumbSwiper .swiper-slide {
     width: 8.8rem !important;
     height: 8.8rem !important;
   }
@@ -28,6 +46,10 @@ h2 {
   .swiper-slide-thumb-active::after {
     content: "";
     @apply absolute inset-0 pointer-events-none rounded-xl bg-black/20;
+  }
+
+  .slider-products {
+    padding: 10px !important;
   }
 
   @media screen and (max-width: 768px) {

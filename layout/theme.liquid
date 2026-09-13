@@ -311,7 +311,12 @@
 
     {% sections 'header-group' %}
 
-    <main id="MainContent" class="content-for-layout focus-none  dark:bg-black" role="main" tabindex="-1">
+    <main
+      id="MainContent"
+      class="content-for-layout focus-none dark:bg-gray-950 dark:text-gray-200"
+      role="main"
+      tabindex="-1"
+    >
       {% render 'dark-mode' %}
       {{ content_for_layout }}
     </main>

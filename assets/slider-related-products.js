@@ -2,11 +2,8 @@ const getSlidesPerView = (breakpoints, viewportWidth, defaultSlides = 1.1) => {
   let slidesPerView = defaultSlides;
 
   for (const [key, settings] of Object.entries(breakpoints)) {
-    if (viewportWidth >= +key) {
-      slidesPerView = settings.slidesPerView;
-    }
+    if (viewportWidth >= +key) slidesPerView = settings.slidesPerView;
   }
-
   return slidesPerView;
 };
 
@@ -32,7 +29,10 @@ const initSwiper = (containerSelector = ".slider-products") => {
       spaceBetween: 16,
       loop: enableLoop,
       mousewheel: true,
-      keyboard: true,
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true
+      },
       watchOverflow: true,
       navigation: {
         nextEl: slider.querySelector(".swiper-button-next"),

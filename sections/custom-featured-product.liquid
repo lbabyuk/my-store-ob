@@ -13,7 +13,7 @@
 {%- endstyle -%}
 
 <section
-  class="product section-{{ section.id }}-padding section-{{ section.id }} dark:bg-black transition-colors duration-300"
+  class="product section-{{ section.id }}-padding section-{{ section.id }} transition-colors duration-300"
   id="product-{{ section.id }}"
   data-section="{{ section.id }}"
   data-url="{{ product.url }}"
@@ -22,13 +22,13 @@
   <div class="page-width">
     {%- assign not_available_text = 'No product available at the moment.' -%}
     {%- if product == null -%}
-      <div class="title-wrapper text-center dark:text-white">
+      <div class="title-wrapper text-center">
         <h2 class="title">
           {{ not_available_text }}
         </h2>
       </div>
     {%- else -%}
-      <div class="product-wrapper grid! grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-15">
+      <div class="product-wrapper grid! grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10">
         {%- render 'custom-product-media' -%}
         <div class="product-info flex flex-col gap-8">
           <div class="product_title">
@@ -38,9 +38,15 @@
               <h1 class="product_title">{{ product.handle | capitalize }}</h1>
             {%- endif -%}
           </div>
-          {%- form 'product', product -%}
+          {%- form 'product', product, class: 'form', data-type: 'add-to-cart-form' -%}
             <div class="product-form-wrapper flex flex-col gap-8">
-              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+              <input
+                type="hidden"
+                name="id"
+                value="{{ product.selected_or_first_available_variant.id }}"
+                class="sr-only"
+                aria-hidden="true"
+              >
               {%- render 'custom-product-price' -%}
               {%- render 'custom-product-options' -%}
             </div>
@@ -49,6 +55,8 @@
               name="id"
               id="selected-variant-id"
               value="{{ product.selected_or_first_available_variant.id }}"
+              class="sr-only"
+              aria-hidden="true"
             >
             {%- render 'custom-add-to-cart' -%}
           {%- endform -%}

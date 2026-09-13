@@ -16,10 +16,10 @@
   }
 {%- endstyle -%}
 
-<div class="color-{{ section.settings.color_scheme }}">
+<div class="dark:bg-gray-950 dark:text-gray-200">
   <div class="contact section-{{ section.id }}-padding page-width page-width--narrow">
     {%- if section.settings.heading != blank -%}
-      <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}">
+      <h2 class="title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }} dark:text-gray-200!">
         {{ section.settings.heading }}
       </h2>
     {%- else -%}
@@ -54,7 +54,7 @@
               type="text"
               name="contact[name]"
               id="name"
-              placeholder="Enter name"
+              placeholder="{{ 'templates.contact.form.name' | t }}"
               autocomplete="name"
               value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
             >
@@ -65,7 +65,7 @@
               type="tel"
               name="contact[phone]"
               id="phone"
-              placeholder="Enter phone"
+              placeholder="{{ 'templates.contact.form.phone' | t }}"
               autocomplete="tel"
               value="{% if form.phone %}{{form.phone}}{% elsif customer %}{{ customer.phone }}{% endif %}"
               pattern="^\+?(?:[0-9] ?){6,14}[0-9]$"
@@ -78,13 +78,11 @@
             type="email"
             name="contact[email]"
             id="email"
-            placeholder="Enter email"
+            placeholder="{{ 'templates.contact.form.email' | t }}"
             value="{% if form.email %}{{form.email}}{% elsif customer %}{{ customer.email }}{% endif %}"
             pattern="^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$"
-
             required
             aria-required="true"
-
             autocorrect="off"
             autocapitalize="off"
             autocomplete="email"
@@ -115,7 +113,10 @@
             required
             aria-required="true"
             autocomplete="off"
-          >{{ form.body }}</textarea>
+          >{{ form.body | escape }}</textarea>
+          {%- if form.errors contains 'body' -%}
+            <p class="field-error" id="ContactForm-body-error">{{ form.errors.messages.body }}</p>
+          {%- endif -%}
         </div>
       </div>
       <div class="contact-honeypot" aria-hidden="true">
@@ -125,7 +126,11 @@
       <div class="contact__button">
         <button
           type="submit"
-          class="help-btn"
+          class="
+            help-btn bg-gray-950 text-gray-200 w-full pt-6 pb-6 rounded-lg cursor-pointer
+            disabled:cursor-not-allowed transition-colors duration-300 hover:bg-gray-800
+            dark:bg-gray-50 dark:text-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-200 focus-visible
+          "
           aria-label="Submit button"
           data-sending-text="Sending..."
         >

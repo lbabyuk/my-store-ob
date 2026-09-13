@@ -11,15 +11,21 @@
 {%- if recommendations.performed? and recommendations.products_count > 0 -%}
   <h2 class="section-title">{{ section.settings.heading }}</h2>
   <div
-    class="swiper slider-products"
+    class="swiper slider-products focus-visible"
     aria-roledescription="carousel"
     aria-label="{{ section.settings.heading }}"
     id="Slider-{{ section.id }}"
+    role="region"
   >
     <div class="swiper-wrapper">
       {%- for product in recommendations.products -%}
-        <div class="swiper-slide flex shrink">
-          <a href="{{ product.url }}" class="product-image-link">
+        <div
+          class="swiper-slide flex shrink"
+        >
+          <a
+            href="{{ product.url }}"
+            class="product-image-link inline-block"
+          >
             {%- if product.featured_image != blank -%}
               {{
                 product.featured_image
@@ -31,35 +37,33 @@
                 | default: product.title
               }}
             {%- else -%}
-              {{'product-2' | placeholder_svg_tag: 'placeholder-img '}}
+              {{ 'product-2' | placeholder_svg_tag: 'placeholder-img ' }}
             {%- endif -%}
-          </a>
-          <a href="{{ product.url }}" class="product-info flex flex-col gap-2 mt-4">
-            <span class="product-name text-black dark:text-white text-sm hover:underline underline-offset-4">
-              {{- product.title | escape -}}
-            </span>
-            <span class="product-price text-neutral-500 dark:text-gray-50 text-sm">
-              {{ product.price | money_with_currency }}
-            </span>
+            <div class="product-info flex flex-col gap-2 mt-4">
+              <span class="product-name text-sm hover:underline underline-offset-4">
+                {{- product.title | escape -}}
+              </span>
+              <span class="product-price text-sm">
+                {{ product.price | money_with_currency }}
+              </span>
+            </div>
           </a>
         </div>
       {%- endfor -%}
     </div>
     <button
       type="button"
-      aria-label="{{ 'sections.slideshow.previous_slideshow' | t }}"
+      aria-label="{{ 'sections.slideshow.next_slideshow' | t }}"
       aria-controls="Slider-{{ section.id }}"
-      class="swiper-button-prev rotate-180 absolute top-1/2 -translate-y-1/2 -left-5 w-10 h-10 z-50 items-center justify-center rounded-full border border-gray-300 bg-white shadow-sm"
+      class="swiper-button-next absolute top-1/2 -translate-y-1/2 -right-5 w-10 h-10 z-50  rounded-full border border-gray-300 bg-white shadow-sm focus-visible"
     >
       {{ 'custom-icon-arrow.svg' | inline_asset_content }}
     </button>
-
     <button
       type="button"
-      name="next"
-      aria-label="{{ 'sections.slideshow.next_slideshow' | t }}"
+      aria-label="{{ 'sections.slideshow.previous_slideshow' | t }}"
       aria-controls="Slider-{{ section.id }}"
-      class="swiper-button-next absolute top-1/2 -translate-y-1/2 -right-5 w-10 h-10 z-50  items-center justify-center rounded-full border border-gray-300 bg-white shadow-sm"
+      class="swiper-button-prev rotate-180 absolute top-1/2 -translate-y-1/2 -left-5 w-10 h-10 z-50 rounded-full border border-gray-300 bg-white shadow-sm focus-visible"
     >
       {{ 'custom-icon-arrow.svg' | inline_asset_content }}
     </button>
