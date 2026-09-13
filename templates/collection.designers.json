@@ -12,13 +12,14 @@
     "banner": {
       "type": "main-collection-banner",
       "settings": {
-        "show_collection_description": false,
+        "show_collection_description": true,
         "show_collection_image": false,
         "color_scheme": "scheme-1"
       }
     },
     "product-grid": {
       "type": "main-collection-product-grid",
+      "disabled": true,
       "settings": {
         "products_per_page": 16,
         "columns_desktop": 4,
@@ -37,7 +38,7 @@
         "padding_bottom": 36
       }
     },
-    "designers_collection_pkitzA": {
+    "designers_collection_TxhYGj": {
       "type": "designers-collection",
       "name": "Designers cards",
       "settings": {
@@ -45,7 +46,7 @@
         "columns_desktop": 4,
         "columns_mobile": "1",
         "color_scheme": "",
-        "show_vendor": false,
+        "show_vendor": true,
         "padding_top": 36,
         "padding_bottom": 36
       }
@@ -54,6 +55,6 @@
   "order": [
     "banner",
     "product-grid",
-    "designers_collection_pkitzA"
+    "designers_collection_TxhYGj"
   ]
 }
